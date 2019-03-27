@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="assets/stylesheets/main.css">
 	<script src="assets/scripts/main.js"></script>
-	<title>Banka | Root Admin Sign Up</title>
+	<title>Banka | User Sign Up</title>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
 			<header class="intro">
-				<h3>Create Root Admin Account that's needed to kickstart Banka</h3>
+				<h3>Create your Phyical Bank Account online with Banka in few steps</h3>
 			</header>
 			<section class="sign-up"><!--
         
@@ -70,9 +70,27 @@
               <input type="text" name="middleName" placeholder="Middlename">
             </label>
 
+          	<label class="control-label">
+              Account Type
+              <select name="accountType"  class="form-control">
+								<option value="0">-- choose account type --</option>
+								<option value="1">Savings</option>
+								<option value="2">Current</option>
+							</select>
+            </label>
+
+          	<label class="control-label">
+                Gender
+                <select name="gender" class="">
+									<option value="0">-- choose gender --</option>
+									<option value="2">Female</option>
+									<option value="1">Male</option>
+								</select>
+						</label>
+
             <label class="required">
               Mobile Number
-              <input type="number" name="mobileNumber" placeholder="Mobile number" required>
+              <input type="number" name="mobileNumber" placeholder="Mobile Number" required>
             </label>
            
             <label class="required">
@@ -107,9 +125,9 @@
 
 					</fieldset>
 
-					<a href="admin_account_success.html" class="btn btn-default">Become Root Admin</a>
+					<a href="user_account_success.html" class="btn btn-default">Create your Bank Account</a>
 
-<!--           <input class="btn btn-default" type="submit" name="submit" value="Create Account"> -->
+<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 
         </form>
 			</section>
@@ -136,3 +154,4 @@
 </body>
 
 </html>
+                                    
