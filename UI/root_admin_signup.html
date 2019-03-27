@@ -5,16 +5,134 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="assets/stylesheets/main.css">
-	<link rel="scripts" href="assets/scripts/main.js">
-	<title>Banka | Root Admin</title>
+	<script src="assets/scripts/main.js"></script>
+	<title>Banka | Root Admin Sign Up</title>
 </head>
 
 <body>
-	<header>
-		<h2 class="main-heading"></h2>
-	</header>
-	<section class="main-body">Root Admin Sign-up</section>
+	<div class="container form-page-container">
+		<header class="main-header">
+			<h1 id="heading">Internet Banking</h1>
+			<ul>
+				<li>
+					<a href="index.html" class="main-logo">
+						<img src="assets/images/banka_logo.png" alt="banka_logo">
+					</a>
+				</li>
+				<li>
+					<div class="date"></div>
+				</li>
+			</ul>
+		</header>
+		<aside id="side" class="main-sidebar form-page-sidebar">
+		  <ul>
+		  	<li>
+		  		<a class="active" href="#home">Home</a>
+		  	</li>
+		  	<li>
+		  		<a href="#news">News</a>
+		  	</li>
+		    <li>
+		    	<a href="#contact">Contact</a>
+		    </li>
+		  	<li>
+		  		<a href="#about">About</a>
+		  	</li>
+		  </ul>
+		</aside>
+		<section id="main" class="main-body form-page-main-body">
+			<div class="menu">
+				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
+			</div>
+			<header class="intro">
+				<h3>Create Root Admin Account that's needed to kickstart Banka</h3>
+			</header>
+			<section class="sign-up"><!--
+        
+        Registration form
 
+    --><form class="" action="#" method="post">
+
+          <fieldset class="create-account">
+
+            <label class="required">
+              Surname
+              <input type="text" name="surname" placeholder="Surname" required>
+            </label>
+
+            <label class="required">
+              Firstname
+              <input type="text" name="firstName" placeholder="Firstname" required>
+            </label>
+
+            <label>
+              Middlename
+              <input type="text" name="middleName" placeholder="Middlename">
+            </label>
+
+            <label class="required">
+              Mobile Number
+              <input type="number" name="mobileNumber" placeholder="Email address" required>
+            </label>
+           
+            <label class="required">
+              Email Address
+              <input type="email" name="email" placeholder="Email address" required>
+            </label>
+
+            <label class="required">
+            	House Address
+            	<input type="text" name="houseAddress" placeholder="House Address" required>
+            </label>
+
+			    	<label class="control-label">Identification type
+			        <select name="identificationType" id="identificationType" class="form-control" required>
+								<option selected="selected" value="0">-- choose id type --</option>
+								<option value="4">Driver's Licence</option>
+								<option value="2">Federal/State Government ID Card</option>
+								<option value="3">International Passport</option>
+								<option value="5">National ID</option>
+								<option value="10">None</option>
+								<option value="6">NYSC ID Card</option>
+								<option value="9">Others</option>
+								<option value="1">Permanent Voter's Card</option>
+								<option value="7">Student ID Card</option>
+
+							</select>
+						</label>
+
+			      <label class="control-label">Identification number
+			        <input name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
+						</label>
+
+					</fieldset>
+
+					<a href="account_success.html" class="btn btn-default">Become Root Admin</a>
+
+<!--           <input class="btn btn-default" type="submit" name="submit" value="Create Account"> -->
+
+        </form>
+			</section>
+		</section>
+
+		<footer class="main-footer">
+			<nav class="footer-nav">
+				<ul>
+					<li>
+						<a href="">Security</a>
+					</li>
+					<li>
+						<a href="">Accessibility</a>
+					</li>
+					<li>
+						<a href="">Terms and Conditions</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</footer>
+
+	</div>
 </body>
 
 </html>
