@@ -9,7 +9,7 @@
 	<title>Banka | Welcome</title>
 </head>
 
-<body>
+<body class="homePage loginPage">
 	<div class="container">
 		<header class="main-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -47,22 +47,52 @@
 			<div class="menu">
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
-			<section class="sign-in">
-				<button class="btn btn-default">Sign In</button>
-				<form action="">
-					
-				</form>
+			<section id="slideContainer" class="sign-in sign-in-Btn">
+				<div id="slidingLogIn" onclick="event.stopPropagation()" class="sliding-log-in">
+		 			<div id="slideLogin" class="slide-div">
+			 			<form id="slideForm" class="slide-form" action="#" method="post">
+
+		          <fieldset class="log-in flex-label">
+		           
+		            <label class="required">
+		              Email Address
+		              <input type="email" name="email" placeholder="Email address" required>
+		            </label>
+
+		          	<label>
+		          		Password
+		          		<input name="password" type="password" placeholder="Password" required>
+		          	</label>
+		          	<a href="#">Forgotten account?</a>
+
+							</fieldset>
+							<div>
+
+								<a id="loginButton" href="user_portal.html" class="btn btn-default">Log In</a>
+							</div>
+
+		<!--           <input class="btn btn-default" type="submit" name="submit" value="Log In"> -->
+
+		        </form>
+	      	</div>
+	        <div>
+						<button id="signInBtn" onclick="event.stopPropagation()" class="user-sign-in btn btn-default">User Sign In</button>
+					</div>     
+        </div>
 			</section>
 			<header class="intro">
 				<h3>Banka...for digital and physical banking!</h3>
-				<p>Welcome to Digital Entry and Tracking for Physical Banking World at its Very Best</p>
 			</header>
+			<section>
+				<p>Welcome to Digital Entry and Tracking for Physical Banking World at its Very Best</p>
+			</section>
 			<section class="info">
 				<h3>Create your Phyical Bank Account online with Banka in few steps</h3>
 			</section>
 			<section class="sign-up">
 				<a href="user_signup.html" class="btn btn-default">Sign Up</a>
 			</section>
+			<div id="transOverlay"></div>
 		</section>
 
 		<footer class="main-footer">
