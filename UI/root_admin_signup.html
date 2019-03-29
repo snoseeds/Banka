@@ -47,13 +47,13 @@
 			<header class="intro">
 				<h3>Create Root Admin Account that's needed to kickstart Banka</h3>
 			</header>
-			<section class="sign-up"><!--
+			<section class="sign-up-form sign-up"><!--
         
         Registration form
 
     --><form class="" action="#" method="post">
 
-          <fieldset class="create-account">
+          <fieldset class="create-account flex-label">
 
             <label class="required">
               Surname
@@ -79,6 +79,11 @@
               Email Address
               <input type="email" name="email" placeholder="Email address" required>
             </label>
+
+            <label>
+          		Password
+          		<input name="password" type="password" placeholder="Password" required>
+          	</label>
 
             <label class="required">
             	House Address
@@ -107,7 +112,9 @@
 
 					</fieldset>
 
-					<a href="admin_account_success.html" class="btn btn-default">Become Root Admin</a>
+					<div>
+						<a href="admin_account_success.html" class="btn btn-default">Become Root Admin</a>
+					</div>
 
 <!--           <input class="btn btn-default" type="submit" name="submit" value="Create Account"> -->
 

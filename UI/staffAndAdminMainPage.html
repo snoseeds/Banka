@@ -9,7 +9,7 @@
 	<title>Banka | Welcome</title>
 </head>
 
-<body>
+<body class="allAdminPage loginPage">
 	<div class="container">
 		<header class="main-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -43,29 +43,57 @@
 		  	</li>
 		  </ul>
 		</aside>
-		<section id="main" class="main-body">
+		<section id="main" class="main-body admin-main-body">
 			<div class="menu">
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
 			<header class="intro">
 				<h3>Banka...for digital and physical banking!</h3>
-				<p>Admin Crew Member, Welcome! DO REMEMBER THAT WITH GREAT POWER COMES GREAT RESPONSIBILITY</p>
+				<p>Dear Admin Crew Member, Welcome! Do Remember That With Great Power Comes Great Responsibility!</p>
 			</header>
-			<section class="sign-in">
-				<button class="btn btn-default">Admin Sign In</button>
-				<form action="">
-					
-				</form>
+			<section id="slideContainer" class="sign-in sign-in-Btn">
+				<div id="slidingLogIn" onclick="event.stopPropagation()" class="sliding-log-in">
+		 			<div id="slideLogin" class="slide-div">
+			 			<form id="slideForm" class="slide-form" action="#" method="post">
+
+		          <fieldset class="log-in flex-label">
+		           
+		            <label class="required">
+		              Email Address
+		              <input type="email" name="email" placeholder="Email address" required>
+		            </label>
+
+		          	<label>
+		          		Password
+		          		<input name="password" type="password" placeholder="Password" required>
+		          	</label>
+		          	<a href="#">Forgotten account?</a>
+
+							</fieldset>
+							<div>
+
+								<a id="loginButton" href="admin_portal.html" class="btn btn-default">Log In</a>
+							</div>
+
+		<!--           <input class="btn btn-default" type="submit" name="submit" value="Log In"> -->
+
+		        </form>
+	      	</div>
+	        <div>
+						<button id="signInBtn" onclick="event.stopPropagation()" class="admin-sign-in btn btn-default">Admin Sign In</button>
+					</div>     
+        </div>
 			</section>
-			<section class="sign-in">
-				<button class="btn btn-default">Staff Sign In</button>
-				<form action="">
-					
-				</form>
+			<section class="sign-in slideContainer">
+		<!--           <input class="btn btn-default" type="submit" name="submit" value="Log In"> -->
+        <div>
+					<button onclick="event.stopPropagation()" class="staff-sign-in btn btn-default">Staff Sign In</button>
+				</div>     
 			</section>
 			<section class="sign-up">
 				<a href="root_admin_signup.html" class="btn btn-default">Root Admin Sign Up</a>
 			</section>
+			<div id="transOverlay"></div>
 		</section>
 
 		<footer class="main-footer">

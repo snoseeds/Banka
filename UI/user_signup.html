@@ -45,15 +45,16 @@
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
 			<header class="intro">
-				<h3>Create your Phyical Bank Account online with Banka in few steps</h3>
+				<h3>Sign up with Banka in few steps</h3>
+				<p>It gives you access to a world of possibilities, including your online creation of a physical bank account</p>
 			</header>
-			<section class="sign-up"><!--
+			<section class="sign-up-form sign-up"><!--
         
         Registration form
 
     --><form class="" action="#" method="post">
 
-          <fieldset class="create-account">
+          <fieldset class="create-account flex-label">
 
             <label class="required">
               Surname
@@ -71,17 +72,8 @@
             </label>
 
           	<label class="control-label">
-              Account Type
-              <select name="accountType"  class="form-control">
-								<option value="0">-- choose account type --</option>
-								<option value="1">Savings</option>
-								<option value="2">Current</option>
-							</select>
-            </label>
-
-          	<label class="control-label">
                 Gender
-                <select name="gender" class="">
+                <select name="gender" class="" required>
 									<option value="0">-- choose gender --</option>
 									<option value="2">Female</option>
 									<option value="1">Male</option>
@@ -98,34 +90,16 @@
               <input type="email" name="email" placeholder="Email address" required>
             </label>
 
-            <label class="required">
-            	House Address
-            	<input type="text" name="houseAddress" placeholder="House Address" required>
-            </label>
-
-			    	<label class="control-label">Identification type
-			        <select name="identificationType" id="identificationType" class="form-control" required>
-								<option selected="selected" value="0">-- choose id type --</option>
-								<option value="4">Driver's Licence</option>
-								<option value="2">Federal/State Government ID Card</option>
-								<option value="3">International Passport</option>
-								<option value="5">National ID</option>
-								<option value="10">None</option>
-								<option value="6">NYSC ID Card</option>
-								<option value="9">Others</option>
-								<option value="1">Permanent Voter's Card</option>
-								<option value="7">Student ID Card</option>
-
-							</select>
-						</label>
-
-			      <label class="control-label">Identification number
-			        <input name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
-						</label>
+            <label>
+          		Password
+          		<input name="password" type="password" placeholder="Password" required>
+          	</label>
 
 					</fieldset>
 
-					<a href="user_account_success.html" class="btn btn-default">Create your Bank Account</a>
+					<div>
+						<a href="user_account_success.html" class="btn btn-default">Sign me up with Banka!</a>
+					</div>
 
 <!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 

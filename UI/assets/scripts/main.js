@@ -1,5 +1,6 @@
 const startApp = () => {
 	document.addEventListener("DOMContentLoaded", function() {
+		const presentPageBody = document.querySelector('body');
 
 		// Section to Display Admin Button on Homepage with
 		// Seven continuous clicks under five seconds while no two clicks
@@ -41,21 +42,26 @@ const startApp = () => {
 		  adminTestingElement.addEventListener('click', adminDisplayer, false);		
 		}
 
-		adminSection();
+		if (presentPageBody.classList.contains('homePage')) {
+			adminSection();
+		}
 
 		// Section to Toggle Menu on Mobile Screen
-		const mobileMenuToggle = () => {
+		const mobileMenuToggle = (formStatus) => {
 			// toggleMenu on mobile
 			const menu = document.querySelector('#menuB');
 			const mainBody = document.querySelector('#main');
 			const sideBar = document.querySelector('#side');
 			const nav = document.querySelector('#side ul');
 
+			// Toggle Menu on Login Forms Display
+			const overlayForLogin = document.querySelector('#transOverlay');
+			const slidingLogIn = document.querySelector('#slidingLogIn');
+
 			const style = document.createElement('style');
 			document.head.appendChild(style);
 
 			const showMenu = () => {
-				sideBar.classList.remove('reset-height');
 				const mainBodyStyles = window.getComputedStyle(mainBody);
 				// To get tentative width of sideBar (70vw),
 				// which has been given to nav as well
@@ -77,17 +83,107 @@ const startApp = () => {
 
 				const hideMenu = () => {
 					sideBar.classList.remove('show-menu');
-					sideBar.classList.add('reset-height');
 					mainBody.removeEventListener('click', hideMenu, false);
+					if (formStatus) {
+						overlayForLogin.removeEventListener('click', hideMenu, false);
+						slidingLogIn.removeEventListener('click', hideMenu, false);
+						overlayForLogin.removeAttribute('onclick');
+						overlayForLogin.style.zIndex = '2';
+
+					}
 				}
 				mainBody.addEventListener('click', hideMenu, false);
+				if (formStatus) {
+					overlayForLogin.style.zIndex = '3';
+					overlayForLogin.setAttribute('onclick', 'event.stopPropagation()');
+					overlayForLogin.addEventListener('click', hideMenu, false);
+					slidingLogIn.addEventListener('click', hideMenu, false);
+				}
 			}			  
 			menu.addEventListener('click', showMenu, false);
 		}
 
 		mobileMenuToggle();
-	
+
+
+		// Section to Toggle Login Form on Sign-in Pages
+		const loginFormToggle = () => {
+			// Show Login form on clicking SignIn Button, and Hide it on clicking body
+			const mainBody = document.querySelector('#main');
+			const slideContainer = document.querySelector('#slideContainer');
+			const signInBtn = document.querySelector('#signInBtn');
+			const transOverlay = document.querySelector('#transOverlay');
+			const slideLogin = document.querySelector('#slideLogin');
+			const slideForm = document.querySelector('#slideForm');
+
+			const showForm = (linkForLogin) => {
+				const formLoginButton = document.querySelector('#loginButton');
+				formLoginButton.setAttribute('href', `${linkForLogin}`);
+
+				mainBody.style.paddingTop = '0'
+				slideContainer.classList.add('abs');
+				transOverlay.classList.add('transparent-overlay');
+				slideLogin.classList.add('show-login-form');
+
+				// Activate mobile toggle menu button while viewing form on mobiles
+				mobileMenuToggle(true);
+
+				const hideForm = () => {
+					mainBody.style.paddingTop = '5';
+					slideContainer.classList.remove('abs');
+					slideLogin.classList.remove('show-login-form');
+					transOverlay.classList.remove('transparent-overlay');
+					mainBody.removeEventListener('click', hideForm, false);
+					formLoginButton.setAttribute('href', '');
+				}
+				mainBody.addEventListener('click', hideForm, false);
+			}
+
+			const loginLinkRouter = () => {
+				// Sign-in Buttons present
+				const userSignIn = document.querySelector('.user-sign-in');
+				const staffSignIn = document.querySelector('.staff-sign-in');
+				const adminSignIn = document.querySelector('.admin-sign-in');
+									
+				// Adding Event listeners on all sign-in buttons on pages across the app
+				// We presently have the following only on index.html and staffAndAdminMainPage.html
+				if (presentPageBody.classList.contains('allAdminPage')) {
+					staffSignIn.addEventListener('click', function () {
+						console.log('Staff is baffled!')
+						const buttonTitle = staffSignIn.textContent;
+						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
+						showForm(loginLink);
+					}, false);
+
+					adminSignIn.addEventListener('click', function () {
+						const buttonTitle = adminSignIn.textContent;
+						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
+						showForm(loginLink);
+					}, false);
+				} else {
+					userSignIn.addEventListener('click', function () {
+						const buttonTitle = userSignIn.textContent;
+						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
+						showForm(loginLink);
+					}, false);
+				}
+
+
+
+			}
+
+			loginLinkRouter();
+			// signInBtn.addEventListener('click', showForm, false);
+
+		}
+
+		if (presentPageBody.classList.contains('loginPage')) {
+			loginFormToggle();
+		}
+
+
 	});
+
 }
 
 startApp();
