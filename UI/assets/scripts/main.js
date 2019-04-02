@@ -181,6 +181,22 @@ const startApp = () => {
 			loginFormToggle();
 		}
 
+		const accItemToggle = () => {
+			const accMenuItems = document.querySelectorAll('.accordion');
+			
+			function toggleAccItem () {
+		    this.classList.toggle('active-acc');
+		    const panel = this.nextElementSibling;
+		    panel.style.maxHeight = panel.style.maxHeight ? null : `${panel.scrollHeight}px`;
+		  }
+		  accMenuItems.forEach(accMenuItem =>
+		  	accMenuItem.addEventListener('click', toggleAccItem, false));
+		}
+
+		if (presentPageBody.classList.contains('accordion-page')) {
+			accItemToggle();
+		}
+
 
 	});
 
