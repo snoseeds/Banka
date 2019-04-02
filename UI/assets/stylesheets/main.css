@@ -248,7 +248,7 @@ body {
 	.main-sidebar {
 		background: #fff;
 		max-width: 0;
-		overflow-y: scroll;
+		overflow-y: auto;
 		transition: max-width 0.2s ease-in-out;
 		border-bottom-right-radius: 30px;
 		border-bottom-left-radius: 30px;
@@ -302,6 +302,14 @@ General UI Elements Styling
   background: #77a198;
 }
 
+.create-bank-account {
+  background: #77a198;
+}
+
+.create-bank-account:hover {
+  background: #df5000;
+
+}
 
 /*
 =======================================
@@ -393,6 +401,7 @@ fieldset {
 .sign-up label text-area {
 	width: 50%;
 }
+
 /*
   ==================================================
   Login Sections for User (client) on index.html and 
@@ -506,4 +515,210 @@ fieldset {
 
 #transOverlay {
 	position: absolute;
+}
+
+
+/*
+  ==================================================
+  User Portal Styles
+  ==================================================
+*/
+.user-portal {
+	grid-template-rows: auto auto auto 1fr;
+	grid-auto-rows: 1fr;
+	padding-top: 10px;
+	text-align: left;
+	grid-row-gap: 10px;
+	padding-bottom: 20px;
+
+	/*justify-content: center;*/
+	/*align-items: flex-start;*/
+	/*justify-items: flex-start;*/
+}
+
+.menu-item-title {
+/*	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;*/
+}
+
+.portal-intro {
+	display: flex;
+	justify-content: space-between;
+	/*flex-wrap: wrap;*/
+	/*justify-items: flex-end;*/
+}
+
+header.portal-intro.intro {
+	/*margin-top: 0.5em;*/
+	/*border: 1px solid black;*/
+	/*justify-content: flex-start;*/
+
+}
+
+.portal-intro p {
+	text-align: right;
+	/*justify-self: flex-end;*/
+}
+
+.date-day {
+	display: block;
+	text-align: right;
+	color: green;
+}
+
+.balance-info a {
+	text-decoration: underline;
+}
+
+/*.menu-item-title + hr {
+	align-self: center;
+}*/
+
+
+
+.accounts-table {
+	overflow-x: auto;
+	-webkit-box-shadow: 0px 0px 0.5px 1.2px rgba(0,0,0,0.5);
+		 -moz-box-shadow: 0px 0px 0.5px 1.2px rgba(0,0,0,0.5);
+					box-shadow: 0px 0px 0.5px 1.2px rgba(0,0,0,0.5);
+	border-bottom-right-radius: 2px;
+	border-bottom-left-radius: 2px;
+	background: rgba(1, 66, 17, 0.35)
+}
+
+th {
+	vertical-align: bottom;
+}
+
+table {
+	width: 100%;
+}
+
+tbody {
+	background: white;
+}
+
+th {
+	padding: 5px;
+}
+td {
+	padding: 2px 5px;
+}
+
+td, th {
+	border-radius: 0;
+}
+
+p.account-name a {
+	text-decoration: underline;;
+}
+
+p.account-type {
+	color: green;
+}
+
+td.balance p {
+	color: red;
+}
+
+td.av-balance p {
+	color: green;
+}
+
+.account-creation {
+	background: white;
+	/*text-align: right;*/
+	padding: 2px;
+}
+
+.create-bank-account {
+
+}
+
+.menu-item-title {
+	-webkit-box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
+		 -moz-box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
+					box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
+	border-radius: 0;
+	padding-bottom: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+	.date-time {
+		display: block;
+	}
+
+	header.portal-intro.intro p {
+		flex-shrink: 0;
+
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.user-portal {
+		grid-template-rows: auto auto auto auto 1fr;
+		padding-top: 0;
+	}
+
+	.user-portal div:first-child {
+		margin-bottom: -10px;
+	}
+
+	header.portal-intro.intro {
+
+	}
+
+
+	
+	header.portal-intro.intro h3 {
+
+	}
+
+
+}
+
+header.portal-intro.intro p {
+	/*flex-shrink: 0;*/
+	padding-left: 10px;
+}
+	
+/*.hidden-content {
+	width: 70%;
+	background: green;
+	display: none;
+}*/
+
+.hidden-content li {
+	margin-left: 15px;
+}
+
+.accordion {
+}
+
+.active-acc, .accordion:hover {
+  background-color: #ccc;
+}
+
+.accordion a:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active-acc a:after {
+  content: "\2212";
+}
+
+.panel {
+  /*padding: 0 18px;*/
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+@media only screen and (max-width: 700px) {
+
 }
