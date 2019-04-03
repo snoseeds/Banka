@@ -42,8 +42,14 @@ const startApp = () => {
 		  adminTestingElement.addEventListener('click', adminDisplayer, false);		
 		}
 
+		const logOutMessage = () => {
+			const logOut = document.querySelector('.log-out-message');
+			logOut.style.display = window.location.href.endsWith('?log_out') ? 'block' : 'none';
+		}
+
 		if (presentPageBody.classList.contains('homePage')) {
 			adminSection();
+			logOutMessage();
 		}
 
 		// Section to Toggle Menu on Mobile Screen
@@ -149,7 +155,6 @@ const startApp = () => {
 				// We presently have the following only on index.html and staffAndAdminMainPage.html
 				if (presentPageBody.classList.contains('allAdminPage')) {
 					staffSignIn.addEventListener('click', function () {
-						console.log('Staff is baffled!')
 						const buttonTitle = staffSignIn.textContent;
 						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
 						showForm(loginLink);
@@ -196,6 +201,67 @@ const startApp = () => {
 		if (presentPageBody.classList.contains('accordion-page')) {
 			accItemToggle();
 		}
+
+
+		const confirmationBoxToggle = () => {
+			const actionButtons = document.querySelectorAll('.action');
+			const confirmationBox = document.querySelector('.confirmation');
+			const confirmationBoxTxt = document.querySelector('.confirmation p');
+			const confirmActionBtn = document.querySelector('.do-action');
+			const stopActionBtn = document.querySelector('.stop-action');
+
+			const transOverlay = document.querySelector('#transOverlay');
+
+			function showDialogBox () {
+				const setDialogBoxWidth = () => {
+					const mainBody = document.querySelector('.main-body');
+					// if (!document.querySelector('style')) {
+						const style = document.createElement('style');
+						document.head.appendChild(style);
+					// }
+
+					const mainBodyStyles = window.getComputedStyle(mainBody);
+					const mainBodyWidth = mainBodyStyles.getPropertyValue('width').slice(0, -2);
+					style.textContent = `@media only screen and (min-width: 400px) {
+							.confirmation {
+								width: ${mainBodyWidth * 0.6}px;	
+							}			
+					}`;
+				}
+				setDialogBoxWidth();
+
+				confirmationBoxTxt.textContent = `${this.dataset.question}`;
+				confirmActionBtn.setAttribute('href', `${this.dataset.url}`);
+				confirmActionBtn.textContent = `${this.dataset.urlTitle}`;
+				confirmationBox.classList.add('show-confirmation');
+				transOverlay.classList.add('transparent-overlay');
+
+				if (confirmActionBtn.textContent == 'Log Out') {
+					const displayLogOutMessage = () => {
+						confirmActionBtn.setAttribute('href', `${this.dataset.url}?log_out`);
+					}
+
+					confirmActionBtn.addEventListener('click', displayLogOutMessage, false)
+				}
+
+				const hideDialogBox = () => {
+					confirmationBox.classList.remove('show-confirmation');
+					transOverlay.classList.remove('transparent-overlay');
+				}
+				stopActionBtn.addEventListener('click', hideDialogBox, false);
+				transOverlay.addEventListener('click', hideDialogBox, false);
+			}
+
+			actionButtons.forEach(actionButton =>
+		  	actionButton.addEventListener('click', showDialogBox, false));
+
+		}
+
+		if (presentPageBody.classList.contains('confirmation-box')) {
+			confirmationBoxToggle();
+		}
+
+
 
 
 	});

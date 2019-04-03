@@ -9,9 +9,9 @@
 	<title>Banka | Welcome</title>
 </head>
 
-<body class="accordion-page">
+<body class="accordion-page confirmation-box">
 	<div class="container">
-		<header class="main-header">
+		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
 			<ul>
 				<li>
@@ -19,11 +19,18 @@
 						<img src="assets/images/banka_logo.png" alt="banka_logo">
 					</a>
 				</li>
-				<li>
-					<div class="date"></div>
+				<li class="log-out">
+					<a data-question="Are you sure you want to log out?" data-url="index.html" data-url-title="Log Out" class="action" href="#">Log Out</a>
 				</li>
 			</ul>
 		</header>
+		<section class="confirmation">
+			<p></p>
+			<div>
+				<a class="btn btn-default do-action" href=""></a>
+				<button class="btn btn-default stop-action">No</button>
+			</div>
+		</section>
 		<aside id="side" class="main-sidebar">
 		  <ul>
 		  	<li>
@@ -60,7 +67,7 @@
 				<p>Wednesday, April 1, 2019</p>
 			</section>
 			<header class="portal-intro intro">
-				<h3>Welcome Nurudeen Shakirat!</h3>
+				<h3>Welcome Oke Shakirat!</h3>
 				<p class=last-visit>Last visit: <span class="date-time">3:56pm, Saturday</span><span class="date-day">March 30, 2019</span></p>
 			</header>
 			<section class="balance-info">
@@ -108,8 +115,11 @@
             </tr>
           </tbody>
         </table>
-				<section class="account-creation"><a href="user_bankAccount_creation.html" class="btn btn-default create-bank-account">Add Bank Account</a></section>
+				<section class="account-creation">
+					<button data-question="Are you sure you want to create a new bank account?" data-url="user_bankAccount_creation.html" data-url-title="Add Account" class="btn btn-default action">Add Bank Account</button>
+				</section>
 			</section>
+			<div id="transOverlay"></div>
 		</section>
 		<footer class="main-footer">
 			<nav class="footer-nav">
