@@ -213,36 +213,11 @@ const startApp = () => {
 			const transOverlay = document.querySelector('#transOverlay');
 
 			function showDialogBox () {
-				const setDialogBoxWidth = () => {
-					const mainBody = document.querySelector('.main-body');
-					// if (!document.querySelector('style')) {
-						const style = document.createElement('style');
-						document.head.appendChild(style);
-					// }
-
-					const mainBodyStyles = window.getComputedStyle(mainBody);
-					const mainBodyWidth = mainBodyStyles.getPropertyValue('width').slice(0, -2);
-					style.textContent = `@media only screen and (min-width: 400px) {
-							.confirmation {
-								width: ${mainBodyWidth * 0.6}px;	
-							}			
-					}`;
-				}
-				setDialogBoxWidth();
-
 				confirmationBoxTxt.textContent = `${this.dataset.question}`;
 				confirmActionBtn.setAttribute('href', `${this.dataset.url}`);
 				confirmActionBtn.textContent = `${this.dataset.urlTitle}`;
 				confirmationBox.classList.add('show-confirmation');
 				transOverlay.classList.add('transparent-overlay');
-
-				if (confirmActionBtn.textContent == 'Log Out') {
-					const displayLogOutMessage = () => {
-						confirmActionBtn.setAttribute('href', `${this.dataset.url}?log_out`);
-					}
-
-					confirmActionBtn.addEventListener('click', displayLogOutMessage, false)
-				}
 
 				const hideDialogBox = () => {
 					confirmationBox.classList.remove('show-confirmation');
@@ -261,7 +236,42 @@ const startApp = () => {
 			confirmationBoxToggle();
 		}
 
+		const advancedHistory = () => {
+			const advHistoryBtn = document.querySelector('.adv-history');
+			const advHistoryToggle = document.querySelector('.adv-history span')
+			const moreOptionsGuide = document.querySelectorAll('.guide');
+			const dateRangeStart = document.querySelector('label.history.start');
+			const dateRangeEndTxt = document.querySelector('label.history.end p');
 
+
+			
+			const showAdvancedOptions = () => {
+				advHistoryBtn.removeEventListener('click', showAdvancedOptions, false);
+
+				moreOptionsGuide.forEach(altTxt => 
+					altTxt.textContent = altTxt.dataset.guideTxt);
+				advHistoryToggle.textContent = advHistoryToggle.dataset.hideMore;
+				dateRangeStart.classList.remove('hide');
+				dateRangeEndTxt.classList.remove('hide');
+
+				const hideAdvancedOptions = () => {
+					advHistoryBtn.addEventListener('click', showAdvancedOptions, false);
+					// moreOptionsGuide.textContent = moreOptionsGuide.dataset.basicTxt;
+					moreOptionsGuide.forEach(altTxt => 
+						altTxt.textContent = altTxt.dataset.basicTxt);
+					advHistoryToggle.textContent = advHistoryToggle.dataset.showMore;
+					dateRangeStart.classList.add('hide');
+					dateRangeEndTxt.classList.add('hide');
+				}
+				advHistoryBtn.addEventListener('click', hideAdvancedOptions, false);
+			}
+
+			advHistoryBtn.addEventListener('click', showAdvancedOptions, false);
+
+		}
+		if (presentPageBody.classList.contains('history')) {
+			advancedHistory();
+		}
 
 
 	});

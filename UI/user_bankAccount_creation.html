@@ -20,15 +20,15 @@
 					</a>
 				</li>
 				<li class="log-out">
-					<a data-question="Are you sure you want to log out?" data-url="index.html" data-url-title="Log Out" class="action" href="#">Log Out</a>
+					<a data-question="Are you sure you want to log out?" data-url="index.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
 				</li>
 			</ul>
 		</header>
 		<section class="confirmation">
 			<p></p>
 			<div>
-				<a class="btn btn-default do-action" href=""></a>
-				<button class="btn btn-default stop-action">No</button>
+				<a class="btn btn-default do-action"></a>
+				<a class="btn btn-default stop-action" href="#heading">No</a>
 			</div>
 		</section>
 		<aside id="side" class="main-sidebar">
@@ -37,7 +37,7 @@
 		  		<a class="active" href="#main">Summary</a>
 		  	</li>
 		  	<li>
-		  		<a href="user_portal/bank_accounts_history.html">History</a>
+		  		<a href="user_bank_accounts_history.html">History</a>
 		  	</li>
 		    <div class="more-container">
 		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
@@ -134,7 +134,7 @@
       <div id="transOverlay"></div>
 		</section>
 
-		<footer class="main-footer">
+		<footer id="tail" class="main-footer">
 			<nav class="footer-nav">
 				<ul>
 					<li>
