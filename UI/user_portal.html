@@ -20,7 +20,7 @@
 					</a>
 				</li>
 				<li class="log-out">
-					<a data-question="Are you sure you want to log out?" data-url="index.html" data-url-title="Log Out" class="action" href="#">Log Out</a>
+					<a data-question="Are you sure you want to log out?" data-url="index.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
 				</li>
 			</ul>
 		</header>
@@ -28,16 +28,16 @@
 			<p></p>
 			<div>
 				<a class="btn btn-default do-action" href=""></a>
-				<button class="btn btn-default stop-action">No</button>
+				<a class="btn btn-default stop-action" href="#heading">No</a>
 			</div>
 		</section>
 		<aside id="side" class="main-sidebar">
 		  <ul>
 		  	<li>
-		  		<a class="active" href="#main">Summary</a>
+		  		<a class="active" href="user_portal.html">Summary</a>
 		  	</li>
 		  	<li>
-		  		<a href="user_portal/bank_accounts_history.html">History</a>
+		  		<a href="user_bank_accounts_history.html">History</a>
 		  	</li>
 		    <div class="more-container">
 		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
@@ -68,7 +68,7 @@
 			</section>
 			<header class="portal-intro intro">
 				<h3>Welcome Oke Shakirat!</h3>
-				<p class=last-visit>Last visit: <span class="date-time">3:56pm, Saturday</span><span class="date-day">March 30, 2019</span></p>
+				<p class="last-visit">Last visit: <span class="date-time">3:56pm, Saturday</span><span class="date-day">March 30, 2019</span></p>
 			</header>
 			<section class="balance-info">
 				<p>Note that shown balances can't reflect <a href="">Pending Payments</a></p>
@@ -92,7 +92,7 @@
             <tr class="accounts-table-row">
               <td class="">
                 <p class="account-type">Current Account</p>
-                <p class="account-name">Oke Shakirat / <a href="user_portal/bank_accounts_history.html">8312345678</a></p>
+                <p class="account-name">Oke Shakirat / <a href="user_bank_accounts_history.html">8312345678</a></p>
               </td>
               <td class="balance">
                 <p>&#8358;150,000.00</p>
@@ -104,7 +104,7 @@
             <tr class="accounts-table-row">
               <td class="">
                 <p class="account-type">Savings Account</p>
-                <p class="account-name">Oke Shakirat / <a href="user_portal/bank_accounts_history.html">8309230008</a></p>
+                <p class="account-name">Oke Shakirat / <a href="user_bank_accounts_history.html">8309230008</a></p>
               </td>
               <td class="balance">
                 <p>&#8358;150,000.00</p>
@@ -121,7 +121,7 @@
 			</section>
 			<div id="transOverlay"></div>
 		</section>
-		<footer class="main-footer">
+		<footer id="tail" class="main-footer">
 			<nav class="footer-nav">
 				<ul>
 					<li>

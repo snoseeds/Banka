@@ -46,6 +46,7 @@ body {
 	display: grid;
 	grid-template-rows: 2px 1fr;
 	margin-bottom: 5px;
+	padding-right: 5px;
 	-webkit-box-shadow: 0px 4px 3px -4px rgba(0,0,0,0.75);
 		 -moz-box-shadow: 0px 4px 3px -4px rgba(0,0,0,0.75);
 					box-shadow: 0px 4px 3px -4px rgba(0,0,0,0.75);					
@@ -78,7 +79,6 @@ body {
 	align-self: center;
 	flex: 0 0 auto;
 	display: none;
-	margin-right: 5px;
 }
 
 /*.main-header li:last-child {
@@ -187,6 +187,7 @@ body {
 @media only screen and (max-width: 980px) {
 	body{
 		grid-template-columns: 1fr 98vw 1fr;
+		height: 100vmax;
 	}
 }
 
@@ -195,11 +196,6 @@ body {
 		grid-column: 1/3;
 		border-bottom-left-radius: 5px;
 	}
-
-/*	body {
-		display: grid;
-		height: 100vmax;
-	}*/
 
 	.main-sidebar ul {
 		display: flex;
@@ -359,17 +355,18 @@ textarea {
   font: 300 16px/22px "Lato", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.date-label label,
 .flex-label label {
   color: #648880;
   cursor: pointer;
   font-weight: 400;
 }
 
+.date-label select,
 .flex-label input,
 .flex-label select,
 .flex-label textarea {
   border: 1px solid #c6c9cc;
-  border-radius: 5px;
   color: #888;
   margin: 5px 0 27px 0;
   padding: 5px 8px;
@@ -562,6 +559,10 @@ fieldset {
 	/*justify-items: flex-start;*/
 }
 
+.log-out {
+
+}
+
 .menu-item-title {
 /*	display: flex;
 	justify-content: space-between;
@@ -644,9 +645,9 @@ p.account-type {
 	color: green;
 }
 
-td.balance p {
+/*td.balance p {
 	color: red;
-}
+}*/
 
 td.av-balance p {
 	color: green;
@@ -750,20 +751,38 @@ header.portal-intro.intro p {
 	background: #fff;
 	z-index: 5;
 	padding: 1em;
-	position: absolute;
-	top: 50%;
-	left: 57.5%;
-	margin-right: -42.5%;
-	transform: translate(-50%, -50%);
+	position: fixed;
+	bottom: 40%;
+	left: 50%;
+	margin-left: 6%;
+	transform: translate(-50%, 0%);
+	width: 600px;
+}
+
+@media only screen and (max-width: 960px) {
+	.confirmation {
+		left: 60%;
+		margin-left: 0;
+		width: 65%;
+	}
 }
 
 @media only screen and (max-width: 700px) {
 	.confirmation {
 		left: 50%;
 		margin-right: -50%;
+		width: 70%;
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.confirmation {
+		left: 50%;
+		margin-right: -50%;
 		width: 90%;
 	}
 }
+
 
 /*.container {
 	position: relative;
@@ -794,4 +813,192 @@ header.portal-intro.intro p {
 	margin-right: 5px;
 	margin-bottom: 5px;
 	background: #fff;
+}
+
+
+
+.history form,
+.history fieldset {
+	margin-bottom: 0;
+}
+
+.history .flex-label select,
+/*.history .flex-label div,*/
+.date-label select {
+	margin: 0;
+}
+
+.history .flex-label select {
+	position: static;
+}
+
+a.go,
+.accts-history-form fieldset a {
+	padding: 8px;
+  height: 34px;
+}
+
+.accts-history-form .flex-label select {
+	margin-right: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+	.history form {
+		padding-top: 0;
+		/*margin-top: 0;*/
+	}
+
+	.history p {
+		text-align: justify;
+	}
+
+	.accts-history-form fieldset div {
+		margin-top: 5px;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.accts-history-form .flex-label select {
+		margin-right: 0;
+	}
+
+}
+
+.history {
+	align-content: flex-start;
+	grid-template-rows: auto;
+	grid-auto-rows: auto;
+	/*align-items: flex-start;*/
+}
+
+.monthly-form .date-label * {
+	/*display: inline-block;*/
+}
+
+.monthly-form .date-label {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.monthly-form .date-label label {
+	display: flex;
+}
+
+.go {
+	vertical-align: top;
+	width: 35px;
+	margin-left: 5px;
+}
+
+.history-table p {
+	color: green;
+}
+
+.actions {
+	text-align: center;
+}
+
+.actions a {
+	padding: 5px 8px;
+	margin: 3px 0;
+}
+
+tr.accounts-table-row.total {
+	border-left: none;
+	padding-top: 6px;
+	border-radius: 0;
+	-webkit-box-shadow: 0px 0px 0.5px 1.2px rgba(0,0,0,0.5);
+		 -moz-box-shadow: 0px 0px 0.5px 1.2px rgba(0,0,0,0.5);
+					box-shadow: 0px -2px 0px 0px rgba(0,0,0,0.5);
+	
+}
+
+.history-table tr:last-child p,
+td.transaction-diff {
+	text-align: right;
+	color: #000;
+}
+
+.history-guide {
+	display: flex;
+	justify-content: space-between;
+}
+
+.history-guide p:first-child {
+	width: 80%;
+	text-align: justify;
+	margin-right: 3em;
+
+}
+
+.history-guide p:last-child {
+	text-align: right;
+	cursor: pointer;
+	text-decoration: underline;
+	align-self: center;
+}
+
+@media only screen and (max-width: 780px) {
+	.monthly-form {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.monthly-form form {
+		grid-column: 2/3;
+	}
+
+	.monthly-form .date-label {
+		justify-content: flex-end;
+	}
+
+	.form-div {
+		display: flex;
+
+	}
+
+	.history-guide p:first-child {
+		width: 100%;
+		margin-right: 10px;
+
+	}
+
+	.history-guide p:last-child span {
+		/*display: block;*/
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.recent-history {
+		margin-top: 10px;
+	}
+}
+
+	@media only screen and (max-width: 360px) {
+	.monthly-form .date-label label {
+		flex-wrap: wrap;
+	}
+
+	.recent-history {
+		margin-top: 10px;
+	}
+}
+
+.monthly-form .start {
+	margin-right: 40px;
+	margin-bottom: 0.5em;
+}
+
+.monthly-form label p {
+	margin-right: 5px;
+}
+
+/*.adv-history-txt {
+	display: none;
+}*/
+
+.hide {
+	display: none!important;
 }

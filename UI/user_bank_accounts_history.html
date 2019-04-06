@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="assets/stylesheets/main.css">
+	<script src="assets/scripts/main.js"></script>
+	<title>Banka | Welcome</title>
+</head>
+
+<body class="accordion-page confirmation-box history">
+	<div class="container">
+		<header class="main-header portal-header">
+			<h1 id="heading">Internet Banking</h1>
+			<ul>
+				<li>
+					<a href="index.html" class="main-logo">
+						<img src="assets/images/banka_logo.png" alt="banka_logo">
+					</a>
+				</li>
+				<li class="log-out">
+					<a data-question="Are you sure you want to log out?" data-url="index.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
+				</li>
+			</ul>
+		</header>
+		<section class="confirmation">
+			<p></p>
+			<div>
+				<a class="btn btn-default do-action" href=""></a>
+				<a class="btn btn-default stop-action" href="#heading">No</a>
+			</div>
+		</section>
+		<aside id="side" class="main-sidebar">
+		  <ul>
+		  	<li>
+		  		<a href="user_portal.html">Summary</a>
+		  	</li>
+		  	<li>
+		  		<a class="active" href="user_portal/user_bank_accounts_history.html">History</a>
+		  	</li>
+		    <div class="more-container">
+		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
+					  <div class="hidden-content panel">
+					  	<li>
+					  		<a class="" href="#home">Home</a>
+					  	</li>
+					  	<li>
+					  		<a href="#news">News</a>
+					  	</li>
+					    <li>
+					    	<a href="#contact">Contact</a>
+					    </li>
+					  	<li>
+					  		<a href="#about">About</a>
+					  	</li>
+					  </div>
+		    </div>
+		  </ul>
+		</aside>
+		<section id="main" class="history main-body user-portal">
+			<div class="menu">
+				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
+			</div>
+			<section class="portal-intro menu-item-title">
+				<h4>Your Statements</h4>
+				<p>Wednesday, April 1, 2019</p>
+			</section>
+			<section class="accts-history-form sign-up-form sign-up"><!--
+			
+			Accounts History form
+
+     --><form class="" action="#" method="post">
+
+          <fieldset class="flex-label">
+          	<label class="control-label">
+              <select name="accountType"  class="form-control">
+								<option value="0">-- choose account--</option>
+								<option value="1">Savings: Oke S, 8312345678</option>
+								<option value="2">Current: Oke S, 8309230008</option>
+							</select>
+							<div>
+								<a href="account_no_history.html" class="btn btn-default">Go</a>
+							</div>
+            </label>
+					</fieldset>
+
+<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
+
+        </form>
+			</section>
+			<section class="balance-info">
+				<p>Note that shown balances can't reflect <a href="">Pending Payments</a></p>
+			</section>
+			<section class="accounts-table">
+				<table>
+          <thead>
+            <tr class="accounts-table-row">
+              <th colspan="3">
+                Account Summary
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="accounts-table-row">
+              <td rowspan="2" class="">
+                <p class="account-type">Current Account</p>
+                <p class="account-name">Oke Shakirat / <a href="user_portal/user_bank_accounts_history.html">8312345678</a></p>
+              </td>
+              <th>
+                Balance
+              </th>
+              <td class="balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+            </tr>            
+            <tr class="accounts-table-row">
+              <th>
+                Available Balance
+              </th>
+              <td class="av-balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+			</section>
+			<section class="history-guide">
+				<p>To show transactions for a <span class="guide" data-guide-txt="date range," data-basic-txt="specific month (or a day),">specific month (or a day),</span><span id="historyOption" class="adv-history-txt"></span> kindly <span class="guide" data-guide-txt="fill the range," data-basic-txt="select the month (day is optional) and year of interest,">select the month (day is optional) and year of interest,</span> and hit the Go button below.</p>
+				<p class="adv-history"><span data-hide-more="Hide" data-show-more="Show">Show</span><span> Advanced</span> Options</p>
+			</section>
+			<section class="monthly-form"><!--
+			
+			Accounts Monthly History form
+
+	   -->
+	   		<form class="" action="#" method="post">
+
+	        <fieldset>
+	        	<div class="date-label">
+		        	<label class="history start hide">
+								<p>From</p>
+								<div class="form-div">
+			            <select name="day">
+										<option value="0">Day</option>
+									</select><!--
+							 --><select name="month">
+										<option value="0">Month</option>
+									</select><!--
+							 --><select>
+										<option value="0">Year</option>
+									</select>
+								</div>
+		          </label>
+		          <label class="history end">
+								<p class="hide">To</p>
+								<div class="form-div">
+			            <select name="day">
+										<option value="0">Day</option>
+									</select><!--
+							 --><select name="month">
+										<option value="0">Month</option>
+									</select><!--
+							 --><select>
+										<option value="0">Year</option>
+									</select><!--
+							 --><a class="go btn btn-default" href="account_no_history.html" class="btn btn-default">Go</a>
+								</div>
+		          </label>
+						</div>
+					</fieldset>
+
+	<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
+
+	      </form>
+	    </section>				
+			<section class="recent-history">
+				<p>The most recent transactions on your account are shown in the table below.</p>
+			</section>
+			<section class="accounts-table history-table">
+				<table>
+          <thead>
+            <tr class="accounts-table-row">
+              <th>
+                Date
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Money In
+              </th>
+              <th>
+                Money Out
+              </th>              
+              <th>
+                Balance
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="accounts-table-row">
+              <td class="">
+                <p class="">Mar 28, 2019</p>
+              </td>
+              <td class="transaction-type">
+                <p>Deposit</p>
+              </td>
+              <td class="amount">
+                <p>&#8358;10,000.00</p>
+              </td>
+              <td class="amount">
+                <p></p>
+              </td>
+              <td class="balance">
+                <p>&#8358;105,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="">
+                <p class="">Mar 25, 2019</p>
+              </td>
+              <td class="transaction-type">
+                <p>Withdrawal</p>
+              </td>
+              <td class="amount">
+                <p></p>
+              </td>
+              <td class="amount">
+                <p>&#8358;20,000.00</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;95,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="">
+                <p class="">Mar 15, 2019</p>
+              </td>
+              <td class="transaction-type">
+                <p>Withdrawal</p>
+              </td>
+              <td class="amount">
+                <p></p>
+              </td>
+              <td class="amount">
+                <p>&#8358;15,000.00</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;115,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="">
+                <p class="">Mar 9, 2019</p>
+              </td>
+              <td class="transaction-type">
+                <p>Deposit</p>
+              </td>
+              <td class="amount">
+                <p>&#8358;30,000.00</p>
+              </td>
+              <td class="amount">
+                <p></p>
+              </td>
+              <td class="balance">
+                <p>&#8358;130,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="">
+                <p class="">Mar 6, 2019</p>
+              </td>
+              <td class="transaction-type">
+                <p>Withdrawal</p>
+              </td>
+              <td class="amount">
+                <p></p>
+              </td>
+              <td class="amount">
+                <p>&#8358;10,000.00</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;100,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row total">
+            	<td>
+            		<a id="#top" class="">Back to Top&#x25B2;</a>
+            	</td>
+            	<td></td>
+              <td class="amount total">
+                <p>&#8358;40,000.00</p>
+              </td>
+              <td class="amount total">
+                <p>&#8358;45,000.00</p>
+              </td>
+              <td></td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td colspan="2" class="">
+								<p>Mar 6, 2019 - Mar 28, 2019</p>
+              </td>
+              <td colspan="2" class="transaction-diff">
+                <p>Money In - Money Out</p>
+              </td>
+              <td class="balance">
+                <p>-&#8358;5,000.00</p>
+              </td>
+            </tr>                                 
+          </tbody>
+        </table>
+				<section class="actions">
+					<a class="btn btn-default">Download</a>
+					<a class="btn btn-default">Print</a>
+				</section>
+			</section>
+			<div id="transOverlay"></div>
+		</section>
+		<footer id="tail" class="main-footer">
+			<nav class="footer-nav">
+				<ul>
+					<li>
+						<a href="">Security</a>
+					</li>
+					<li>
+						<a href="">Accessibility</a>
+					</li>
+					<li>
+						<a href="">Terms and Conditions</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</footer>
+
+	</div>
+</body>
+
+</html>
