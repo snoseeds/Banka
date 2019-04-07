@@ -37,7 +37,7 @@
 		  		<a class="active" href="admin_portal.html">Admin</a>
 		  	</li>
 		  	<li>
-		  		<a href="operations.html">User</a>
+		  		<a href="admin_user_operations.html">User</a>
 		  	</li>
 		    <div class="more-container">
 		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
@@ -72,13 +72,16 @@
 			</header>
 			<section class="admin-actions">
 				<section>
-					<h4>Adminstration Actions</h4>
+					<h4>Adminstration Operations</h4>
 				</section>
 				<section class="account-creation">
 					<button data-question="Are you sure you want to create a new member of staff account?" data-url="create_any_admin_acct.html?staff" data-url-title="Add Account" class="btn btn-default action">Create Staff Account</button>
 				</section>
 				<section class="account-creation">
 					<button data-question="Are you sure you want to create a new Admin account?" data-url="create_any_admin_acct.html?admin" data-url-title="Add Account" class="btn btn-default action">Create Admin Account</button>
+				</section>
+				<section class="regulate-admin-crew">
+					<button data-question="Sure to be a Root Admin that has this priviledge?" data-url="reg_admin_crew.html" data-url-title="Continue" class="btn btn-default action">Regulate Admin Crew</button>
 				</section>
 			</section>
 			<div id="transOverlay"></div>
