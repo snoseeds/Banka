@@ -6,10 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="assets/stylesheets/main.css">
 	<script src="assets/scripts/main.js"></script>
-	<title>Banka | Admin Account Success</title>
+	<title>Banka | Admin Welcome</title>
 </head>
 
-<body class="accordion-page confirmation-box admin-staff-success">
+<body class="accordion-page confirmation-box">
 	<div class="container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -37,7 +37,7 @@
 		  		<a class="active" href="admin_portal.html">Admin</a>
 		  	</li>
 		  	<li>
-		  		<a href="operations.html">User</a>
+		  		<a href="admin_user_operations.html">User</a>
 		  	</li>
 		    <div class="more-container">
 		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
@@ -58,29 +58,35 @@
 		    </div>
 		  </ul>
 		</aside>
-		<section id="main" class="main-body">
+		<section id="main" class="main-body user-portal admin-portal">
 			<div class="menu">
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
-			<header class="intro">
-				<h3>You have successfully created an account for <span id="accountType" data-staff="a member of Staff" data-admin="an Admin"></span> at Banka!</h3>
+			<section class="portal-intro menu-item-title">
+				<h4>Today's Date</h4>
+				<p>Wednesday, April 1, 2019</p>
+			</section>
+			<header class="portal-intro intro">
+				<h3>Welcome Admin X!</h3>
+				<p class="last-visit">Last visit: <span class="date-time">9:10am, Tuesday</span><span class="date-day">April 2, 2019</span></p>
 			</header>
-			<section>
-				<p>The new account holder should check their email to confirm the login details and can subsequently use the link below to login. Thanks!</p>
-			</section>
-			<section class="sign-in">
-				<a href="staffAndAdminMainPage.html" class="btn btn-default">Admin Sign In</a>
-			</section>
-			<section>
-				<p>You should check your email as well to confirm that you actually created this account. Bye!</p>
-			</section>
-			<section class="sign-in">
-				<a href="admin_portal.html" class="btn btn-default">Go back to Portal</a>
+			<section class="admin-actions">
+				<section>
+					<h4>Adminstration Operations</h4>
+				</section>
+				<section class="account-creation">
+					<button data-question="Are you sure you want to create a new member of staff account?" data-url="create_any_admin_acct.html?staff" data-url-title="Add Account" class="btn btn-default action">Create Staff Account</button>
+				</section>
+				<section class="account-creation">
+					<button data-question="Are you sure you want to create a new Admin account?" data-url="create_any_admin_acct.html?admin" data-url-title="Add Account" class="btn btn-default action">Create Admin Account</button>
+				</section>
+				<section class="regulate-admin-crew">
+					<button data-question="Sure to be a Root Admin that has this priviledge?" data-url="reg_admin_crew.html" data-url-title="Continue" class="btn btn-default action">Regulate Admin Crew</button>
+				</section>
 			</section>
 			<div id="transOverlay"></div>
 		</section>
-
-		<footer class="main-footer">
+		<footer id="tail" class="main-footer">
 			<nav class="footer-nav">
 				<ul>
 					<li>
@@ -101,4 +107,3 @@
 </body>
 
 </html>
-                                    
