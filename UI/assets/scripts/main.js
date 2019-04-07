@@ -49,7 +49,6 @@ const startApp = () => {
 
 		if (presentPageBody.classList.contains('homePage')) {
 			adminSection();
-			logOutMessage();
 		}
 
 		// Section to Toggle Menu on Mobile Screen
@@ -57,8 +56,16 @@ const startApp = () => {
 			// toggleMenu on mobile
 			const menu = document.querySelector('#menuB');
 			const mainBody = document.querySelector('#main');
-			const sideBar = document.querySelector('#side');
-			const nav = document.querySelector('#side ul');
+			// Multiple definitions for sideBar because of different type of
+			// sidebars that are to be used for create admin page
+			const sideBar = window.location.href.includes('root') &&
+											document.querySelector('#pageSideBar') ?
+											document.querySelector('#pageSideBar') :
+											document.querySelector('#portalSideBar') ? 
+											document.querySelector('#portalSideBar') :
+											document.querySelector('#side');
+
+			const nav = sideBar.firstElementChild;
 
 			// Toggle Menu on Login Forms Display
 			const overlayForLogin = document.querySelector('#transOverlay');
@@ -76,7 +83,7 @@ const startApp = () => {
 				const mainBodyWidth = mainBodyStyles.getPropertyValue('width').slice(0, -2);
 				const sideBarWidth = sideBarStyles.getPropertyValue('width').slice(0, -2);
 				style.textContent = `@media only screen and (max-width: 400px) {
-					#side {
+					aside.main-sidebar {
 						height: ${mainBodyHeight};
 					}
 					.show-menu {
@@ -184,6 +191,7 @@ const startApp = () => {
 
 		if (presentPageBody.classList.contains('loginPage')) {
 			loginFormToggle();
+			logOutMessage();
 		}
 
 		const accItemToggle = () => {
@@ -272,6 +280,67 @@ const startApp = () => {
 		if (presentPageBody.classList.contains('history')) {
 			advancedHistory();
 		}
+
+		const adminCrewSignUpRouter = () => {
+			const title = document.querySelector('title');
+			const mainPageAside = document.querySelector('#pageSideBar');
+			const portalPageAside = document.querySelector('#portalSideBar');
+			const formIntro = document.querySelector('header.intro h3');
+			const submitForm = document.querySelector('#submitForm');
+			const logOut = document.querySelector('.log-out');
+
+			const pageCaller = window.location.href.includes('staff') ? 'staff' :
+												 window.location.href.includes('root') ? 'root' : 'admin';
+
+			const updateSignUpForm = () => {
+				switch (pageCaller) {
+					case 'root': 
+						formIntro.textContent = "Create Root Admin Account that's needed to kickstart Banka";
+						mainPageAside.style.display = 'block';
+						submitForm.textContent = "Become a Root Admin";
+						submitForm.setAttribute('href', 'root_admin_success.html');
+						logOut.style.display = 'none';
+						title.textContent = 'Banka | Root Admin Sign Up';
+						break;
+					case 'admin':
+						formIntro.textContent = "Create Account for an Admin";
+						portalPageAside.style.display = 'block';
+						submitForm.textContent = "Create Admin Account";
+						submitForm.setAttribute('href', 'admin_account_success.html?admin');
+						title.textContent = 'Banka | Create Admin Account';
+						accItemToggle();
+						break;
+					case 'staff':
+						formIntro.textContent = "Create Account for a Staff Member";
+						portalPageAside.style.display = 'block';
+						submitForm.textContent = "Create Staff Account";
+						submitForm.setAttribute('href', 'admin_account_success.html?staff');
+						title.textContent = 'Banka | Create Staff Account';
+						accItemToggle();
+						break;
+				}
+			}
+			updateSignUpForm();
+		}
+
+		if (presentPageBody.classList.contains('admin-sign-up')) {
+			adminCrewSignUpRouter();
+		}
+
+		const createAdminStaffSuccess = () => {
+			const accountType = document.querySelector('#accountType');
+			
+			accountType.textContent = window.location.href.includes('staff') ?
+				accountType.dataset.staff : accountType.dataset.admin;
+		}
+
+		if (presentPageBody.classList.contains('admin-staff-success')) {
+			createAdminStaffSuccess();
+		}
+
+
+
+
 
 
 	});
