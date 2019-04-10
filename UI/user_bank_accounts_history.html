@@ -9,7 +9,7 @@
 	<title>Banka | Welcome</title>
 </head>
 
-<body class="accordion-page confirmation-box history">
+<body class="accordion-page confirmation-box history slidingFormPage transaction">
 	<div class="container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -62,6 +62,29 @@
 			<div class="menu">
 				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
 			</div>
+      <section id="slideContainer" class="sign-in sign-in-Btn">
+        <div id="formSliding" onclick="event.stopPropagation()" class="sliding-log-in">
+          <div id="slide" class="slide-div">
+            <form id="slideForm" class="slide-form" action="#" method="post">
+
+              <fieldset class="log-in flex-label">
+               
+                <label id="formLabel" class="required">
+                  <p>Credit Account</p>
+                  <input id="transactField" type="number" name="credit-amount" placeholder="Credit Amount" required>
+                </label>
+
+              </fieldset>
+              <div>
+                <a id="slidingFormButton" class="staff btn btn-default">Credit</a>
+              </div>
+
+    <!--           <input class="btn btn-default" type="submit" name="submit" value="Credit"> -->
+
+            </form>
+          </div>    
+        </div>
+      </section>
 			<section class="portal-intro menu-item-title">
 				<h4>Your Statements</h4>
 				<p>Wednesday, April 1, 2019</p>
@@ -74,10 +97,10 @@
 
           <fieldset class="flex-label">
           	<label class="control-label">
-              <select name="accountType"  class="form-control">
+              <select id="selectAcctNoOfUser" name="account-no-of-user"  class="form-control">
 								<option value="0">-- choose account--</option>
-								<option value="1">Savings: Oke S, 8312345678</option>
-								<option value="2">Current: Oke S, 8309230008</option>
+								<option value="AccountNumber1ofUser">Savings: Oke S, 8312345678</option>
+								<option value="AccountNumber2ofUser">Current: Oke S, 8309230008</option>
 							</select>
 							<div>
 								<a href="account_no_history.html" class="btn btn-default">Go</a>
@@ -124,6 +147,17 @@
             </tr>
           </tbody>
         </table>
+        <section class="admin-section">
+          <header class="admin-summary">
+            <p>Admin/Staff Section</p>
+            <p>Account Status: <span class="account-status">Activated</span></p>
+          </header>
+          <section class="admin-staff-power">
+            <button data-question="Are you sure you want to deactivate this bank account?" data-url="user_bankAccount_deactivate.html" data-url-title="Deactivate" class="btn btn-default action">Deactivate</button>
+            <button data-question="Are you sure you want to activate this bank account?" data-url="user_bankAccount_activate.html" data-url-title="Activate" class="btn btn-default action">Activate</button>
+            <button data-question="Are you sure you want to delete this bank account?" data-url="user_bankAccount_deleted.html" data-url-title="Delete" class="btn btn-default action">Delete Bank Account</button>
+          </section>
+        </section>
 			</section>
 			<section class="history-guide">
 				<p>To show transactions for a <span class="guide" data-guide-txt="date range," data-basic-txt="specific month (or a day),">specific month (or a day),</span><span id="historyOption" class="adv-history-txt"></span> kindly <span class="guide" data-guide-txt="fill the range," data-basic-txt="select the month (day is optional) and year of interest,">select the month (day is optional) and year of interest,</span> and hit the Go button below.</p>

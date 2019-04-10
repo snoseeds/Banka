@@ -144,6 +144,11 @@ body {
   color: white;
 }
 
+.main-sidebar .hidden-content a.active {
+  background-color: #77a198;
+  color: white;
+}
+
 .main-sidebar li:hover {
   border-bottom: 1px solid #555;
 }
@@ -180,7 +185,7 @@ body {
 }
 
 
-.form-page-main-body header{
+.form-page-main-body header {
 	margin-top: 15px;
 }
 
@@ -462,7 +467,7 @@ fieldset {
 	padding-bottom: 10px;
 }
 
-.show-login-form {
+.show-sliding-form {
 	max-height: auto;
 	z-index: 4;
 	transition: max-height 0.2s ease-in-out;
@@ -503,6 +508,10 @@ fieldset {
 	}
 
 	form {
+		padding-top: 10px;
+	}
+
+	.slide-div .slide-form {
 		padding-top: 10px;
 	}
 
@@ -865,11 +874,14 @@ a.go,
 
 }
 
+.admin-user-ops {
+	padding-bottom: 20px;
+}
+
 .history {
 	align-content: flex-start;
 	grid-template-rows: auto;
 	grid-auto-rows: auto;
-	/*align-items: flex-start;*/
 }
 
 .monthly-form .date-label * {
@@ -1017,6 +1029,7 @@ td.transaction-diff {
 	border: 1px solid red;
 }*/
 
+.admin-user-actions,
 .admin-actions {
 	align-self: stretch;
 	display: grid;
@@ -1027,7 +1040,150 @@ td.transaction-diff {
 	/*align-items: space-between;*/
 }
 
+.admin-user-actions section,
+.admin-actions section {
+	margin: 20px 0;
+}
+
+.admin-user-actions section:first-child,
+.admin-actions section:first-child {
+	margin: 5px 0;
+}
+
 /* Admin Sign Up Router */
 .admin-sign-up .main-sidebar {
 	display: none;
 }
+
+.admin-user-actions p {
+	line-height: 1.5;
+	text-align: justify;
+}
+
+
+.user-operations {
+	grid-template-rows: auto;
+	grid-auto-rows: auto;
+	align-content: flex-start;
+}
+
+.admin-user-ops {
+	grid-row-gap: 10px;
+}
+
+.admin-user-ops {
+	text-align: justify;
+}
+
+.admin-user-ops .accts-history-form p {
+	display: none;
+	text-align: right;
+	margin-top: 5px;
+	color: #000;
+	/*margin-top: -10px;*/
+	margin-right: 40px;
+
+}
+
+@media only screen and (max-width: 601px) {
+	.admin-user-ops	.accts-history-form .flex-label {
+		position: relative;
+	}
+
+	.admin-user-ops .accts-history-form p {
+		position: absolute;
+		top: 35px;
+		right: 40px;
+	}
+
+}
+
+#selectUser {
+	/*align-self: flex-start;*/
+}
+
+.history .staff-section,
+.history .admin-section {
+	display: flex;
+	justify-content: space-between;
+	background: #fff;
+	margin: 5px;
+	border: 1px solid black;
+}
+
+
+.history .staff-section .staff-power,
+.history .admin-section .admin-staff-power {
+	flex-shrink: 0;
+	padding: 4px;
+	display: grid;
+	grid-template-columns: 1/3;
+	grid-gap: 4px;
+	background: #000;
+	/*border-radius: 0;*/
+}
+
+.history .staff-section header,
+.history .admin-section header {
+	padding: 5px;
+	flex-shrink: 0;
+}
+
+/*.user-portal .admin-welcome {
+	display: none;
+	text-align: center;
+}
+*/
+.user-portal .admin-welcome p {
+	margin-bottom: 10px;
+	color: #000;
+}
+
+.history .admin-section {
+	/*display: none;*/
+
+}
+
+/*@media only screen and (max-width: 400px) {*/
+	.account-status {
+		display: block;
+		color: green;
+	}
+/*}*/
+
+.history .staff-section p:first-child,
+.history .admin-section p:first-child {
+	color: red;
+}
+
+.history .staff-power button,
+.history .admin-staff-power button {
+	padding: 5px;
+}
+
+.history .admin-staff-power button:first-child {
+	grid-column: 1/2;
+}
+
+.history .admin-staff-power button:nth-child(2) {
+	background: green;
+	grid-column: 2/3;
+}
+
+.history .staff-power button,
+.history .admin-staff-power button:last-child {
+	background: #f00;
+	grid-column: 1/3;
+	color: black;
+}
+
+
+.history .staff-power button:first-child {
+	background: green;
+	color: #fff;
+}
+
+/*.admin-user-ops,
+.admin-user-ops * {
+	border: 1px solid black;
+}*/
