@@ -47,6 +47,10 @@ const startApp = () => {
 			logOut.style.display = window.location.href.endsWith('?log_out') ? 'block' : 'none';
 		}
 
+		if (presentPageBody.classList.contains('loginPage')) {
+			logOutMessage();
+		}
+
 		if (presentPageBody.classList.contains('homePage')) {
 			adminSection();
 		}
@@ -67,9 +71,9 @@ const startApp = () => {
 
 			const nav = sideBar.firstElementChild;
 
-			// Toggle Menu on Login Forms Display
-			const overlayForLogin = document.querySelector('#transOverlay');
-			const slidingLogIn = document.querySelector('#slidingLogIn');
+			// Toggle Menu on Forms Login Forms Display
+			const overlayForForm = document.querySelector('#transOverlay');
+			const formSliding = document.querySelector('#formSliding');
 
 			const style = document.createElement('style');
 			document.head.appendChild(style);
@@ -98,19 +102,19 @@ const startApp = () => {
 					sideBar.classList.remove('show-menu');
 					mainBody.removeEventListener('click', hideMenu, false);
 					if (formStatus) {
-						overlayForLogin.removeEventListener('click', hideMenu, false);
-						slidingLogIn.removeEventListener('click', hideMenu, false);
-						overlayForLogin.removeAttribute('onclick');
-						overlayForLogin.style.zIndex = '2';
+						overlayForForm.removeEventListener('click', hideMenu, false);
+						formSliding.removeEventListener('click', hideMenu, false);
+						overlayForForm.removeAttribute('onclick');
+						overlayForForm.style.zIndex = '2';
 
 					}
 				}
 				mainBody.addEventListener('click', hideMenu, false);
 				if (formStatus) {
-					overlayForLogin.style.zIndex = '3';
-					overlayForLogin.setAttribute('onclick', 'event.stopPropagation()');
-					overlayForLogin.addEventListener('click', hideMenu, false);
-					slidingLogIn.addEventListener('click', hideMenu, false);
+					overlayForForm.style.zIndex = '3';
+					overlayForForm.setAttribute('onclick', 'event.stopPropagation()');
+					overlayForForm.addEventListener('click', hideMenu, false);
+					formSliding.addEventListener('click', hideMenu, false);
 				}
 			}			  
 			menu.addEventListener('click', showMenu, false);
@@ -119,24 +123,52 @@ const startApp = () => {
 		mobileMenuToggle();
 
 
-		// Section to Toggle Login Form on Sign-in Pages
-		const loginFormToggle = () => {
+		// Section to Toggle Sliding Form on Login Form on Sign-in Pages and Transact Page
+		const slidingFormToggle = () => {
 			// Show Login form on clicking SignIn Button, and Hide it on clicking body
 			const mainBody = document.querySelector('#main');
 			const slideContainer = document.querySelector('#slideContainer');
-			const signInBtn = document.querySelector('#signInBtn');
+			// const signInBtn = document.querySelector('#signInBtn');
 			const transOverlay = document.querySelector('#transOverlay');
-			const slideLogin = document.querySelector('#slideLogin');
+			const slide = document.querySelector('#slide');
 			const slideForm = document.querySelector('#slideForm');
 
-			const showForm = (linkForLogin) => {
-				const formLoginButton = document.querySelector('#loginButton');
-				formLoginButton.setAttribute('href', `${linkForLogin}`);
+			function showForm (formSubmitLink) {
+				const slidingFormButton = document.querySelector('#slidingFormButton');
 
-				mainBody.style.paddingTop = '0'
+				if (presentPageBody.classList.contains('transaction')) {
+					const configTransactionForm = () => {
+						const transactLabel = document.querySelector('#formLabel p');
+						const selectUserAcctNo = document.querySelector('#selectAcctNoOfUser');
+						const amountInputField = document.querySelector('#transactField');
+
+						const transactBoxForm = () => {
+							transactLabel.textContent = `${this.textContent}`;
+							amountInputField.setAttribute('placeholder', `${this.dataset.transactAction}`);
+							amountInputField.setAttribute('name', `${this.dataset.name}`);
+							slidingFormButton.textContent = `${this.textContent}`;
+							const transactType = `${this.dataset.transactType}`;
+							const selectedUserAcctNo = selectUserAcctNo.options[selectUserAcctNo.selectedIndex].value;
+							const doTransaction = () => {
+								const inputAmount = amountInputField.value;
+								console.log(inputAmount);
+								const transactLink = `${transactType}_${selectedUserAcctNo}_with_${inputAmount}`;
+								slidingFormButton.setAttribute('href', `${transactLink}`);
+								amountInputField.value = '';
+							}
+							slidingFormButton.addEventListener('click', doTransaction, false);
+						}
+						transactBoxForm();
+					}
+					configTransactionForm();
+				} else {
+					slidingFormButton.setAttribute('href', `${formSubmitLink}`);
+				}
+
+				mainBody.style.paddingTop = '0';
 				slideContainer.classList.add('abs');
 				transOverlay.classList.add('transparent-overlay');
-				slideLogin.classList.add('show-login-form');
+				slide.classList.add('show-sliding-form');
 
 				// Activate mobile toggle menu button while viewing form on mobiles
 				mobileMenuToggle(true);
@@ -144,10 +176,10 @@ const startApp = () => {
 				const hideForm = () => {
 					mainBody.style.paddingTop = '5';
 					slideContainer.classList.remove('abs');
-					slideLogin.classList.remove('show-login-form');
+					slide.classList.remove('show-sliding-form');
 					transOverlay.classList.remove('transparent-overlay');
 					mainBody.removeEventListener('click', hideForm, false);
-					formLoginButton.setAttribute('href', '');
+					slidingFormButton.setAttribute('href', '');
 				}
 				mainBody.addEventListener('click', hideForm, false);
 			}
@@ -167,31 +199,43 @@ const startApp = () => {
 						showForm(loginLink);
 					}, false);
 
+						console.log('As expected, this part is running even prior to the event');
 					adminSignIn.addEventListener('click', function () {
+						console.log(`I ram the vent and I'm running as well of course`);
 						const buttonTitle = adminSignIn.textContent;
 						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
 						showForm(loginLink);
 					}, false);
 				} else {
+					console.log(`It's not the poor event, this whole part of the function isn't even exposed to run in the very first place`);
 					userSignIn.addEventListener('click', function () {
+						console.log('I received the event');
 						const buttonTitle = userSignIn.textContent;
 						const loginLink = `${buttonTitle.slice(0, -8).toLowerCase()}_portal.html`;
 						showForm(loginLink);
 					}, false);
 				}
-
-
-
 			}
 
-			loginLinkRouter();
-			// signInBtn.addEventListener('click', showForm, false);
+			const transactFormRouter = () => {
+				const transactBtns = document.querySelectorAll('.transact');
+				transactBtns.forEach(transactBtn =>
+					transactBtn.addEventListener('click', showForm, false));
+			}
+
+			if (presentPageBody.classList.contains('loginPage')) {
+				loginLinkRouter();
+				// signInBtn.addEventListener('click', showForm, false);
+			} else {
+				console.log('We are transacting');
+				/*Sliding form on Page is for transaction*/ 
+				transactFormRouter();
+			}
 
 		}
 
-		if (presentPageBody.classList.contains('loginPage')) {
-			loginFormToggle();
-			logOutMessage();
+		if (presentPageBody.classList.contains('slidingFormPage')) {
+			slidingFormToggle();
 		}
 
 		const accItemToggle = () => {
@@ -277,6 +321,7 @@ const startApp = () => {
 			advHistoryBtn.addEventListener('click', showAdvancedOptions, false);
 
 		}
+
 		if (presentPageBody.classList.contains('history')) {
 			advancedHistory();
 		}
@@ -327,7 +372,7 @@ const startApp = () => {
 			adminCrewSignUpRouter();
 		}
 
-		const createAdminStaffSuccess = () => {
+		const createAdminOrStaffSuccess = () => {
 			const accountType = document.querySelector('#accountType');
 			
 			accountType.textContent = window.location.href.includes('staff') ?
@@ -335,16 +380,41 @@ const startApp = () => {
 		}
 
 		if (presentPageBody.classList.contains('admin-staff-success')) {
-			createAdminStaffSuccess();
+			createAdminOrStaffSuccess();
 		}
 
+		const processAdminStaffRequest = () => {
+			const selectUser = document.querySelector('#selectUser');
+			const goButton = document.querySelector('#selectUser + div a');
+			const dataRequester = goButton.dataset.request;
+			const validationReply = document.querySelector('.accts-history-form .flex-label p');
 
+			const setUserPortalAdd = () => {
+				const selectedUser = selectUser.options[selectUser.selectedIndex].value;
+				const selectedUserPortalAdd = `user_portal.html?${selectedUser}_${dataRequester}`;
+				if (selectedUser == "0") {
+					validationReply.style.display = 'block'
+					goButton.setAttribute('href', '#');
+				} else {
+					validationReply.style.display = 'none';
+					goButton.setAttribute('href', `${selectedUserPortalAdd}`);
+				}
+			}
+			goButton.addEventListener('click', setUserPortalAdd, false);
+		}
 
+		if (presentPageBody.classList.contains('staff-access')) {
+			processAdminStaffRequest();
+		}
 
+		const displayAdminPriviledges = () => {
+			
+		}
 
-
+		if (presentPageBody.classList.contains('users-portal')) {
+			displayAdminPriviledges();
+		}
 	});
-
 }
 
 startApp();

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="assets/stylesheets/main.css">
+	<script src="assets/scripts/main.js"></script>
+	<title>Banka | Admin Users' View</title>
+</head>
+<body class="accordion-page confirmation-box admin-access staff-access">
+	<div class="container">
+		<header class="main-header portal-header">
+			<h1 id="heading">Internet Banking</h1>
+			<ul>
+				<li>
+					<a href="index.html" class="main-logo">
+						<img src="assets/images/banka_logo.png" alt="banka_logo">
+					</a>
+				</li>
+				<li class="log-out">
+					<a data-question="Are you sure you want to log out?" data-url="staffAndAdminMainPage.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
+				</li>
+			</ul>
+		</header>
+		<section class="confirmation">
+			<p></p>
+			<div>
+				<a class="btn btn-default do-action" href=""></a>
+				<a class="btn btn-default stop-action" href="#heading">No</a>
+			</div>
+		</section>
+		<aside id="side" class="main-sidebar">
+		  <ul>
+		  	<li>
+		  		<a href="admin_portal.html">Admin</a>
+		  	</li>
+		  	<li>
+		  		<a class="active" href="admin_portal_reg_user.html">User</a>
+		  	</li>
+		    <div class="more-container">
+		    		<li id="hiddenMenuButton" class="hidden-menu accordion" onclick="event.stopPropagation()"><a href="#">More</a></li>
+					  <div class="hidden-content panel">
+					  	<li>
+					  		<a class="" href="#home">Home</a>
+					  	</li>
+					  	<li>
+					  		<a href="#news">News</a>
+					  	</li>
+					    <li>
+					    	<a href="#contact">Contact</a>
+					    </li>
+					  	<li>
+					  		<a href="#about">About</a>
+					  	</li>
+					  </div>
+		    </div>
+		  </ul>
+		</aside>
+		<section id="main" class="admin-user-ops history main-body">
+			<div class="menu">
+				<button id="menuB" onclick="event.stopPropagation()">&#8801</button>
+			</div>
+			<section class="portal-intro menu-item-title">
+				<h4>Registered Users</h4>
+				<p>Wednesday, April 1, 2019</p>
+			</section>
+			<section class="accts-history-form sign-up-form sign-up"><!--
+			
+			Accounts History form
+
+     --><form class="" action="#" method="post">
+
+          <fieldset class="flex-label">
+          	<label class="control-label">
+              <select id="selectUser" name="user" class="form-control">
+								<option value="0">-- choose user--</option>
+								<option value="accountNumber1">Adebare Saheed</option>
+								<option value="accountNumber2">Oke Shakirat</option>
+								<option value="accountNumber3">Soremekun Nurudeen</option>
+							</select>
+							<div>
+								<a data-request="admin" href="#"class="btn btn-default">Go</a>
+							</div>
+					
+            </label>
+            <p>Select a valid user</p>
+					</fieldset>
+
+<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
+
+        </form>
+			</section>
+			<section class="">
+				<p>Below is the list of user accounts, a user's summary can be jumped to faster by selecting it from the select box above without hitting 'Go', and it would take you down to the user summary in the table.</p>
+			</section>
+			<section>
+					<p>Hitting 'Go' would take you to the portal of the user, for detailed history of the accounts of the user, and for wielding admin priviledges.</p>
+			</section>
+			<section class="accounts-table history-table">
+				<table>
+          <thead>
+            <tr class="accounts-table-row">
+              <th>
+                Account Name
+              </th>
+              <th>
+                Account Type
+              </th>
+              <th>
+                Account Number
+              </th>
+              <th>
+                Balance
+              </th>              
+              <th>
+                Available Balance
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="accounts-table-row">
+              <td class="acct-name">
+                <p class="">Adabare Saheed</p>
+              </td>
+              <td class="account-type">
+                <p>Savings</p>
+              </td>
+              <td class="acct-number">
+                <p>2569857412</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;105,000.00</p>
+              </td>
+              <td class="available-balance">
+                <p>&#8358;105,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="acct-name">
+                <p class="">Oke Shakirat</p>
+              </td>
+              <td class="account-type">
+                <p>Current</p>
+              </td>
+              <td class="acct-number">
+                <p>8312345678</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+              <td class="available-balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="acct-name">
+                <p class="">Oke Shakirat</p>
+              </td>
+              <td class="account-type">
+                <p>Savings</p>
+              </td>
+              <td class="acct-number">
+                <p>8309230008</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+              <td class="available-balance">
+                <p>&#8358;150,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row">
+              <td class="acct-name">
+                <p class="">Soremekun Nurudeen</p>
+              </td>
+              <td class="account-type">
+                <p>Current</p>
+              </td>
+              <td class="acct-number">
+                <p>8309258961</p>
+              </td>
+              <td class="balance">
+                <p>&#8358;1,500,000,000.00</p>
+              </td>
+              <td class="available-balance">
+                <p>&#8358;1,500,000,000.00</p>
+              </td>
+            </tr>
+            <tr class="accounts-table-row total">
+            	<td colspan="5">
+            		<a id="#top" class="">Back to Top&#x25B2;</a>
+            	</td>
+          </tbody>
+        </table>
+				<section class="actions">
+					<a class="btn btn-default">Download</a>
+					<a class="btn btn-default">Print</a>
+				</section>
+			</section>
+			<div id="transOverlay"></div>
+		</section>
+		<footer id="tail" class="main-footer">
+			<nav class="footer-nav">
+				<ul>
+					<li>
+						<a href="">Security</a>
+					</li>
+					<li>
+						<a href="">Accessibility</a>
+					</li>
+					<li>
+						<a href="">Terms and Conditions</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</footer>
+
+	</div>
+</body>
+
+</html>
