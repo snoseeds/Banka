@@ -177,4 +177,78 @@ describe('Testing User Controller', () => {
         });
     });
   });
+
+  describe('Testing signin controller', () => {
+    const signinUrl = '/api/v1/auth/signin';
+    it(
+      'should login a registered user when all the parameters are given',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'test@test.com',
+            password: 'olujuwondoke',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(201);
+            expect(response.body.status).to.equal(201);
+            expect(response.body.data).to.be.a('object');
+            expect(response.body.data).to.have.property('token');
+            expect(response.body.data).to.have.property('id');
+            expect(response.body.data).to.have.property('firstName');
+            expect(response.body.data).to.have.property('lastName');
+            expect(response.body.data).to.have.property('email');
+            expect(response.body.data.token).to.be.a('string');
+            expect(response.body.data.email).to.equal('test@test.com');
+            expect(response.body.data.message).to.equal('Successful Login');
+            done();
+          });
+      },
+    );
+
+    it(
+      'should not login a registered user when the Email field is missing',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            password: 'olujuwondoke',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('Email is required');
+            done();
+          });
+      },
+    );
+    
+    it(
+      'should not login a registered user when the Password field is missing',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'test@test.com',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('Password is required');
+            done();
+          });
+      },
+    );
+  });
 });
