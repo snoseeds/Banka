@@ -1,5 +1,5 @@
 const startApp = () => {
-	document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener('DOMContentLoaded', () => {
 		const presentPageBody = document.querySelector('body');
 
 		// Section to Display Admin Button on Homepage with
@@ -300,7 +300,7 @@ const startApp = () => {
 			const showAdvancedOptions = () => {
 				advHistoryBtn.removeEventListener('click', showAdvancedOptions, false);
 
-				moreOptionsGuide.forEach(altTxt => 
+				moreOptionsGuide.forEach(altTxt =>
 					altTxt.textContent = altTxt.dataset.guideTxt);
 				advHistoryToggle.textContent = advHistoryToggle.dataset.hideMore;
 				dateRangeStart.classList.remove('hide');
@@ -362,7 +362,6 @@ const startApp = () => {
 						submitForm.setAttribute('href', 'admin_account_success.html?staff');
 						title.textContent = 'Banka | Create Staff Account';
 						accItemToggle();
-						break;
 				}
 			}
 			updateSignUpForm();
