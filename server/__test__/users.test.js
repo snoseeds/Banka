@@ -22,8 +22,8 @@ describe('Testing User Controller', () => {
             firstName: 'shakirat',
             lastName: 'oke',
             email: 'test@test.com',
-            password: 'olujuwondoke',
-            confirmPassword: 'olujuwondoke',
+            password: 'ajulo2oluwawa',
+            confirmPassword: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
 
@@ -186,8 +186,9 @@ describe('Testing User Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'test@test.com',
+            email: 'johndoe@gmail.com',
             password: 'olujuwondoke',
+            typeOfUser: 'client',
           })
 
           .end((error, response) => {
@@ -201,16 +202,17 @@ describe('Testing User Controller', () => {
             expect(response.body.data).to.have.property('firstName');
             expect(response.body.data).to.have.property('lastName');
             expect(response.body.data).to.have.property('email');
+            expect(response.body.data).to.have.property('message');
             expect(response.body.data.token).to.be.a('string');
-            expect(response.body.data.email).to.equal('test@test.com');
-            expect(response.body.data.message).to.equal('Successful Login');
+            expect(response.body.data.email).to.equal('johndoe@gmail.com');
+            expect(response.body.data.message).to.equal('Login is successful');
             done();
           });
       },
     );
 
     it(
-      'should not login a registered user when the Email field is missing',
+      'should not login a user when the Email field is missing',
       (done) => {
         chai.request(app)
           .post(signinUrl)
@@ -231,12 +233,12 @@ describe('Testing User Controller', () => {
     );
     
     it(
-      'should not login a registered user when the Password field is missing',
+      'should not login a user when the Password field is missing',
       (done) => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'test@test.com',
+            email: 'johndoe@gmail.com',
           })
 
           .end((error, response) => {
@@ -246,6 +248,74 @@ describe('Testing User Controller', () => {
             expect(response.body.status).to.equal(400);
             expect(response.body.error).to.be.a('string');
             expect(response.body.error).to.equal('Password is required');
+            done();
+          });
+      },
+    );    
+    
+    it(
+      'should not login a user when the "Type of User" field is missing',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'johndoe@gmail.com',
+            password: 'olujuwondoke',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('Type of user is required');
+            done();
+          });
+      },
+    );
+
+    it(
+      'should not login a user whose email does not exist in the database',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'undefined@gmail.com',
+            password: 'nullpassword',
+            typeOfUser: 'client',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(403);
+            expect(response.body.status).to.equal(403);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('User with this email doesn\'t exist');
+            done();
+          });
+      },
+    );
+
+    it(
+      'should not login a registered user whose email exists but supplies a wrong password',
+      (done) => {
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'johndoe@gmail.com',
+            password: 'wrongpassword',
+            typeOfUser: 'client',
+          })
+
+          .end((error, response) => {
+            // console.log('error', response);
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('The supplied password is wrong');
             done();
           });
       },
