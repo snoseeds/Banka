@@ -14,6 +14,8 @@ const routes = () => {
   router.get('/api/v1', Index.v1);
   // Signup routes
   router.post('/api/v1/auth/signup', Users.signup);
+  // Signin routes
+  router.post('/api/v1/auth/signin', Users.signin);
 };
 
 routes();
