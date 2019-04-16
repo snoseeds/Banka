@@ -9,13 +9,6 @@
  * if there's error or undefined if not
  */
 const validateFormFields = (requiredFields, reqdFieldsDescription, response) => {
-  // const inputs = {
-  //   1: 'First name',
-  //   2: 'Last name',
-  //   3: 'Email',
-  //   4: 'Password',
-  //   5: 'Type of user',
-  // };
   let idx = 0;
   if (requiredFields.some((inputField) => {
     idx += 1;

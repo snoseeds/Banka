@@ -140,6 +140,7 @@ class UserController {
           id,
           firstName,
           lastName,
+          lastVisit,
         } = user;
         return user.password === password
           ? res.status(201).json({
@@ -150,6 +151,7 @@ class UserController {
               firstName,
               lastName,
               email,
+              lastVisit,
               message: 'Login is successful',
             },
           })
