@@ -4,20 +4,25 @@ class HardCodedData {
       id: 1,
       firstName: 'john',
       lastName: 'doe',
+      userMobileNo: 8193899887,
       email: 'johndoe@gmail.com',
       password: 'olujuwondoke',
       type: 'client',
+      lastVisit: new Date(Date.now()),
       noOfAccounts: 1,
       imageUrl: '',
       accounts: [{
         id: 1,
+        idCardType: 3,
+        idCardNumber: 'A09579437',
+        acctMobileNo: 8025847569,
         accountNumber: 5187941354,
+        email: 'johndoe2@gmail.com',
         createdOn: new Date(Date.now()),
         type: 'savings',
         owner: 1,
         status: 'active',
         balance: 100000.00,
-        lastVisit: new Date(Date.now()),
       }],
     }];
     this.cashier = [{
@@ -29,7 +34,7 @@ class HardCodedData {
       imageUrl: '',
       type: 'staff',
       isAdmin: false,
-    }]
+    }];
 
     this.admin = [{
       id: 1,

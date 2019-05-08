@@ -14,7 +14,7 @@ const checkPasswordsMatch = (password, confirmPassword, response) => {
       error: 'Passwords do not match',
     });
   }
-  return undefined;
+  return null;
 };
 
 export default checkPasswordsMatch;

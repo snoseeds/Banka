@@ -8,25 +8,18 @@
  * @returns {json} error status code with and object having status code and error string
  * if there's error or undefined if not
  */
-const validateFormFields = (requiredFields, reqdFieldsDescription, response) => {
-  // const inputs = {
-  //   1: 'First name',
-  //   2: 'Last name',
-  //   3: 'Email',
-  //   4: 'Password',
-  //   5: 'Type of user',
-  // };
-  let idx = 0;
-  if (requiredFields.some((inputField) => {
+const validateFormFields = (reqdFieldsDescription, response) => {
+  let idx = -1;
+  if (Object.values(reqdFieldsDescription).some((inputField) => {
     idx += 1;
     return !inputField;
   })) {
     return response.status(400).json({
       status: 400,
-      error: `${reqdFieldsDescription[idx]} is required`,
+      error: `${Object.keys(reqdFieldsDescription)[idx]} is required`,
     });
   }
-  return undefined;
+  return null;
 };
 
 export default validateFormFields;
