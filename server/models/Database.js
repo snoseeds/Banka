@@ -4,7 +4,7 @@ class HardCodedData {
       id: 1,
       firstName: 'john',
       lastName: 'doe',
-      mobileNo: 8193899887,
+      userMobileNo: 8193899887,
       email: 'johndoe@gmail.com',
       password: 'olujuwondoke',
       type: 'client',
@@ -13,7 +13,9 @@ class HardCodedData {
       imageUrl: '',
       accounts: [{
         id: 1,
-        mobileNo: 8025847569,
+        idCardType: 3,
+        idCardNumber: 'A09579437',
+        acctMobileNo: 8025847569,
         accountNumber: 5187941354,
         email: 'johndoe2@gmail.com',
         createdOn: new Date(Date.now()),
@@ -32,7 +34,7 @@ class HardCodedData {
       imageUrl: '',
       type: 'staff',
       isAdmin: false,
-    }]
+    }];
 
     this.admin = [{
       id: 1,

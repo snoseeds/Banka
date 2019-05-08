@@ -16,6 +16,8 @@ const routes = () => {
   router.post('/api/v1/auth/signup', Users.signup);
   // Signin routes
   router.post('/api/v1/auth/signin', Users.signin);
+  // Client create bank account route
+  router.post('/api/v1/accounts', Users.createBankAccount);
 };
 
 routes();

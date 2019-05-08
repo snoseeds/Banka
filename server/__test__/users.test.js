@@ -126,7 +126,7 @@ describe('Testing User Controller', () => {
           firstName: 'Shakirat',
           lastName: 'olujuwondoke',
           email: 'test@test.com',
-          password: 'olujuwondoke'
+          password: 'olujuwondoke',
         })
         .end((error, response) => {
           expect(response.body).to.be.an('object');
@@ -199,8 +199,7 @@ describe('Testing User Controller', () => {
             expect(response.body.data).to.be.a('object');
             expect(response.body.data).to.have.property('token');
             expect(response.body.data).to.have.property('id');
-            expect(response.body.data).to.have.
-            property('firstName');
+            expect(response.body.data).to.have.property('firstName');
             expect(response.body.data).to.have.property('lastName');
             expect(response.body.data).to.have.property('email');
             expect(response.body.data).to.have.property('message');
@@ -322,126 +321,222 @@ describe('Testing User Controller', () => {
       },
     );
   });
-  
+
   describe('Testing create bank account controller', () => {
-    let clientToken;
-    const signupUrl = '/api/v1/signup';
-    const signinUrl = '/api/v1/signin';
-    const createAccountUrl = '/api/v1/accounts';
-    before((done) => {
-      chai
-        .request(app)
-        .post(signupUrl)
-        .send({
-          firstName: 'shakirat',
-          lastName: 'oke',
-          email: 'test@test.com',
-          password: 'ajulo2oluwawa',
-          confirmPassword: 'ajulo2oluwawa',
-          typeOfUser: 'client',
-        })
-        .end((err, res) => {
-          clientToken = res.body.token;
-          done();
-        });
+    describe('Testing create bank account controller for user that just signed up', () => {
+      let clientToken;
+      const signupUrl = '/api/v1/auth/signup';
+      const createAccountUrl = '/api/v1/accounts';
+      it(
+        'should create a new bank account for user that signed up when all the required parameters are given',
+        (done) => {
+          chai.request(app)
+            .post(signupUrl)
+            .send({
+              firstName: 'kehinde',
+              lastName: 'soremekun',
+              email: 'pass@test.com',
+              password: 'oluwa2juwalo',
+              confirmPassword: 'oluwa2juwalo',
+              typeOfUser: 'client',
+            })
+            .end((err, res) => {
+              clientToken = res.body.data.token;
+              chai.request(app)
+                .post(createAccountUrl)
+                .send({
+                  accountType: 'current',
+                  idCardType: 3,
+                  idCardNumber: 'A09579734',
+                })
+                .set('authorization', `Bearer ${clientToken}`)
+                .end((error, response) => {
+                  expect(response.body).to.be.an('object');
+                  expect(response).to.have.status(201);
+                  expect(response.body.status).to.equal(201);
+                  expect(response.body.data).to.be.a('object');
+                  expect(response.body.data).to.have.property('accountNumber');
+                  expect(response.body.data).to.have.property('firstName');
+                  expect(response.body.data).to.have.property('lastName');
+                  expect(response.body.data).to.have.property('email');
+                  expect(response.body.data).to.have.property('type');
+                  expect(response.body.data).to.have.property('openingBalance');
+                  expect(response.body.data).to.have.property('idCardType');
+                  expect(response.body.data).to.have.property('message');
+                  done();
+                });
+            });
+        },
+      );
+
+      it(
+        'should not create a new bank account for user that signed up when account type is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              idCardType: 3,
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Type of account (current or savings) is required');
+              done();
+            });
+        },
+      );
+
+      it(
+        'should not create a new bank account for user that signed up when identification card type is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'current',
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Type of identification card is required');
+              done();
+            });
+        },
+      );
+
+      it(
+        'should not create a new bank account for user that signed up when identification card number is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'current',
+              idCardType: 3,
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Identification card number is required');
+              done();
+            });
+        },
+      );
     });
-    it(
-      'should create a new bank account for user that signed up when all the required parameters are given',
-      (done) => {
-        chai.request(app)
-          .post(createAccountUrl)
-          .send({
-            accountType: 'current',
-            idType: '3',
-            idNumber: 'A09579734',
-          })
-          .set('authorization', `Bearer ${clientToken}`)
+    describe('Testing create bank account controller for user that signed in', () => {
+      let clientToken;
+      const signinUrl = '/api/v1/auth/signin';
+      const createAccountUrl = '/api/v1/accounts';
+      it(
+        'should create a new bank account for user that signed in when all the required parameters are given',
+        (done) => {
+          chai.request(app)
+            .post(signinUrl)
+            .send({
+              email: 'johndoe@gmail.com',
+              password: 'olujuwondoke',
+              typeOfUser: 'client',
+            })
+            .end((err, res) => {
+              clientToken = res.body.data.token;
+              chai.request(app)
+                .post(createAccountUrl)
+                .send({
+                  accountType: 'current',
+                  idCardType: 3,
+                  idCardNumber: 'A09579734',
+                })
+                .set('authorization', `Bearer ${clientToken}`)
+                .end((error, response) => {
+                  expect(response.body).to.be.an('object');
+                  expect(response).to.have.status(201);
+                  expect(response.body.status).to.equal(201);
+                  expect(response.body.data).to.be.a('object');
+                  expect(response.body.data).to.have.property('accountNumber');
+                  expect(response.body.data).to.have.property('firstName');
+                  expect(response.body.data).to.have.property('lastName');
+                  expect(response.body.data).to.have.property('email');
+                  expect(response.body.data).to.have.property('type');
+                  expect(response.body.data).to.have.property('openingBalance');
+                  expect(response.body.data).to.have.property('idCardType');
+                  expect(response.body.data).to.have.property('message');
+                  done();
+                });
+            });
+        },
+      );
 
-          .end((error, response) => {
-            // console.log('error', response);
-            expect(response.body).to.be.an('object');
-            expect(response).to.have.status(201);
-            expect(response.body.status).to.equal(201);
-            expect(response.body.data).to.be.a('object');
-            expect(response.body.data).to.have.property('accountNumber');
-            expect(response.body.data).to.have.property('firstName');
-            expect(response.body.data).to.have.property('lastName');
-            expect(response.body.data).to.have.property('email');
-            expect(response.body.data).to.have.property('type');
-            expect(response.body.data).to.have.property('openingBalance');
-            expect(response.body.data).to.have.property('message');
-            done();
-          });
-      },
-    );
+      it(
+        'should not create a new bank account for user that signed in when account type is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              idCardType: 3,
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Type of account (current or savings) is required');
+              done();
+            });
+        },
+      );
 
-    it(
-      'should not create a new bank account for user that signed up when account type is missing',
-      (done) => {
-        chai.request(app)
-          .post(createAccountUrl)
-          .send({
-            idType: 3,
-            idNumber: 'A09579734',
-          })
-          .set('authorization', `Bearer ${clientToken}`)
+      it(
+        'should not create a new bank account for user that signed in when identification card type is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'current',
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Type of identification card is required');
+              done();
+            });
+        },
+      );
 
-          .end((error, response) => {
-            // console.log('error', response);
-            expect(response.body).to.be.an('object');
-            expect(response).to.have.status(400);
-            expect(response.body.status).to.equal(400);
-            expect(response.body.error).to.be.a('string');
-            expect(response.body.error).to.equal('Type of account (current or savings) is required');
-            done();
-          });
-      },
-    );
-
-    it(
-      'should not create a new bank account for user that signed up when identification card type is missing',
-      (done) => {
-        chai.request(app)
-          .post(createAccountUrl)
-          .send({
-            accountType: 'current',
-            idNumber: 'A09579734',
-          })
-          .set('authorization', `Bearer ${clientToken}`)
-
-          .end((error, response) => {
-            // console.log('error', response);
-            expect(response.body).to.be.an('object');
-            expect(response).to.have.status(400);
-            expect(response.body.status).to.equal(400);
-            expect(response.body.error).to.be.a('string');
-            expect(response.body.error).to.equal('Type of identification card is required');
-            done();
-          });
-      },
-    );
-
-    it(
-      'should not create a new bank account for user that signed up when identification card number is missing',
-      (done) => {
-        chai.request(app)
-          .post(createAccountUrl)
-          .send({
-            accountType: 'current',
-            idType: 3,
-          })
-          .set('authorization', `Bearer ${clientToken}`)
-
-          .end((error, response) => {
-            // console.log('error', response);
-            expect(response.body).to.be.an('object');
-            expect(response).to.have.status(400);
-            expect(response.body.status).to.equal(400);
-            expect(response.body.error).to.be.a('string');
-            expect(response.body.error).to.equal('Identification card number is required');
-            done();
-          });
-      },
-    );
+      it(
+        'should not create a new bank account for user that signed in when identification card number is missing',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'current',
+              idCardType: 3,
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(400);
+              expect(response.body.status).to.equal(400);
+              expect(response.body.error).to.be.a('string');
+              expect(response.body.error).to.equal('Identification card number is required');
+              done();
+            });
+        },
+      );
+    });
   });
 });

@@ -5,6 +5,9 @@ import Admin from '../models/Admin';
 import validateFormFields from '../helpers/validateFormFields';
 import checkPasswordsMatch from '../helpers/checkPasswordsMatch';
 import generateToken from '../helpers/generateToken';
+import authenticateUser from '../helpers/authenticateUser';
+import generateAcctNo from '../helpers/generateAcctNo';
+import Account from '../models/Account';
 
 
 // import bcrypt from 'bcrypt';
@@ -36,35 +39,32 @@ class UserController {
       confirmPassword,
       typeOfUser,
     } = req.body;
-    const requiredFields = [firstName, lastName, email, password, typeOfUser];
+    // const requiredFields = [firstName, lastName, email, password, typeOfUser];
     const reqdFieldsDescription = {
-      1: 'First name',
-      2: 'Last name',
-      3: 'Email',
-      4: 'Password',
-      5: 'Type of user',
+     'First name': firstName,
+     'Last name': lastName,
+      Email: email,
+      Password: password,
+      'Type of user': typeOfUser,
     };
 
-    const valResult = validateFormFields(requiredFields, reqdFieldsDescription, res);
-    if (valResult !== undefined) {
+    const valResult = validateFormFields(reqdFieldsDescription, res);
+    if (valResult !== null) {
       return valResult;
     }
 
     const passCheck = checkPasswordsMatch(password, confirmPassword, res);
-    if (passCheck !== undefined) {
+    if (passCheck !== null) {
       return passCheck;
     }
 
-    const checkUserUniqueness = () => {
-      if (Database[typeOfUser].some(user => user.email === email)) {
-        return res.status(400).json({
-          status: 400,
-          error: 'A user with the given email already exists',
-        });
-      }
-      return undefined;
-    };
-    checkUserUniqueness();
+    // checkUserUniqueness
+    if (Database[typeOfUser].some(user => user.email === email)) {
+      return res.status(400).json({
+        status: 400,
+        error: 'A user with the given email already exists',
+      });
+    }
 
     const user = {
       id: Database[typeOfUser].length + 1,
@@ -79,27 +79,17 @@ class UserController {
      * @returns nothing
      */
     const createAcctInDb = () => {
-      // const newClient = new Client(...Object.values(user), bcrypt.hashSync(password, salt));
-      const newClient = new Client(...Object.values(user), password);
-      const newCashier = new Cashier(...Object.values(user), password);
-      const newAdmin = new Admin(...Object.values(user), password);
-      switch (typeOfUser) {
-        case 'client':
-          Database.client.push(newClient);
-          break;
-        case 'cashier':
-          Database.cashier.push(newCashier);
-          break;
-        case 'admin':
-          Database.admin.push(newAdmin);
-      }
+      const typeOfUsers = { client: Client, cashier: Cashier, admin: Admin };
+      // Database[typeOfUser].push(new typeOfUsers[typeOfUser](...Object.values(user),
+                                                          // bcrypt.hashSync(password, salt));
+      Database[typeOfUser].push(new typeOfUsers[typeOfUser](...Object.values(user), password));
     };
     createAcctInDb();
 
     return res.status(201).json({
       status: 201,
       data: {
-        token: generateToken({ email, lastName }),
+        token: generateToken({ email, lastName, typeOfUser }),
         ...user,
         message: 'Account created successfully',
       },
@@ -121,15 +111,14 @@ class UserController {
       password,
       typeOfUser,
     } = req.body;
-    const requiredFields = [email, password, typeOfUser];
+    // const requiredFields = [email, password, typeOfUser];
     const reqdFieldsDescription = {
-      1: 'Email',
-      2: 'Password',
-      3: 'Type of user',
+      Email: email,
+      Password: password,
+      'Type of user': typeOfUser,
     };
-
-    const valResult = validateFormFields(requiredFields, reqdFieldsDescription, res);
-    if (valResult !== undefined) {
+    const valResult = validateFormFields(reqdFieldsDescription, res);
+    if (valResult !== null) {
       return valResult;
     }
 
@@ -146,7 +135,7 @@ class UserController {
           ? res.status(201).json({
             status: 201,
             data: {
-              token: generateToken({ email, lastName }),
+              token: generateToken({ email, lastName, typeOfUser }),
               id,
               firstName,
               lastName,
@@ -166,6 +155,73 @@ class UserController {
       });
     };
     getUserDetails();
+  }
+
+
+  /**
+   * creates new user (client, cashier, or admin)
+   * @param {object} request express request object
+   * @param {object} response express response object
+   *
+   * @returns {json} status code with string or json object
+   * @memberof UserController
+   */
+  // eslint-disable-next-line consistent-return
+  static createBankAccount(req, res) {
+    const authResult = authenticateUser(req, res);
+    if (Array.isArray(authResult)) {
+      const [payload] = authResult;
+      const {
+        accountType,
+        idCardType,
+        idCardNumber,
+        acctMobileNo,
+      } = req.body;
+
+      const reqdFieldsDescription = {
+        'Type of account (current or savings)': accountType,
+        'Type of identification card': idCardType,
+        'Identification card number': idCardNumber,
+      };
+
+      const valResult = validateFormFields(reqdFieldsDescription, res);
+      if (valResult !== null) {
+        return valResult;
+      }
+      const user = Database.client.find(databaseUser => databaseUser.email === payload.email);
+      if (user) {
+        const {
+          firstName,
+          lastName,
+          email,
+          id,
+          userMobileNo,
+        } = user;
+        const accountNumber = generateAcctNo(email, firstName);
+        const account = new Account(id + 1, accountNumber, new Date(Date.now()), user.id, accountType,
+          idCardType, idCardNumber, acctMobileNo ? acctMobileNo : userMobileNo);
+        user.accounts.push(account);
+        user.noOfAccounts += 1;
+        return res.status(201).json({
+          status: 201,
+          data: {
+            accountNumber,
+            firstName,
+            lastName,
+            email,
+            type: accountType,
+            openingBalance: 0.00,
+            idCardType,
+            message: `Congrats!, you now have a new ${accountType} account at Banka!`,
+          },
+        });
+      }
+      return res.status(403).json({
+        status: 403,
+        error: 'Client with this email doesn\'t exist',
+      });
+    }
+    return authResult;
   }
 }
 
