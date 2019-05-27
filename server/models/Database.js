@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class HardCodedData {
   constructor() {
     this.client = [{
@@ -8,7 +10,7 @@ class HardCodedData {
       email: 'johndoe@gmail.com',
       password: 'olujuwondoke',
       type: 'client',
-      lastVisit: new Date(Date.now()),
+      lastVisit: moment.now(),
       noOfAccounts: 1,
       imageUrl: '',
       accounts: [{
@@ -18,7 +20,7 @@ class HardCodedData {
         acctMobileNo: 8025847569,
         accountNumber: 5187941354,
         email: 'johndoe2@gmail.com',
-        createdOn: new Date(Date.now()),
+        createdOn: moment.now(),
         type: 'savings',
         owner: 1,
         status: 'active',
