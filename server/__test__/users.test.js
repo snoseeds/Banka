@@ -3,14 +3,14 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-import migrations from '../models/migration';
+// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing User Controller', () => {
-  before(() => {
-    migrations.createTables();
-  });
+  // before(() => {
+  //   migrations.createTables();
+  // });
   describe('Testing signup controller', () => {
     const signupUrl = '/api/v1/auth/signup';
     it(
@@ -137,6 +137,26 @@ describe('Testing User Controller', () => {
         });
     });
 
+    it('should not register a user when type of user is not client', (done) => {
+      chai.request(app)
+        .post(signupUrl)
+        .send({
+          firstName: 'Shakirat',
+          lastName: 'olujuwondoke',
+          email: 'test@test.com',
+          password: 'olujuwondoke',
+          typeOfUser: 'admin',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response).to.have.status(403);
+          expect(response.body.status).to.equal(403);
+          expect(response.body).to.have.property('message');
+          expect(response.body.message).to.equal('Not Authorized');
+          done();
+        });
+    });
+
     it('should not register a user when the passwords do not match', (done) => {
       chai.request(app)
         .post(signupUrl)
@@ -231,7 +251,7 @@ describe('Testing User Controller', () => {
           });
       },
     );
-    
+  
     it(
       'should not login a user when the Password field is missing',
       (done) => {
@@ -251,8 +271,8 @@ describe('Testing User Controller', () => {
             done();
           });
       },
-    );    
-    
+    );
+ 
     it(
       'should not login a user when the "Type of User" field is missing',
       (done) => {
@@ -274,6 +294,24 @@ describe('Testing User Controller', () => {
           });
       },
     );
+
+    it('should not login a signed-up user when type of user is not client', (done) => {
+      chai.request(app)
+        .post(signinUrl)
+        .send({
+          email: 'sky@gmail.com',
+          password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
+          typeOfUser: 'staff',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response).to.have.status(403);
+          expect(response.body.status).to.equal(403);
+          expect(response.body).to.have.property('message');
+          expect(response.body.message).to.equal('Not Authorized');
+          done();
+        });
+    });
 
     it(
       'should not login a user whose email does not exist in the database',
@@ -538,5 +576,42 @@ describe('Testing User Controller', () => {
         },
       );
     });
+    // describe('Testing create bank account controller for non client sign-in', () => {
+    //   let adminToken;
+    //   const signinUrl = '/api/v1/auth/admin/login';
+    //   const createAccountUrl = '/api/v1/accounts';
+    //   it(
+    //     'should not create a new bank account for user that signed in that is not a client',
+    //     (done) => {
+    //       chai.request(app)
+    //         .post(signinUrl)
+    //         .send({
+    //           email: 'sky@gmail.com',
+    //           password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
+    //           typeOfUser: 'admin',
+    //         })
+    //         .end((err, res) => {
+    //           adminToken = res.body.data.token;
+    //           chai.request(app)
+    //             .post(createAccountUrl)
+    //             .send({
+    //               accountType: 'current',
+    //               idCardType: 3,
+    //               idCardNumber: 'A09579734',
+    //             })
+    //             .set('authorization', `Bearer ${clientToken}`)
+    //             .end((error, response) => {
+    //               expect(response.body).to.be.an('object');
+    //               expect(response).to.have.status(403);
+    //               expect(response.body.status).to.equal(403);
+    //               expect(response.body.data).to.be.a('object');
+    //               expect(response.body.data).to.have.property('message');
+    //               expect(response.body.data.message).to.equal('Not Authorized');
+    //               done();
+    //             });
+    //         });
+    //     },
+    //   );
+    // });
   });
 });

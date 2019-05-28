@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Index from '../controllers';
-import Users from '../controllers/userController';
+import user from '../controllers/userController';
 
 
 const router = Router();
@@ -13,11 +13,11 @@ const routes = () => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
   // Signup routes
-  router.post('/api/v1/auth/signup', Users.signup);
+  router.post('/api/v1/auth/signup', user.signup[0]);
   // Signin routes
-  router.post('/api/v1/auth/signin', Users.signin);
+  router.post('/api/v1/auth/signin', user.signin[0]);
   // Client create bank account route
-  router.post('/api/v1/accounts', Users.createBankAccount);
+  router.post('/api/v1/accounts', user.createBankAccount[0]);
 };
 
 routes();
