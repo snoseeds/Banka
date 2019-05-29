@@ -4,7 +4,7 @@ const initValidateUserType = (expectedType, typeOfUser) => {
     if (expectedType !== typeOfUser) {
       return res.status(403).json({
         status: 403,
-        message: 'Not Authorized',
+        error: 'Not Authorized',
       });
     }
     next();

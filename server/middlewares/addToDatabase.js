@@ -1,25 +1,23 @@
+import bcrypt from 'bcrypt';
 import Database from '../models/Database';
 import Client from '../models/Client';
 import Cashier from '../models/Cashier';
 import Admin from '../models/Admin';
+import RootAdmin from '../models/RootAdmin';
 import generateToken from '../helpers/generateToken';
 
-const initAddToDatabase = (typeOfUser, firstName, lastName, email, password) => {
+const salt = bcrypt.genSaltSync(10);
+
+const initAddToDatabase = (typeOfUser, firstName, lastName, email, password,
+  mobileNo, houseAddress, idCardType, idCardNumber) => {
   const addToDatabase = (req, res) => {
-    // checkUserUniqueness
-    if (Database[typeOfUser].some(user => user.email === email)) {
-      return res.status(400).json({
-        status: 400,
-        error: 'A user with the given email already exists',
+    // checkMaximumNumberOfRootAdmins
+    if (typeOfUser === 'rootAdmin' && Database.rootAdmin.length + 1 === 4) {
+      return res.status(403).json({
+        status: 403,
+        error: 'Not Authorized',
       });
     }
-
-    const user = {
-      id: Database[typeOfUser].length + 1,
-      firstName,
-      lastName,
-      email,
-    };
 
     /**
      * @description adds a new user to the database
@@ -27,12 +25,35 @@ const initAddToDatabase = (typeOfUser, firstName, lastName, email, password) => 
      * @returns nothing
      */
     const createAcctInDb = () => {
-      const typeOfUsers = { client: Client, cashier: Cashier, admin: Admin };
       // Database[typeOfUser].push(new typeOfUsers[typeOfUser](...Object.values(user),
       // bcrypt.hashSync(password, salt));
-      Database[typeOfUser].push(new typeOfUsers[typeOfUser](...Object.values(user), password));
+      const basicDetails = {
+        id: Database[typeOfUser].length + 1,
+        firstName,
+        lastName,
+        email,
+      };
+      if (typeOfUser === 'client') {
+        Database[typeOfUser].push(new Client(...Object.values(basicDetails),
+          bcrypt.hashSync(password, salt)));
+        return { ...basicDetails };
+      }
+      const typeOfInternalUsers = {
+        cashier: Cashier,
+        admin: Admin,
+        rootAdmin: RootAdmin,
+      };
+      const extendedDetails = {
+        mobileNo,
+        houseAddress,
+        idCardType,
+        idCardNumber,
+      };
+      Database[typeOfUser].push(new typeOfInternalUsers[typeOfUser](...Object.values(basicDetails),
+        bcrypt.hashSync(password, salt), ...Object.values(extendedDetails)));
+      return { ...basicDetails, ...extendedDetails };
     };
-    createAcctInDb();
+    const user = createAcctInDb();
 
     return res.status(201).json({
       status: 201,
