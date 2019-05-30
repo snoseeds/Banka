@@ -151,8 +151,8 @@ describe('Testing User Controller', () => {
           expect(response.body).to.be.an('object');
           expect(response).to.have.status(403);
           expect(response.body.status).to.equal(403);
-          expect(response.body).to.have.property('message');
-          expect(response.body.message).to.equal('Not Authorized');
+          expect(response.body).to.have.property('error');
+          expect(response.body.error).to.equal('Not Authorized');
           done();
         });
     });
@@ -177,7 +177,7 @@ describe('Testing User Controller', () => {
         });
     });
 
-    it('should not register a user when the email already exist', (done) => {
+    it('should not register a user when the email already exists', (done) => {
       chai.request(app)
         .post(signupUrl)
         .send({
@@ -192,7 +192,7 @@ describe('Testing User Controller', () => {
           expect(response.body).to.be.an('object');
           expect(response.body.status).to.equal(400);
           expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('A user with the given email already exists');
+          expect(response.body.error).to.equal('Email supplied has already been taken by an existing user');
           done();
         });
     });
@@ -307,8 +307,8 @@ describe('Testing User Controller', () => {
           expect(response.body).to.be.an('object');
           expect(response).to.have.status(403);
           expect(response.body.status).to.equal(403);
-          expect(response.body).to.have.property('message');
-          expect(response.body.message).to.equal('Not Authorized');
+          expect(response.body).to.have.property('error');
+          expect(response.body.error).to.equal('Not Authorized');
           done();
         });
     });

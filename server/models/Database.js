@@ -1,4 +1,12 @@
 import moment from 'moment';
+import bcrypt from 'bcrypt';
+
+const salt = bcrypt.genSaltSync(10);
+const clientHash = bcrypt.hashSync('olujuwondoke', salt);
+const cashierHash = bcrypt.hashSync('christWasNeverGod', salt);
+const adminHash = bcrypt.hashSync('kenny4roger', salt);
+const rootAdminHash = bcrypt.hashSync('igbagbolani', salt);
+
 
 class HardCodedData {
   constructor() {
@@ -8,9 +16,10 @@ class HardCodedData {
       lastName: 'doe',
       userMobileNo: 8193899887,
       email: 'johndoe@gmail.com',
-      password: 'olujuwondoke',
+      password: clientHash,
       type: 'client',
-      lastVisit: moment.now(),
+      registeredOn: moment.now(),
+      lastVisit: '',
       noOfAccounts: 1,
       imageUrl: '',
       accounts: [{
@@ -32,7 +41,7 @@ class HardCodedData {
       firstName: 'adelabu',
       lastName: 'christopher',
       email: 'adechris@gmail.com',
-      password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
+      password: cashierHash,
       imageUrl: '',
       type: 'staff',
       isAdmin: false,
@@ -43,10 +52,26 @@ class HardCodedData {
       firstName: 'kehinde',
       lastName: 'soremekun',
       email: 'sky@gmail.com',
-      password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
+      password: adminHash,
       imageUrl: '',
       type: 'staff',
       isAdmin: true,
+    }];
+
+    this.rootAdmin = [{
+      id: 1,
+      firstName: 'Olabisi',
+      lastName: 'Abdus-Samee\'',
+      email: 'snoworlddocs@gmail.com',
+      password: rootAdminHash,
+      imageUrl: '',
+      mobileNo: '+2348125027766',
+      houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
+      idCardType: 3,
+      idCardNumber: 'A23568974',
+      type: 'staff',
+      isAdmin: true,
+      isRootAdmin: true,
     }];
   }
 }

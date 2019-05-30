@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import Index from '../controllers';
 import user from '../controllers/userController';
+import rootAdmin from '../controllers/rootAdminController';
 
 
 const router = Router();
@@ -18,6 +19,8 @@ const routes = () => {
   router.post('/api/v1/auth/signin', user.signin[0]);
   // Client create bank account route
   router.post('/api/v1/accounts', user.createBankAccount[0]);
+  // Root Admin Signup routes
+  router.post('/api/v1/auth/root-admin/signup', rootAdmin.signup[0]);
 };
 
 routes();

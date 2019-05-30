@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import generateToken from '../helpers/generateToken';
 
 const initLoginUser = (typeOfUser, email, suppliedPassword) => {
@@ -9,7 +10,7 @@ const initLoginUser = (typeOfUser, email, suppliedPassword) => {
       lastVisit,
       password,
     } = req.user;
-    if (password === suppliedPassword) {
+    if (bcrypt.compareSync(suppliedPassword, password)) {
       return res.status(201).json({
         status: 201,
         data: {
