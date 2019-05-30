@@ -54,8 +54,13 @@ class HardCodedData {
       email: 'sky@gmail.com',
       password: adminHash,
       imageUrl: '',
-      type: 'staff',
+      mobileNo: '+2348103774484',
+      houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
+      idCardType: 3,
+      idCardNumber: 'A23562548',
+      type: 'admin',
       isAdmin: true,
+      isRootAdmin: false,
     }];
 
     this.rootAdmin = [{
@@ -69,7 +74,7 @@ class HardCodedData {
       houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
       idCardType: 3,
       idCardNumber: 'A23568974',
-      type: 'staff',
+      type: 'rootAdmin',
       isAdmin: true,
       isRootAdmin: true,
     }];

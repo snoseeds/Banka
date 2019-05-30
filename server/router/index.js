@@ -21,6 +21,8 @@ const routes = () => {
   router.post('/api/v1/accounts', user.createBankAccount[0]);
   // Root Admin Signup routes
   router.post('/api/v1/auth/root-admin/signup', rootAdmin.signup[0]);
+  // Root Admin can creatte Admin account
+  router.post('/api/v1/auth/root-admin/create-admin-acct', rootAdmin.createAdminAcct[0]);
 };
 
 routes();
