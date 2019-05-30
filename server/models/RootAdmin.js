@@ -9,6 +9,7 @@ class RootAdmin extends Admin {
     this.houseAddress = houseAddress;
     this.idCardType = idCardType;
     this.idCardNumber = idCardNumber;
+    this.isRootAdmin = true;
   }
 }
 

@@ -63,6 +63,48 @@ const rootAdmin = {
       });
     }],
 
+  createAdminAcct: [
+    function getAndPersistReqProps(req, res, next) {
+      const {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        typeOfUser,
+        mobileNo,
+        houseAddress,
+        idCardType,
+        idCardNumber,
+      } = req.body;
+      const reqdFieldsDescription = {
+        'First name': firstName,
+        'Last name': lastName,
+        Email: email,
+        Password: password,
+        'Type of user': typeOfUser,
+        'Mobile Number': mobileNo,
+        'House Address': houseAddress,
+        'ID Card Type': idCardType,
+        'ID Card Number': idCardNumber,
+      };
+      rootAdmin.createAdminAcct[1] = initValidateFields(reqdFieldsDescription);
+      rootAdmin.createAdminAcct[2] = initValidateUserType('admin', typeOfUser);
+      rootAdmin.createAdminAcct[3] = initPasswordsMatch(password, confirmPassword);
+      rootAdmin.createAdminAcct[4] = initCheckUserUniquenessInDB('admin', [email, mobileNo,
+        idCardNumber], { Email: 'email', 'Mobile number': 'mobileNo', 'ID Card Number': 'idCardNumber' });
+      rootAdmin.createAdminAcct[5] = initAddToDatabase('admin', firstName, lastName, email,
+        password, mobileNo, houseAddress, idCardType, idCardNumber);
+      // eslint-disable-next-line consistent-return
+      async.series(rootAdmin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
+        if (err) {
+          console.log('There is a problem running the middleware');
+          return next(err);
+        }
+        next();
+      });
+    }],
+
   /**
    * creates new user (client, cashier, or admin)
    * @param {object} request express request object
