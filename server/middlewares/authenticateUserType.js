@@ -23,10 +23,10 @@ const initAuthenticateUserType = (typeOfUser) => {
 
     // authentication for client
     const payload = confirmToken;
-    if (!payload.email && payload.typeOfUser !== `${typeOfUser}`) {
+    if (!payload.email || payload.typeOfUser !== `${typeOfUser}`) {
       return res.status(403).json({
         status: 403,
-        message: 'Not Authorized',
+        error: 'Not Authorized',
       });
     }
     req.authEmail = payload.email;
