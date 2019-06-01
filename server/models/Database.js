@@ -38,13 +38,18 @@ class HardCodedData {
     }];
     this.cashier = [{
       id: 1,
-      firstName: 'adelabu',
-      lastName: 'christopher',
-      email: 'adechris@gmail.com',
+      firstName: 'joshua',
+      lastName: 'kuti',
+      email: 'kutjosh@gmail.com',
       password: cashierHash,
       imageUrl: '',
+      mobileNo: '+2348059006860',
+      houseAddress: '11, Adedeji Obasa, Yewande, Giwa, Oke-Aro, Ifo, Ogun State',
+      idCardType: 3,
+      idCardNumber: 'A23244648',
       type: 'staff',
       isAdmin: false,
+      isRootAdmin: false,
     }];
 
     this.admin = [{
