@@ -576,42 +576,42 @@ describe('Testing User Controller', () => {
         },
       );
     });
-    // describe('Testing create bank account controller for non client sign-in', () => {
-    //   let adminToken;
-    //   const signinUrl = '/api/v1/auth/admin/login';
-    //   const createAccountUrl = '/api/v1/accounts';
-    //   it(
-    //     'should not create a new bank account for user that signed in that is not a client',
-    //     (done) => {
-    //       chai.request(app)
-    //         .post(signinUrl)
-    //         .send({
-    //           email: 'sky@gmail.com',
-    //           password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
-    //           typeOfUser: 'admin',
-    //         })
-    //         .end((err, res) => {
-    //           adminToken = res.body.data.token;
-    //           chai.request(app)
-    //             .post(createAccountUrl)
-    //             .send({
-    //               accountType: 'current',
-    //               idCardType: 3,
-    //               idCardNumber: 'A09579734',
-    //             })
-    //             .set('authorization', `Bearer ${clientToken}`)
-    //             .end((error, response) => {
-    //               expect(response.body).to.be.an('object');
-    //               expect(response).to.have.status(403);
-    //               expect(response.body.status).to.equal(403);
-    //               expect(response.body.data).to.be.a('object');
-    //               expect(response.body.data).to.have.property('message');
-    //               expect(response.body.data.message).to.equal('Not Authorized');
-    //               done();
-    //             });
-    //         });
-    //     },
-    //   );
-    // });
+
+    describe('Testing create bank account controller for non client sign-in', () => {
+      let adminToken;
+      const adminSignInUrl = '/api/v1/auth/admin/signin';
+      const createAccountUrl = '/api/v1/accounts';
+      it(
+        'should not create a new bank account for user that signed in that is not a client',
+        (done) => {
+          chai.request(app)
+            .post(adminSignInUrl)
+            .send({
+              email: 'sky@gmail.com',
+              password: 'kenny4roger',
+              typeOfUser: 'admin',
+            })
+            .end((err, res) => {
+              adminToken = res.body.data.token;
+              chai.request(app)
+                .post(createAccountUrl)
+                .send({
+                  accountType: 'current',
+                  idCardType: 3,
+                  idCardNumber: 'A09579734',
+                })
+                .set('authorization', `Bearer ${adminToken}`)
+                .end((error, response) => {
+                  expect(response.body).to.be.an('object');
+                  expect(response).to.have.status(403);
+                  expect(response.body.status).to.equal(403);
+                  expect(response.body).to.have.property('error');
+                  expect(response.body.error).to.equal('Not Authorized');
+                  done();
+                });
+            });
+        },
+      );
+    });
   });
 });
