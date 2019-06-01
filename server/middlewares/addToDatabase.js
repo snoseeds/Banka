@@ -55,6 +55,16 @@ const initAddToDatabase = (typeOfUser, firstName, lastName, email, password,
     };
     const user = createAcctInDb();
 
+    if (typeOfUser === 'admin' || typeOfUser === 'cashier') {
+      return res.status(201).json({
+        status: 201,
+        data: {
+          ...user,
+          message: 'Account created successfully',
+        },
+      });
+    }
+
     return res.status(201).json({
       status: 201,
       data: {

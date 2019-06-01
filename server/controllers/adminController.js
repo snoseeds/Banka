@@ -20,49 +20,7 @@ import initCreateBankAcct from '../middlewares/createNewBankAcct';
  */
 // class UserController {
 //   constructor() {
-const rootAdmin = {
-  signup: [
-    function getAndPersistReqProps(req, res, next) {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword,
-        typeOfUser,
-        mobileNo,
-        houseAddress,
-        idCardType,
-        idCardNumber,
-      } = req.body;
-      const reqdFieldsDescription = {
-        'First name': firstName,
-        'Last name': lastName,
-        Email: email,
-        Password: password,
-        'Type of user': typeOfUser,
-        'Mobile Number': mobileNo,
-        'House Address': houseAddress,
-        'ID Card Type': idCardType,
-        'ID Card Number': idCardNumber,
-      };
-      rootAdmin.signup[1] = initValidateFields(reqdFieldsDescription);
-      rootAdmin.signup[2] = initValidateUserType('rootAdmin', typeOfUser);
-      rootAdmin.signup[3] = initPasswordsMatch(password, confirmPassword);
-      rootAdmin.signup[4] = initCheckUserUniquenessInDB('rootAdmin', [email, mobileNo,
-        idCardNumber], { Email: 'email', 'Mobile number': 'mobileNo', 'ID Card Number': 'idCardNumber' });
-      rootAdmin.signup[5] = initAddToDatabase('rootAdmin', firstName, lastName, email,
-        password, mobileNo, houseAddress, idCardType, idCardNumber);
-      // eslint-disable-next-line consistent-return
-      async.series(rootAdmin.signup.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
-    }],
-
+const admin = {
   createAdminAcct: [
     function getAndPersistReqProps(req, res, next) {
       const {
@@ -88,17 +46,17 @@ const rootAdmin = {
         'ID Card Type': idCardType,
         'ID Card Number': idCardNumber,
       };
-      rootAdmin.createAdminAcct[1] = initAuthenticateUserType('rootAdmin');
-      rootAdmin.createAdminAcct[2] = initCheckUserInDb('rootAdmin');
-      rootAdmin.createAdminAcct[3] = initValidateFields(reqdFieldsDescription);
-      rootAdmin.createAdminAcct[4] = initValidateUserType('admin', typeOfUser);
-      rootAdmin.createAdminAcct[5] = initPasswordsMatch(password, confirmPassword);
-      rootAdmin.createAdminAcct[6] = initCheckUserUniquenessInDB('admin', [email, mobileNo,
+      admin.createAdminAcct[1] = initAuthenticateUserType('admin');
+      admin.createAdminAcct[2] = initCheckUserInDb('admin');
+      admin.createAdminAcct[3] = initValidateFields(reqdFieldsDescription);
+      admin.createAdminAcct[4] = initValidateUserType('admin', typeOfUser);
+      admin.createAdminAcct[5] = initPasswordsMatch(password, confirmPassword);
+      admin.createAdminAcct[6] = initCheckUserUniquenessInDB('admin', [email, mobileNo,
         idCardNumber], { Email: 'email', 'Mobile number': 'mobileNo', 'ID Card Number': 'idCardNumber' });
-      rootAdmin.createAdminAcct[7] = initAddToDatabase('admin', firstName, lastName, email,
+      admin.createAdminAcct[7] = initAddToDatabase('admin', firstName, lastName, email,
         password, mobileNo, houseAddress, idCardType, idCardNumber);
       // eslint-disable-next-line consistent-return
-      async.series(rootAdmin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
+      async.series(admin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
         if (err) {
           console.log('There is a problem running the middleware');
           return next(err);
@@ -187,4 +145,4 @@ const rootAdmin = {
   //   }],
 };
 
-export default rootAdmin;
+export default admin;
