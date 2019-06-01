@@ -63,6 +63,32 @@ const rootAdmin = {
       });
     }],
 
+  signin: [
+    function getAndPersistReqProps(req, res, next) {
+      const {
+        email,
+        password,
+        typeOfUser,
+      } = req.body;
+      const reqdFieldsDescription = {
+        Email: email,
+        Password: password,
+        'Type of user': typeOfUser,
+      };
+      rootAdmin.signin[1] = initValidateFields(reqdFieldsDescription);
+      rootAdmin.signin[2] = initValidateUserType('rootAdmin', typeOfUser);
+      rootAdmin.signin[3] = initCheckUserInDb(typeOfUser, email);
+      rootAdmin.signin[4] = initLoginUser(typeOfUser, email, password);
+      // eslint-disable-next-line consistent-return
+      async.series(rootAdmin.signin.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
+        if (err) {
+          console.log('There is a problem running the middleware');
+          return next(err);
+        }
+        next();
+      });
+    }],
+
   createAdminAcct: [
     function getAndPersistReqProps(req, res, next) {
       const {
@@ -115,35 +141,6 @@ const rootAdmin = {
    * @returns {json} status code with string or json object
    * @memberof UserController
    */
-  // signin: [
-  //   function getAndPersistReqProps(req, res, next) {
-  //     const {
-  //       email,
-  //       password,
-  //       typeOfUser,
-  //     } = req.body;
-  //     const reqdFieldsDescription = {
-  //       Email: email,
-  //       Password: password,
-  //       'Type of user': typeOfUser,
-  //     };
-  //     const validateSignInField = initValidateFields(reqdFieldsDescription);
-  //     user.signin[1] = validateSignInField.bind(null, req, res);
-  //     const validateUserType = initValidateUserType('client', typeOfUser);
-  //     user.signin[2] = validateUserType.bind(null, req, res);
-  //     const checkUserInDb = initCheckUserInDb(typeOfUser, email);
-  //     user.signin[3] = checkUserInDb.bind(null, req, res);
-  //     const loginUser = initLoginUser(typeOfUser, email, password);
-  //     user.signin[4] = loginUser.bind(null, req, res);
-  //     // eslint-disable-next-line consistent-return
-  //     async.series(user.signin.slice(1), (err) => {
-  //       if (err) {
-  //         console.log('There is a problem running the middleware');
-  //         return next(err);
-  //       }
-  //       next();
-  //     });
-  //   }],
 
 
   /**
