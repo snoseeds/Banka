@@ -30,6 +30,8 @@ const routes = () => {
   router.post('/api/v1/auth/admin/create-admin-acct', admin.createAdminAcct[0]);
   // Admin Signin route
   router.post('/api/v1/auth/admin/signin', admin.signin[0]);
+  // Admin can create Staff account
+  router.post('/api/v1/auth/admin/create-staff-acct', admin.createStaffAcct[0]);
 };
 
 routes();
