@@ -492,6 +492,7 @@ describe('Testing User Controller', () => {
                   accountType: 'current',
                   idCardType: 3,
                   idCardNumber: 'A09579734',
+                  acctMobileNo: '+2348082542089',
                 })
                 .set('authorization', `Bearer ${clientToken}`)
                 .end((error, response) => {
@@ -609,6 +610,27 @@ describe('Testing User Controller', () => {
                   expect(response.body.error).to.equal('Not Authorized');
                   done();
                 });
+            });
+        },
+      );
+     
+      it(
+        'should not create a new bank account for request that came in with a fake token not issued on Banka',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'current',
+              idCardType: 3,
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', 'Bearer #fakeToken34048jjvhh4940495')
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(401);
+              expect(response.body.status).to.equal(401);
+              expect(response.body).to.have.property('error');
+              done();
             });
         },
       );

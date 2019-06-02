@@ -3,6 +3,7 @@ import Index from '../controllers';
 import user from '../controllers/userController';
 import rootAdmin from '../controllers/rootAdminController';
 import admin from '../controllers/adminController';
+import staff from '../controllers/staffController';
 
 
 const router = Router();
@@ -32,6 +33,8 @@ const routes = () => {
   router.post('/api/v1/auth/admin/signin', admin.signin[0]);
   // Admin can create Staff account
   router.post('/api/v1/auth/admin/create-staff-acct', admin.createStaffAcct[0]);
+  // Staff Signin route
+  router.post('/api/v1/auth/staff/signin', staff.signin[0]);
 };
 
 routes();

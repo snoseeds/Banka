@@ -17,7 +17,7 @@ const initAuthenticateUserType = (typeOfUser) => {
     if (typeof confirmToken === 'string') {
       return res.status(401).json({
         status: 401,
-        message: confirmToken,
+        error: confirmToken,
       });
     }
 

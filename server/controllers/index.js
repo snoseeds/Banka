@@ -10,7 +10,7 @@ class Index {
   static v1(req, res) {
     res.status(200).json({
       status: 200,
-      message: 'You\'re Welcome to version 1 of Banka api',
+      message: 'You\'re Welcome to version 1 of Banka APIs',
     });
   }
 }

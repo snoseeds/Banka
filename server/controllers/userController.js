@@ -22,7 +22,7 @@ import initCreateBankAcct from '../middlewares/createNewBankAcct';
 //   constructor() {
 const user = {
   signup: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         firstName,
         lastName,
@@ -49,13 +49,7 @@ const user = {
       const addToDatabase = initAddToDatabase(typeOfUser, firstName, lastName, email, password);
       user.signup[5] = addToDatabase.bind(null, req, res);
       // eslint-disable-next-line consistent-return
-      async.series(user.signup.slice(1), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(user.signup.slice(1));
     }],
 
   /**
@@ -67,7 +61,7 @@ const user = {
    * @memberof UserController
    */
   signin: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         email,
         password,
@@ -87,13 +81,7 @@ const user = {
       const loginUser = initLoginUser(typeOfUser, email, password);
       user.signin[4] = loginUser.bind(null, req, res);
       // eslint-disable-next-line consistent-return
-      async.series(user.signin.slice(1), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(user.signin.slice(1));
     }],
 
 
@@ -106,7 +94,7 @@ const user = {
    * @memberof UserController
    */
   createBankAccount: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         accountType,
         idCardType,
@@ -128,13 +116,7 @@ const user = {
         idCardType, idCardNumber, acctMobileNo);
       user.createBankAccount[4] = createNewBankAcct.bind(null, req, res);
       // eslint-disable-next-line consistent-return
-      async.series(user.createBankAccount.slice(1), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(user.createBankAccount.slice(1));
     }],
 };
 

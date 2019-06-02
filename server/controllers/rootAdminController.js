@@ -22,7 +22,7 @@ import initCreateBankAcct from '../middlewares/createNewBankAcct';
 //   constructor() {
 const rootAdmin = {
   signup: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         firstName,
         lastName,
@@ -54,17 +54,11 @@ const rootAdmin = {
       rootAdmin.signup[5] = initAddToDatabase('rootAdmin', firstName, lastName, email,
         password, mobileNo, houseAddress, idCardType, idCardNumber);
       // eslint-disable-next-line consistent-return
-      async.series(rootAdmin.signup.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(rootAdmin.signup.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 
   signin: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         email,
         password,
@@ -80,17 +74,11 @@ const rootAdmin = {
       rootAdmin.signin[3] = initCheckUserInDb(typeOfUser, email);
       rootAdmin.signin[4] = initLoginUser(typeOfUser, email, password);
       // eslint-disable-next-line consistent-return
-      async.series(rootAdmin.signin.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(rootAdmin.signin.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 
   createAdminAcct: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         firstName,
         lastName,
@@ -124,13 +112,7 @@ const rootAdmin = {
       rootAdmin.createAdminAcct[7] = initAddToDatabase('admin', firstName, lastName, email,
         password, mobileNo, houseAddress, idCardType, idCardNumber);
       // eslint-disable-next-line consistent-return
-      async.series(rootAdmin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(rootAdmin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 
   /**
