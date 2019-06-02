@@ -7,8 +7,6 @@ import initAddToDatabase from '../middlewares/addToDatabase';
 import initLoginUser from '../middlewares/loginUser';
 import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
-import initCreateBankAcct from '../middlewares/createNewBankAcct';
-
 
 // import moment from 'moment';
 
@@ -22,7 +20,7 @@ import initCreateBankAcct from '../middlewares/createNewBankAcct';
 //   constructor() {
 const admin = {
   signin: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         email,
         password,
@@ -38,17 +36,11 @@ const admin = {
       admin.signin[3] = initCheckUserInDb(typeOfUser, email);
       admin.signin[4] = initLoginUser(typeOfUser, email, password);
       // eslint-disable-next-line consistent-return
-      async.series(admin.signin.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(admin.signin.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 
   createAdminAcct: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         firstName,
         lastName,
@@ -82,17 +74,11 @@ const admin = {
       admin.createAdminAcct[7] = initAddToDatabase('admin', firstName, lastName, email,
         password, mobileNo, houseAddress, idCardType, idCardNumber);
       // eslint-disable-next-line consistent-return
-      async.series(admin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(admin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)));
     }],
-  
+
   createStaffAcct: [
-    function getAndPersistReqProps(req, res, next) {
+    function getAndPersistReqProps(req, res) {
       const {
         firstName,
         lastName,
@@ -126,13 +112,7 @@ const admin = {
       admin.createStaffAcct[7] = initAddToDatabase('cashier', firstName, lastName, email,
         password, mobileNo, houseAddress, idCardType, idCardNumber);
       // eslint-disable-next-line consistent-return
-      async.series(admin.createStaffAcct.slice(1).map(mw => mw.bind(null, req, res)), (err) => {
-        if (err) {
-          console.log('There is a problem running the middleware');
-          return next(err);
-        }
-        next();
-      });
+      async.series(admin.createStaffAcct.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 
 
