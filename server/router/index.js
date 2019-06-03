@@ -4,6 +4,7 @@ import user from '../controllers/userController';
 import rootAdmin from '../controllers/rootAdminController';
 import admin from '../controllers/adminController';
 import staff from '../controllers/staffController';
+import staffAndAdmin from '../controllers/staffAndAdminController';
 
 
 const router = Router();
@@ -35,6 +36,8 @@ const routes = () => {
   router.post('/api/v1/auth/admin/create-staff-acct', admin.createStaffAcct[0]);
   // Staff Signin route
   router.post('/api/v1/auth/staff/signin', staff.signin[0]);
+  // Admin or Staff can activate or deactivate a bank account
+  router.patch('/api/v1/accounts/:accountNumber', staffAndAdmin.changeBankAcctStatus[0]);
 };
 
 routes();

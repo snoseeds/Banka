@@ -33,7 +33,7 @@ const admin = {
       };
       admin.signin[1] = initValidateFields(reqdFieldsDescription);
       admin.signin[2] = initValidateUserType('admin', typeOfUser);
-      admin.signin[3] = initCheckUserInDb(typeOfUser, email);
+      admin.signin[3] = initCheckUserInDb(email);
       admin.signin[4] = initLoginUser(typeOfUser, email, password);
       // eslint-disable-next-line consistent-return
       async.series(admin.signin.slice(1).map(mw => mw.bind(null, req, res)));
@@ -65,7 +65,7 @@ const admin = {
         'ID Card Number': idCardNumber,
       };
       admin.createAdminAcct[1] = initAuthenticateUserType('admin');
-      admin.createAdminAcct[2] = initCheckUserInDb('admin');
+      admin.createAdminAcct[2] = initCheckUserInDb();
       admin.createAdminAcct[3] = initValidateFields(reqdFieldsDescription);
       admin.createAdminAcct[4] = initValidateUserType('admin', typeOfUser);
       admin.createAdminAcct[5] = initPasswordsMatch(password, confirmPassword);
@@ -103,7 +103,7 @@ const admin = {
         'ID Card Number': idCardNumber,
       };
       admin.createStaffAcct[1] = initAuthenticateUserType('admin');
-      admin.createStaffAcct[2] = initCheckUserInDb('admin');
+      admin.createStaffAcct[2] = initCheckUserInDb();
       admin.createStaffAcct[3] = initValidateFields(reqdFieldsDescription);
       admin.createStaffAcct[4] = initValidateUserType('cashier', typeOfUser);
       admin.createStaffAcct[5] = initPasswordsMatch(password, confirmPassword);

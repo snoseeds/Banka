@@ -12,7 +12,6 @@ describe('Testing Staff (cashier) Controller', () => {
   //   migrations.createTables();
   // });
 
-  let adminSignInToken;
   describe('Testing staff signin controller', () => {
     const signinUrl = '/api/v1/auth/staff/signin';
     it(
@@ -27,7 +26,6 @@ describe('Testing Staff (cashier) Controller', () => {
           })
 
           .end((error, response) => {
-            adminSignInToken = response.body.data.token;
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(201);
             expect(response.body.status).to.equal(201);

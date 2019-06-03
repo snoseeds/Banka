@@ -613,7 +613,7 @@ describe('Testing User Controller', () => {
             });
         },
       );
-     
+    
       it(
         'should not create a new bank account for request that came in with a fake token not issued on Banka',
         (done) => {
