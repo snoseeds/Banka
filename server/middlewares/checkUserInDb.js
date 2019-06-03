@@ -1,14 +1,14 @@
 import Database from '../models/Database';
 
-const initCheckUserInDb = (typeOfUser, email = null) => {
+const initCheckUserInDb = (email = null) => {
   const checkUserInDb = (req, res, next) => {
     let user;
     switch (email) {
       case null:
-        user = Database[typeOfUser].find(recd => recd.email === req.authEmail);
+        user = Database[req.body.typeOfUser].find(recd => recd.email === req.authEmail);
         break;
       default:
-        user = Database[typeOfUser].find(recd => recd.email === email);
+        user = Database[req.body.typeOfUser].find(recd => recd.email === email);
         break;
     }
     if (user) {

@@ -9,7 +9,7 @@ import verifyToken from '../helpers/verifyToken';
  */
 const secretKey = 'andela';
 
-const initAuthenticateUserType = (typeOfUser) => {
+const initAuthenticateUserType = (typeOfUser1, typeOfUser2) => {
   // eslint-disable-next-line consistent-return
   const authenticateUserType = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
@@ -23,12 +23,13 @@ const initAuthenticateUserType = (typeOfUser) => {
 
     // authentication for client
     const payload = confirmToken;
-    if (!payload.email || payload.typeOfUser !== `${typeOfUser}`) {
+    if (!payload.email || (payload.typeOfUser !== `${typeOfUser1}` && payload.typeOfUser !== `${typeOfUser2}`)) {
       return res.status(403).json({
         status: 403,
         error: 'Not Authorized',
       });
     }
+    req.body.typeOfUser = payload.typeOfUser;
     req.authEmail = payload.email;
     next();
   };

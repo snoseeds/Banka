@@ -76,7 +76,7 @@ const user = {
       user.signin[1] = validateSignInField.bind(null, req, res);
       const validateUserType = initValidateUserType('client', typeOfUser);
       user.signin[2] = validateUserType.bind(null, req, res);
-      const checkUserInDb = initCheckUserInDb(typeOfUser, email);
+      const checkUserInDb = initCheckUserInDb(email);
       user.signin[3] = checkUserInDb.bind(null, req, res);
       const loginUser = initLoginUser(typeOfUser, email, password);
       user.signin[4] = loginUser.bind(null, req, res);
@@ -108,7 +108,7 @@ const user = {
       };
       const authenticateUserType = initAuthenticateUserType('client');
       user.createBankAccount[1] = authenticateUserType.bind(null, req, res);
-      const checkUserInDb = initCheckUserInDb('client');
+      const checkUserInDb = initCheckUserInDb();
       user.createBankAccount[2] = checkUserInDb.bind(null, req, res);
       const validateCreateAcctFields = initValidateFields(reqdFieldsDescription);
       user.createBankAccount[3] = validateCreateAcctFields.bind(null, req, res);

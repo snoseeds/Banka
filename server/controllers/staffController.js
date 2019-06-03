@@ -35,11 +35,11 @@ const staff = {
       };
       staff.signin[1] = initValidateFields(reqdFieldsDescription);
       staff.signin[2] = initValidateUserType('cashier', typeOfUser);
-      staff.signin[3] = initCheckUserInDb(typeOfUser, email);
+      staff.signin[3] = initCheckUserInDb(email);
       staff.signin[4] = initLoginUser(typeOfUser, email, password);
       // eslint-disable-next-line consistent-return
       async.series(staff.signin.slice(1).map(mw => mw.bind(null, req, res)));
     }],
-}
+};
 
 export default staff;

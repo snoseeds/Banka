@@ -7,8 +7,6 @@ import initAddToDatabase from '../middlewares/addToDatabase';
 import initLoginUser from '../middlewares/loginUser';
 import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
-import initCreateBankAcct from '../middlewares/createNewBankAcct';
-
 
 // import moment from 'moment';
 
@@ -71,7 +69,7 @@ const rootAdmin = {
       };
       rootAdmin.signin[1] = initValidateFields(reqdFieldsDescription);
       rootAdmin.signin[2] = initValidateUserType('rootAdmin', typeOfUser);
-      rootAdmin.signin[3] = initCheckUserInDb(typeOfUser, email);
+      rootAdmin.signin[3] = initCheckUserInDb(email);
       rootAdmin.signin[4] = initLoginUser(typeOfUser, email, password);
       // eslint-disable-next-line consistent-return
       async.series(rootAdmin.signin.slice(1).map(mw => mw.bind(null, req, res)));
@@ -103,7 +101,7 @@ const rootAdmin = {
         'ID Card Number': idCardNumber,
       };
       rootAdmin.createAdminAcct[1] = initAuthenticateUserType('rootAdmin');
-      rootAdmin.createAdminAcct[2] = initCheckUserInDb('rootAdmin');
+      rootAdmin.createAdminAcct[2] = initCheckUserInDb();
       rootAdmin.createAdminAcct[3] = initValidateFields(reqdFieldsDescription);
       rootAdmin.createAdminAcct[4] = initValidateUserType('admin', typeOfUser);
       rootAdmin.createAdminAcct[5] = initPasswordsMatch(password, confirmPassword);
@@ -114,56 +112,6 @@ const rootAdmin = {
       // eslint-disable-next-line consistent-return
       async.series(rootAdmin.createAdminAcct.slice(1).map(mw => mw.bind(null, req, res)));
     }],
-
-  /**
-   * creates new user (client, cashier, or admin)
-   * @param {object} request express request object
-   * @param {object} response express response object
-   *
-   * @returns {json} status code with string or json object
-   * @memberof UserController
-   */
-
-
-  /**
-   * creates new user (client, cashier, or admin)
-   * @param {object} request express request object
-   * @param {object} response express response object
-   *
-   * @returns {json} status code with string or json object
-   * @memberof UserController
-   */
-  // createBankAccount: [
-  //   function getAndPersistReqProps(req, res, next) {
-  //     const {
-  //       accountType,
-  //       idCardType,
-  //       idCardNumber,
-  //       acctMobileNo,
-  //     } = req.body;
-  //     const reqdFieldsDescription = {
-  //       'Type of account (current or savings)': accountType,
-  //       'Type of identification card': idCardType,
-  //       'Identification card number': idCardNumber,
-  //     };
-  //     const authenticateUserType = initAuthenticateUserType('client');
-  //     user.createBankAccount[1] = authenticateUserType.bind(null, req, res);
-  //     const checkUserInDb = initCheckUserInDb('client');
-  //     user.createBankAccount[2] = checkUserInDb.bind(null, req, res);
-  //     const validateCreateAcctFields = initValidateFields(reqdFieldsDescription);
-  //     user.createBankAccount[3] = validateCreateAcctFields.bind(null, req, res);
-  //     const createNewBankAcct = initCreateBankAcct(accountType,
-  //       idCardType, idCardNumber, acctMobileNo);
-  //     user.createBankAccount[4] = createNewBankAcct.bind(null, req, res);
-  //     // eslint-disable-next-line consistent-return
-  //     async.series(user.createBankAccount.slice(1), (err) => {
-  //       if (err) {
-  //         console.log('There is a problem running the middleware');
-  //         return next(err);
-  //       }
-  //       next();
-  //     });
-  //   }],
 };
 
 export default rootAdmin;

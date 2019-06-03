@@ -24,10 +24,11 @@ class HardCodedData {
       imageUrl: '',
       accounts: [{
         id: 1,
+        userID: 1,
         idCardType: 3,
         idCardNumber: 'A09579437',
-        acctMobileNo: 8025847569,
-        accountNumber: 5187941354,
+        acctMobileNo: '8025847569',
+        accountNumber: '518791354',
         email: 'johndoe2@gmail.com',
         createdOn: moment.now(),
         type: 'savings',
@@ -63,7 +64,7 @@ class HardCodedData {
       houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
       idCardType: 3,
       idCardNumber: 'A23562548',
-      type: 'admin',
+      type: 'staff',
       isAdmin: true,
       isRootAdmin: false,
     }];
@@ -79,7 +80,7 @@ class HardCodedData {
       houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
       idCardType: 3,
       idCardNumber: 'A23568974',
-      type: 'rootAdmin',
+      type: 'staff',
       isAdmin: true,
       isRootAdmin: true,
     }];
