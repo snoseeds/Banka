@@ -22,20 +22,34 @@ class HardCodedData {
       lastVisit: '',
       noOfAccounts: 1,
       imageUrl: '',
-      accounts: [{
-        id: 1,
-        userID: 1,
-        idCardType: 3,
-        idCardNumber: 'A09579437',
-        acctMobileNo: '8025847569',
-        accountNumber: '518791354',
-        email: 'johndoe2@gmail.com',
-        createdOn: moment.now(),
-        type: 'savings',
-        owner: 1,
-        status: 'active',
-        balance: 100000.00,
-      }],
+      accounts: [
+        {
+          accountID: 1,
+          idCardType: 3,
+          idCardNumber: 'A09579437',
+          acctMobileNo: '8025847569',
+          accountNumber: '518791354',
+          email: 'johndoe2@gmail.com',
+          createdOn: moment.now(),
+          type: 'savings',
+          ownerID: 1,
+          status: 'active',
+          balance: 100000.00,
+        },
+        {
+          accountID: 2,
+          idCardType: 3,
+          idCardNumber: 'A09579437',
+          acctMobileNo: '8025847569',
+          accountNumber: '895698752',
+          email: 'johndoe2@gmail.com',
+          createdOn: moment.now(),
+          type: 'savings',
+          ownerID: 1,
+          status: 'active',
+          balance: 100000.00,
+        }
+      ],
     }];
     this.cashier = [{
       id: 1,
@@ -84,6 +98,8 @@ class HardCodedData {
       isAdmin: true,
       isRootAdmin: true,
     }];
+
+    this.deletedBankAccts = {};
   }
 }
 const Database = new HardCodedData();

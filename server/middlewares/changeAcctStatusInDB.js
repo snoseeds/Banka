@@ -3,13 +3,13 @@ import Database from '../models/Database';
 
 const changeAcctStatusInDb = (req, res) => {
   const {
-    userID,
+    ownerID,
     status,
-    id,
+    accountID,
     accountNumber,
   } = req.bankAccountDetails;
   const newStatus = status === 'active' ? 'dormant' : 'active';
-  Database.client[userID - 1].accounts[id - 1].status = newStatus;
+  Database.client[ownerID - 1].accounts[accountID - 1].status = newStatus;
   return res.status(201).json({
     status: 201,
     data: {

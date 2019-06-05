@@ -1,10 +1,10 @@
 class Account {
   constructor(id, accountNumber, createdOn, userID, accountType,
     idCardType, idCardNumber, mobileNo) {
-    this.id = id;
+    this.accountID = id;
     this.accountNumber = accountNumber;
     this.createdOn = createdOn;
-    this.owner = userID;
+    this.ownerID = userID;
     this.type = accountType; // savings, current
     this.status = 'draft'; // draft, active, or dormant
     this.balance = 0.00;
