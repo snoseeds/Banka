@@ -23,6 +23,7 @@ const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo)
       email,
       id,
       userMobileNo,
+      accounts,
     } = user;
 
     const accountNumber = generateAcctNo(email, firstName);
@@ -39,7 +40,7 @@ const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo)
     // }
 
     const phoneNumberForAcct = !acctMobileNo ? acctMobileNo : userMobileNo;
-    const account = new Account(id + 1, accountNumber, moment.now(), id, accountType,
+    const account = new Account(accounts.length + 1, accountNumber, moment.now(), id, accountType,
       idCardType, idCardNumber, phoneNumberForAcct);
 
     user.accounts.push(account);

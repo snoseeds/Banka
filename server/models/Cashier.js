@@ -5,6 +5,7 @@ class Cashier extends Staff {
   constructor(...args) {
     super(...args);
     this.isAdmin = false;
+    this.acccounts = [];
   }
 }
 
