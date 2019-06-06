@@ -27,18 +27,6 @@ const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo)
     } = user;
 
     const accountNumber = generateAcctNo(email, firstName);
-    // let account;
-    // switch (acctMobileNo) {
-    //   case undefined:
-    //     account = new Account(id + 1, accountNumber, moment.now(), id, accountType,
-    //       idCardType, idCardNumber, userMobileNo);
-    //     break;
-    //   default:
-    //     account = new Account(id + 1, accountNumber, moment.now(), id, accountType,
-    //       idCardType, idCardNumber, acctMobileNo);
-    //     break;
-    // }
-
     const phoneNumberForAcct = !acctMobileNo ? acctMobileNo : userMobileNo;
     const account = new Account(accounts.length + 1, accountNumber, moment.now(), id, accountType,
       idCardType, idCardNumber, phoneNumberForAcct);

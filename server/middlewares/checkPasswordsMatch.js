@@ -1,3 +1,5 @@
+import issueErrorResponse from '../helpers/issueErrorResponse';
+
 /**
  * Tests equality of password and confirmPassword fields
  * @param 'string' password Signup form password
@@ -10,10 +12,7 @@
 const initPasswordsMatch = (password, confirmPassword) => {
   const checkPasswordsMatch = (req, res, next) => {
     if (password !== confirmPassword) {
-      return res.status(400).json({
-        status: 400,
-        error: 'Passwords do not match',
-      });
+      return issueErrorResponse(res, 400, 'Passwords do not match');
     }
     next();
   };

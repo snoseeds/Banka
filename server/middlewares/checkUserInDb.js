@@ -1,4 +1,5 @@
 import Database from '../models/Database';
+import issueErrorResponse from '../helpers/issueErrorResponse';
 
 const initCheckUserInDb = (email = null) => {
   const checkUserInDb = (req, res, next) => {
@@ -15,10 +16,7 @@ const initCheckUserInDb = (email = null) => {
       req.user = user;
       return next();
     }
-    return res.status(403).json({
-      status: 403,
-      error: 'User with this email doesn\'t exist',
-    });
+    return issueErrorResponse(res, 403, 'User with this email doesn\'t exist');
   };
   return checkUserInDb;
 };

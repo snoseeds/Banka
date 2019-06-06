@@ -1,3 +1,4 @@
+import issueErrorResponse from '../helpers/issueErrorResponse';
 /**
  * Tests form fields that are required
  * @param [array] requiredFields - variable names of form fields to be validated
@@ -17,10 +18,7 @@ const initValidateFields = (reqdFieldsDescription) => {
       idx += 1;
       return !inputField;
     })) {
-      return response.status(400).json({
-        status: 400,
-        error: `${Object.keys(reqdFieldsDescription)[idx]} is required`,
-      });
+      return issueErrorResponse(response, 400, `${Object.keys(reqdFieldsDescription)[idx]} is required`);
     }
     next();
   };

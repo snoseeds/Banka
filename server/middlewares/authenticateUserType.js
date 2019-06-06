@@ -1,4 +1,5 @@
 import verifyToken from '../helpers/verifyToken';
+import issueErrorResponse from '../helpers/issueErrorResponse';
 
 /**
  * @description uses JWT to validate user authenticity
@@ -15,19 +16,17 @@ const initAuthenticateUserType = (typeOfUser1, typeOfUser2) => {
     const token = req.headers.authorization.split(' ')[1];
     const confirmToken = verifyToken(token, secretKey);
     if (typeof confirmToken === 'string') {
-      return res.status(401).json({
-        status: 401,
-        error: confirmToken,
-      });
+      return issueErrorResponse(res, 401, confirmToken);
     }
 
     // authentication for client
     const payload = confirmToken;
     if (!payload.email || (payload.typeOfUser !== `${typeOfUser1}` && payload.typeOfUser !== `${typeOfUser2}`)) {
-      return res.status(403).json({
-        status: 403,
-        error: 'Not Authorized',
-      });
+      return issueErrorResponse(res, 403, 'Not Authorized');
+      // res.status(403).json({
+      //   status: 403,
+      //   error: 'Not Authorized',
+      // });
     }
     req.body.typeOfUser = payload.typeOfUser;
     req.authEmail = payload.email;

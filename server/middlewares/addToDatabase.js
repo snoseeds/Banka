@@ -5,6 +5,7 @@ import Cashier from '../models/Cashier';
 import Admin from '../models/Admin';
 import RootAdmin from '../models/RootAdmin';
 import generateToken from '../helpers/generateToken';
+import issueErrorResponse from '../helpers/issueErrorResponse';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -13,10 +14,7 @@ const initAddToDatabase = (typeOfUser, firstName, lastName, email, password,
   const addToDatabase = (req, res) => {
     // checkMaximumNumberOfRootAdmins
     if (typeOfUser === 'rootAdmin' && Database.rootAdmin.length + 1 === 4) {
-      return res.status(403).json({
-        status: 403,
-        error: 'Not Authorized',
-      });
+      return issueErrorResponse(res, 403, 'Not Authorized');
     }
 
     /**
