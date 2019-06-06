@@ -7,12 +7,14 @@ class Account {
     this.ownerID = userID;
     this.type = accountType; // savings, current
     this.status = 'draft'; // draft, active, or dormant
-    this.balance = 0.00;
+    this.accountBalance = 0.00;
     this.idCardType = idCardType;
     this.idCardNumber = idCardNumber;
     this.mobileNo = mobileNo;
     this.lastWithdrawal = 'no transactions yet';
     this.lastDeposit = 'no transactions yet';
+    this.transactions = [];
   }
 }
+
 export default Account;

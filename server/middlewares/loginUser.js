@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import generateToken from '../helpers/generateToken';
+import issueErrorResponse from '../helpers/issueErrorResponse';
 
 const initLoginUser = (typeOfUser, email, suppliedPassword) => {
   const loginUser = (req, res) => {
@@ -24,10 +25,7 @@ const initLoginUser = (typeOfUser, email, suppliedPassword) => {
         },
       });
     }
-    return res.status(400).json({
-      status: 400,
-      error: 'The supplied password is wrong',
-    });
+    return issueErrorResponse(res, 400, 'The supplied password is wrong');
   };
   return loginUser;
 };

@@ -30,12 +30,12 @@ const staffAndAdmin = {
   deleteBankAcct: [
     function getAndPersistReqProps(req, res) {
       const { accountNumber } = req.params;
-      staffAndAdmin.changeBankAcctStatus[1] = initAuthenticateUserType('admin', 'cashier');
-      staffAndAdmin.changeBankAcctStatus[2] = initCheckUserInDb();
-      staffAndAdmin.changeBankAcctStatus[3] = initGetBankAcctDetails(accountNumber);
-      staffAndAdmin.changeBankAcctStatus[4] = deleteBankAcctInDb;
+      staffAndAdmin.deleteBankAcct[1] = initAuthenticateUserType('admin', 'cashier');
+      staffAndAdmin.deleteBankAcct[2] = initCheckUserInDb();
+      staffAndAdmin.deleteBankAcct[3] = initGetBankAcctDetails(accountNumber);
+      staffAndAdmin.deleteBankAcct[4] = deleteBankAcctInDb;
       // eslint-disable-next-line consistent-return
-      async.series(staffAndAdmin.changeBankAcctStatus.slice(1).map(mw => mw.bind(null, req, res)));
+      async.series(staffAndAdmin.deleteBankAcct.slice(1).map(mw => mw.bind(null, req, res)));
     }],
 };
 

@@ -40,6 +40,8 @@ const routes = () => {
   router.patch('/api/v1/accounts/:accountNumber', staffAndAdmin.changeBankAcctStatus[0]);
   // Admin or Staff can delete a bank account
   router.delete('/api/v1/accounts/:accountNumber', staffAndAdmin.deleteBankAcct[0]);
+  // Staff can credit a bank account
+  router.post('/api/v1/transactions/:accountNumber/credit', staff.creditBankAcct[0]);
 };
 
 routes();

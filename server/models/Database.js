@@ -34,7 +34,8 @@ class HardCodedData {
           type: 'savings',
           ownerID: 1,
           status: 'active',
-          balance: 100000.00,
+          accountBalance: 100000.00,
+          transactions: [],
         },
         {
           accountID: 2,
@@ -47,8 +48,9 @@ class HardCodedData {
           type: 'savings',
           ownerID: 1,
           status: 'active',
-          balance: 100000.00,
-        }
+          accountBalance: 100000.00,
+          transactions: [],
+        },
       ],
     }];
     this.cashier = [{
