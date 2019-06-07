@@ -6,7 +6,7 @@ import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
 import initCreateBankAcct from '../middlewares/createNewBankAcct';
 import initAnyUserTypeAcctCreator from '../middlewares/anyUserTypeAcctCreator';
-
+import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 
 // import moment from 'moment';
 
@@ -15,29 +15,7 @@ import initAnyUserTypeAcctCreator from '../middlewares/anyUserTypeAcctCreator';
 const user = {
   signup: [initAnyUserTypeAcctCreator(null, 'client')],
 
-  signin: [
-    function getAndPersistReqProps(req, res) {
-      const {
-        email,
-        password,
-        typeOfUser,
-      } = req.body;
-      const reqdFieldsDescription = {
-        Email: email,
-        Password: password,
-        'Type of user': typeOfUser,
-      };
-      const validateSignInField = initValidateFields(reqdFieldsDescription);
-      user.signin[1] = validateSignInField.bind(null, req, res);
-      const validateUserType = initValidateUserType('client', typeOfUser);
-      user.signin[2] = validateUserType.bind(null, req, res);
-      const checkUserInDb = initCheckUserInDb(email);
-      user.signin[3] = checkUserInDb.bind(null, req, res);
-      const loginUser = initLoginUser(typeOfUser, email, password);
-      user.signin[4] = loginUser.bind(null, req, res);
-      // eslint-disable-next-line consistent-return
-      async.series(user.signin.slice(1));
-    }],
+  signin: [initSignInAnyUserType('client')],
 
   createBankAccount: [
     function getAndPersistReqProps(req, res) {

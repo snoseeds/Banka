@@ -1,42 +1,16 @@
 import async from 'async';
 import initValidateFields from '../middlewares/validateFormFields';
-import initValidateUserType from '../middlewares/validateUserType';
-import initLoginUser from '../middlewares/loginUser';
 import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
 import initGetBankAcctDetails from '../middlewares/getBankAcctDetails';
 import initTransactOnBankAcctInDb from '../middlewares/transactOnBankAcctInDb';
-
+import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 // import moment from 'moment';
 
 // import pool from '../models/database';
 
-
-/**
- * @class UserController
- */
-// class UserController {
-//   constructor() {
 const staff = {
-  signin: [
-    function getAndPersistReqProps(req, res) {
-      const {
-        email,
-        password,
-        typeOfUser,
-      } = req.body;
-      const reqdFieldsDescription = {
-        Email: email,
-        Password: password,
-        'Type of user': typeOfUser,
-      };
-      staff.signin[1] = initValidateFields(reqdFieldsDescription);
-      staff.signin[2] = initValidateUserType('cashier', typeOfUser);
-      staff.signin[3] = initCheckUserInDb(email);
-      staff.signin[4] = initLoginUser(typeOfUser, email, password);
-      // eslint-disable-next-line consistent-return
-      async.series(staff.signin.slice(1).map(mw => mw.bind(null, req, res)));
-    }],
+  signin: [initSignInAnyUserType('cashier')],
 
   creditBankAcct: [
     function getAndPersistReqProps(req, res) {
