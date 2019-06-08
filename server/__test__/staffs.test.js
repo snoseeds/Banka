@@ -232,7 +232,7 @@ describe('Testing Staff (cashier) Controller', () => {
     describe('Testing credit bank account controller for a non staff sign-in', () => {
       let clientToken;
       const clientSignInUrl = '/api/v1/auth/signin';
-      it('should not delete bank account', (done) => {
+      it('should not credit bank account', (done) => {
         chai.request(app)
           .post(clientSignInUrl)
           .send({
@@ -257,11 +257,113 @@ describe('Testing Staff (cashier) Controller', () => {
       });
     });
 
-    describe('Testing create bank account controller for wrong or non-existent account number', () => {
-      it('could not delete bank account whose account number is non existent', (done) => {
+    describe('Testing credit bank account controller for wrong or non-existent account number', () => {
+      it('could not credit bank account whose account number is non existent', (done) => {
         const nonExistentAcct = '759845239';
         chai.request(app)
           .post(`/api/v1/transactions/${nonExistentAcct}/credit`)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((error, response) => {
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(404);
+            expect(response.body.status).to.equal(404);
+            expect(response.body.error).to.be.a('string');
+            expect(response.body.error).to.equal('This account number doesn\'t exist on Banka');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('Testing staff debit account controller', () => {
+    const debitAcctUrl = '/api/v1/transactions/518791354/debit';
+    it('should successfully debit account when all the criteria and parameters are rightly met and given', (done) => {
+      chai.request(app)
+        .post(debitAcctUrl)
+        .set('authorization', `Bearer ${staffSignInToken}`)
+        .send({
+          amount: 45000.89,
+        })
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res).to.have.status(201);
+          expect(res.body.status).to.equal(201);
+          expect(res.body.data).to.be.an('object');
+          expect(res.body.data.transactionId).to.be.a('number');
+          expect(res.body.data.accountNumber).to.be.a('string');
+          expect(res.body.data.amount).to.be.a('number');
+          expect(res.body.data.cashier).to.be.a('number');
+          expect(res.body.data.transactionType).to.be.a('string');
+          expect(res.body.data.accountBalance).to.be.a('string');
+          done();
+        });
+    });
+    it('should not debit account if amount field is empty', (done) => {
+      chai.request(app)
+        .post(debitAcctUrl)
+        .set('authorization', `Bearer ${staffSignInToken}`)
+        .send({
+
+        })
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.equal(400);
+          expect(res.body.error).to.be.a('string');
+          expect(res.body.error).to.equal('Debit amount is required');
+          done();
+        });
+    });
+    it('should not debit account if amount is less than or equal to zero', (done) => {
+      chai.request(app)
+        .post(debitAcctUrl)
+        .set('authorization', `Bearer ${staffSignInToken}`)
+        .send({
+          amount: -5000.45,
+        })
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.equal(400);
+          expect(res.body.error).to.be.a('string');
+          expect(res.body.error).to.equal('Amount to be debited must be a non-zero positive number');
+          done();
+        });
+    });
+
+    describe('Testing debit bank account controller for a non staff sign-in', () => {
+      let clientToken;
+      const clientSignInUrl = '/api/v1/auth/signin';
+      it('should not debit bank account', (done) => {
+        chai.request(app)
+          .post(clientSignInUrl)
+          .send({
+            email: 'johndoe@gmail.com',
+            password: 'olujuwondoke',
+            typeOfUser: 'client',
+          })
+          .end((err, res) => {
+            clientToken = res.body.data.token;
+            chai.request(app)
+              .post(debitAcctUrl)
+              .set('authorization', `Bearer ${clientToken}`)
+              .end((error, response) => {
+                expect(response.body).to.be.an('object');
+                expect(response).to.have.status(403);
+                expect(response.body.status).to.equal(403);
+                expect(response.body).to.have.property('error');
+                expect(response.body.error).to.equal('Not Authorized');
+                done();
+              });
+          });
+      });
+    });
+
+    describe('Testing debit bank account controller for wrong or non-existent account number', () => {
+      it('could not debit bank account whose account number is non existent', (done) => {
+        const nonExistentAcct = '759845239';
+        chai.request(app)
+          .post(`/api/v1/transactions/${nonExistentAcct}/debit`)
           .set('authorization', `Bearer ${staffSignInToken}`)
           .end((error, response) => {
             expect(response.body).to.be.an('object');
