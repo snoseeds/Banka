@@ -17,20 +17,11 @@ import Account from '../models/Account';
 const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo) => {
   const createNewBankAcct = (req, res) => {
     const { user } = req;
-    const {
-      firstName,
-      lastName,
-      email,
-      id,
-      userMobileNo,
-      accounts,
-    } = user;
-
+    // eslint-disable-next-line object-curly-newline
+    const { firstName, lastName, email, id, userMobileNo, accounts } = user;
     const accountNumber = generateAcctNo(email, firstName);
-    const phoneNumberForAcct = !acctMobileNo ? acctMobileNo : userMobileNo;
     const account = new Account(accounts.length + 1, accountNumber, moment.now(), id, accountType,
-      idCardType, idCardNumber, phoneNumberForAcct);
-
+      idCardType, idCardNumber, !acctMobileNo ? userMobileNo : acctMobileNo);
     user.accounts.push(account);
     user.noOfAccounts += 1;
     return res.status(201).json({

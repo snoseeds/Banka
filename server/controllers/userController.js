@@ -1,7 +1,5 @@
 import async from 'async';
 import initValidateFields from '../middlewares/validateFormFields';
-import initValidateUserType from '../middlewares/validateUserType';
-import initLoginUser from '../middlewares/loginUser';
 import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
 import initCreateBankAcct from '../middlewares/createNewBankAcct';
@@ -13,9 +11,9 @@ import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 // import pool from '../models/database';
 
 const user = {
-  signup: [initAnyUserTypeAcctCreator(null, 'client')],
+  signup: initAnyUserTypeAcctCreator(null, 'client'),
 
-  signin: [initSignInAnyUserType('client')],
+  signin: initSignInAnyUserType('client'),
 
   createBankAccount: [
     function getAndPersistReqProps(req, res) {

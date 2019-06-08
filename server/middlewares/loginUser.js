@@ -5,11 +5,7 @@ import issueErrorResponse from '../helpers/issueErrorResponse';
 const initLoginUser = (typeOfUser, email, suppliedPassword) => {
   const loginUser = (req, res) => {
     const {
-      id,
-      firstName,
-      lastName,
-      lastVisit,
-      password,
+      id, firstName, lastName, lastVisit, password,
     } = req.user;
     if (bcrypt.compareSync(suppliedPassword, password)) {
       return res.status(201).json({

@@ -6,12 +6,11 @@ import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 // import pool from '../models/database';
 
 const rootAdmin = {
-  signup: [initAnyUserTypeAcctCreator(null, 'rootAdmin')],
+  signup: initAnyUserTypeAcctCreator(null, 'rootAdmin'),
 
-  signin: [initSignInAnyUserType('rootAdmin')],
+  signin: initSignInAnyUserType('rootAdmin'),
 
-
-  createAdminAcct: [initAnyUserTypeAcctCreator('rootAdmin', 'admin')],
+  createAdminAcct: initAnyUserTypeAcctCreator('rootAdmin', 'admin'),
 };
 
 export default rootAdmin;

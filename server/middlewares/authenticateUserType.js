@@ -10,7 +10,7 @@ import issueErrorResponse from '../helpers/issueErrorResponse';
  */
 const secretKey = 'andela';
 
-const initAuthenticateUserType = (typeOfUser1, typeOfUser2) => {
+const initAuthenticateUserType = (typeOfUser1, typeOfUser2 = null) => {
   // eslint-disable-next-line consistent-return
   const authenticateUserType = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
@@ -18,15 +18,13 @@ const initAuthenticateUserType = (typeOfUser1, typeOfUser2) => {
     if (typeof confirmToken === 'string') {
       return issueErrorResponse(res, 401, confirmToken);
     }
-
-    // authentication for client
     const payload = confirmToken;
-    if (!payload.email || (payload.typeOfUser !== `${typeOfUser1}` && payload.typeOfUser !== `${typeOfUser2}`)) {
+    const isPayloadTypeOfUserInvalid = typeOfUser2
+      ? payload.typeOfUser !== `${typeOfUser1}` && payload.typeOfUser !== `${typeOfUser2}`
+      : payload.typeOfUser !== `${typeOfUser1}`;
+
+    if (isPayloadTypeOfUserInvalid) {
       return issueErrorResponse(res, 403, 'Not Authorized');
-      // res.status(403).json({
-      //   status: 403,
-      //   error: 'Not Authorized',
-      // });
     }
     req.body.typeOfUser = payload.typeOfUser;
     req.authEmail = payload.email;

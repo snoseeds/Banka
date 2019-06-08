@@ -5,12 +5,13 @@
   "main": ".server/index.js",
   "scripts": {
     "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/__test__/*.js --timeout 10000 --exit",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
     "start:dev": "nodemon --exec babel-node ./server",
     "migrate": "babel-node ./server/models/migration createTables"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Nurudeen Soremekun",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
