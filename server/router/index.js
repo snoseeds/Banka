@@ -45,6 +45,9 @@ const routes = () => {
   // Staff can credit a bank account
   router.post('/api/v1/transactions/:accountNumber/credit',
     processReqOfBankAcct, staff.creditBankAcct);
+  // Staff can debit a bank account
+  router.post('/api/v1/transactions/:accountNumber/debit',
+    processReqOfBankAcct, staff.debitBankAcct);
 };
 
 routes();
