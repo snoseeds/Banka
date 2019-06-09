@@ -1,8 +1,8 @@
-import async from 'async';
+import runMiddlewares from './runMiddlewares';
 
 const initStaffAndAdminJobber = (typeOfJob) => {
   const staffAndAdminJobber = (req, res) => {
-    async.series([...req.middlewaresArr, typeOfJob].map(mw => mw.bind(null, req, res)));
+    runMiddlewares([...req.middlewaresArr, typeOfJob], req, res);
   };
   return staffAndAdminJobber;
 };

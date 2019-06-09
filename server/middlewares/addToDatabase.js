@@ -12,7 +12,7 @@ const initAddToDatabase = (...args) => {
     }
     const user = createAcctInDb(...args);
     let dataToken = {};
-    if (!(typeOfUser === 'admin' || typeOfUser === 'cashier')) {
+    if (typeOfUser === 'client' || typeOfUser === 'rootAdmin') {
       dataToken = { token: generateToken({ email, lastName, typeOfUser }) };
     }
     return res.status(201).json({

@@ -1,6 +1,6 @@
-import async from 'async';
 import configureCreateAcctMiddlewares from '../helpers/configureCreateAcctMiddlewares';
 import getRequiredDetails from '../helpers/getRequiredDetails';
+import runMiddlewares from './runMiddlewares';
 
 const initAnyUserTypeAcctCreator = (typeOfCreator, typeOfAccountToBeCreated) => {
   const getAndPersistReqProps = (req, res) => {
@@ -13,8 +13,7 @@ const initAnyUserTypeAcctCreator = (typeOfCreator, typeOfAccountToBeCreated) => 
     const reqdFieldsDescription = getRequiredDetails(typeOfAccountToBeCreated, ...args);
     const createAcct = configureCreateAcctMiddlewares(typeOfCreator, typeOfAccountToBeCreated,
       reqdFieldsDescription, ...args);
-    // eslint-disable-next-line consistent-return
-    async.series(createAcct.map(mw => mw.bind(null, req, res)));
+    runMiddlewares(createAcct, req, res);
   };
   return getAndPersistReqProps;
 };
