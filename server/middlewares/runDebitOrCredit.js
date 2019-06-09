@@ -1,7 +1,7 @@
-import async from 'async';
 import initIsTransactionAmountValid from './isTransactionAmountValid';
 import initValidateFields from './validateFormFields';
 import initTransactOnBankAcctInDb from './transactOnBankAcctInDb';
+import runMiddlewares from './runMiddlewares';
 
 const initRunDebitOrCredit = (transType, transTypeDescription) => {
   const runDebitOrCredit = (req, res) => {
@@ -11,8 +11,7 @@ const initRunDebitOrCredit = (transType, transTypeDescription) => {
       initIsTransactionAmountValid(parseFloat(amount), transType),
       initTransactOnBankAcctInDb(amount, transType),
     ];
-    async.series([...req.middlewaresArr, ...transactionMiddlewares]
-      .map(mw => mw.bind(null, req, res)));
+    runMiddlewares([...req.middlewaresArr, ...transactionMiddlewares], req, res);
   };
   return runDebitOrCredit;
 };

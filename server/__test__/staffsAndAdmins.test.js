@@ -104,6 +104,20 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
               });
           });
       });
+
+      it('should return internal server error for a request without token as a way to test '
+        + '"async" library promise rejection that is used to run middlewares', (done) => {
+        chai.request(app)
+          .patch(toggleBankAcctStatusUrl)
+          .end((error, response) => {
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(500);
+            expect(response.body.status).to.equal(500);
+            expect(response.body).to.have.property('error');
+            expect(response.body.error).to.equal("TypeError: Cannot read property 'split' of undefined");
+            done();
+          });
+      });
     });
 
     describe('Testing activate or deactivate bank account controller for wrong or empty account number', () => {

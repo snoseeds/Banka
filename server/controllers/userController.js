@@ -1,10 +1,10 @@
-import async from 'async';
 import initValidateFields from '../middlewares/validateFormFields';
 import initCheckUserInDb from '../middlewares/checkUserInDb';
 import initAuthenticateUserType from '../middlewares/authenticateUserType';
 import initCreateBankAcct from '../middlewares/createNewBankAcct';
 import initAnyUserTypeAcctCreator from '../middlewares/anyUserTypeAcctCreator';
 import initSignInAnyUserType from '../middlewares/signInAnyUserType';
+import runMiddlewares from '../middlewares/runMiddlewares';
 
 // import moment from 'moment';
 
@@ -28,19 +28,14 @@ const user = {
         'Type of identification card': idCardType,
         'Identification card number': idCardNumber,
       };
-      const authenticateUserType = initAuthenticateUserType('client');
-      user.createBankAccount[1] = authenticateUserType.bind(null, req, res);
-      const checkUserInDb = initCheckUserInDb();
-      user.createBankAccount[2] = checkUserInDb.bind(null, req, res);
-      const validateCreateAcctFields = initValidateFields(reqdFieldsDescription);
-      user.createBankAccount[3] = validateCreateAcctFields.bind(null, req, res);
-      const createNewBankAcct = initCreateBankAcct(accountType,
-        idCardType, idCardNumber, acctMobileNo);
-      user.createBankAccount[4] = createNewBankAcct.bind(null, req, res);
-      // eslint-disable-next-line consistent-return
-      async.series(user.createBankAccount.slice(1));
+      const createBankAcctMiddlewares = [
+        initAuthenticateUserType('client'),
+        initCheckUserInDb(),
+        initValidateFields(reqdFieldsDescription),
+        initCreateBankAcct(accountType, idCardType, idCardNumber, acctMobileNo),
+      ];
+      runMiddlewares(createBankAcctMiddlewares, req, res);
     }],
 };
 
-// const Users = new UserController();
 export default user;

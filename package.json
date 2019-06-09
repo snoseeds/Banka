@@ -4,9 +4,10 @@
   "description": "",
   "main": ".server/index.js",
   "scripts": {
-    "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/__test__/*.js --timeout 10000 --exit",
+    "start": "node -r esm ./server",
+    "test": "nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
-    "start:dev": "nodemon --exec babel-node ./server",
+    "start:dev": "nodemon --exec node -r esm ./server",
     "migrate": "babel-node ./server/models/migration createTables"
   },
   "keywords": [],
@@ -34,6 +35,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "dotenv": "^7.0.0",
+    "esm": "^3.2.25",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "make-runnable": "^1.3.6",

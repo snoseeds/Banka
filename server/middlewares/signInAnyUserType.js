@@ -1,8 +1,8 @@
-import async from 'async';
 import initValidateFields from './validateFormFields';
 import initValidateUserType from './validateUserType';
 import initLoginUser from './loginUser';
 import initCheckUserInDb from './checkUserInDb';
+import runMiddlewares from './runMiddlewares';
 
 const initSignInAnyUserType = (expectedUserType) => {
   const getAndPersistReqProps = (req, res) => {
@@ -22,8 +22,7 @@ const initSignInAnyUserType = (expectedUserType) => {
       initCheckUserInDb(email),
       initLoginUser(typeOfUser, email, password),
     ];
-    // eslint-disable-next-line consistent-return
-    async.series(loginMiddlewares.map(mw => mw.bind(null, req, res)));
+    runMiddlewares(loginMiddlewares, req, res);
   };
   return getAndPersistReqProps;
 };
