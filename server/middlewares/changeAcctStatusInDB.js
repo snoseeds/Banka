@@ -1,6 +1,5 @@
 import Database from '../models/Database';
 
-
 const changeAcctStatusInDb = (req, res) => {
   const {
     ownerID,
