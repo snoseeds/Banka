@@ -3,14 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing User Controller', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
   describe('Testing signup controller', () => {
     const signupUrl = '/api/v1/auth/signup';
     it(
@@ -28,7 +24,6 @@ describe('Testing User Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(201);
             expect(response.body.status).to.equal(201);
@@ -183,7 +178,7 @@ describe('Testing User Controller', () => {
         .send({
           firstName: 'Shakirat',
           lastName: 'Oke',
-          email: 'johndoe@gmail.com',
+          email: 'test@test.com@gmail.com',
           password: 'password',
           confirmPassword: 'password',
           typeOfUser: 'client',
@@ -206,13 +201,12 @@ describe('Testing User Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(201);
             expect(response.body.status).to.equal(201);
@@ -224,7 +218,7 @@ describe('Testing User Controller', () => {
             expect(response.body.data).to.have.property('email');
             expect(response.body.data).to.have.property('message');
             expect(response.body.data.token).to.be.a('string');
-            expect(response.body.data.email).to.equal('johndoe@gmail.com');
+            expect(response.body.data.email).to.equal('ajulo2oluwawa');
             expect(response.body.data.message).to.equal('Login is successful');
             done();
           });
@@ -272,19 +266,18 @@ describe('Testing User Controller', () => {
           });
       },
     );
- 
+
     it(
       'should not login a user when the "Type of User" field is missing',
       (done) => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -299,9 +292,9 @@ describe('Testing User Controller', () => {
       chai.request(app)
         .post(signinUrl)
         .send({
-          email: 'sky@gmail.com',
-          password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
-          typeOfUser: 'staff',
+          email: 'yusikelebe@gmail.com',
+          password: 'ajulo42oluwawa',
+          typeOfUser: 'admin',
         })
         .end((error, response) => {
           expect(response.body).to.be.an('object');
@@ -325,7 +318,6 @@ describe('Testing User Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(403);
             expect(response.body.status).to.equal(403);
@@ -342,13 +334,12 @@ describe('Testing User Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'johndoe@gmail.com',
+            email: 'test@test.com',
             password: 'wrongpassword',
             typeOfUser: 'client',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -480,8 +471,8 @@ describe('Testing User Controller', () => {
           chai.request(app)
             .post(signinUrl)
             .send({
-              email: 'johndoe@gmail.com',
-              password: 'olujuwondoke',
+              email: 'test@test.com',
+              password: 'ajulo2oluwawa',
               typeOfUser: 'client',
             })
             .end((err, res) => {
@@ -588,8 +579,8 @@ describe('Testing User Controller', () => {
           chai.request(app)
             .post(adminSignInUrl)
             .send({
-              email: 'sky@gmail.com',
-              password: 'kenny4roger',
+              email: 'yusikelebe@gmail.com',
+              password: 'ajulo42oluwawa',
               typeOfUser: 'admin',
             })
             .end((err, res) => {
@@ -613,7 +604,7 @@ describe('Testing User Controller', () => {
             });
         },
       );
-    
+
       it(
         'should not create a new bank account for request that came in with a fake token not issued on Banka',
         (done) => {

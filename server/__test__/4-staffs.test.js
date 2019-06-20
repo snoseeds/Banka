@@ -3,14 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff (cashier) Controller', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
   let staffSignInToken;
   describe('Testing staff signin controller', () => {
     const signinUrl = '/api/v1/auth/staff/signin';
@@ -20,8 +16,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
 
@@ -38,7 +34,7 @@ describe('Testing Staff (cashier) Controller', () => {
             expect(response.body.data).to.have.property('email');
             expect(response.body.data).to.have.property('message');
             expect(response.body.data.token).to.be.a('string');
-            expect(response.body.data.email).to.equal('kutjosh@gmail.com');
+            expect(response.body.data.email).to.equal('alliafunkun@gmail.com');
             expect(response.body.data.message).to.equal('Login is successful');
             done();
           });
@@ -71,7 +67,7 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
+            email: 'alliafunkun@gmail.com',
           })
 
           .end((error, response) => {
@@ -92,8 +88,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
           })
 
           .end((error, response) => {
@@ -112,8 +108,8 @@ describe('Testing Staff (cashier) Controller', () => {
       chai.request(app)
         .post(signinUrl)
         .send({
-          email: 'sky@gmail.com',
-          password: 'kenny4roger',
+          email: 'yusikelebe@gmail.com',
+          password: 'ajulo42oluwawa',
           typeOfUser: 'admin',
         })
         .end((error, response) => {
@@ -138,7 +134,6 @@ describe('Testing Staff (cashier) Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(403);
             expect(response.body.status).to.equal(403);
@@ -155,13 +150,12 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'addChristStatus',
+            email: 'alliafunkun@gmail.com',
+            password: 'wrongPassword',
             typeOfUser: 'cashier',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);

@@ -3,15 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Admin Controller', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
-
   let adminSignInToken;
   describe('Testing admin signin controller', () => {
     const signinUrl = '/api/v1/auth/admin/signin';
@@ -21,8 +16,8 @@ describe('Testing Admin Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'admin',
           })
 
@@ -39,7 +34,7 @@ describe('Testing Admin Controller', () => {
             expect(response.body.data).to.have.property('email');
             expect(response.body.data).to.have.property('message');
             expect(response.body.data.token).to.be.a('string');
-            expect(response.body.data.email).to.equal('sky@gmail.com');
+            expect(response.body.data.email).to.equal('yusikelebe@gmail.com');
             expect(response.body.data.message).to.equal('Login is successful');
             done();
           });
@@ -52,11 +47,10 @@ describe('Testing Admin Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            password: 'kenny4roger',
+            password: 'ajulo42oluwawa',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -73,11 +67,10 @@ describe('Testing Admin Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'sky@gmail.com',
+            email: 'yusikelebe@gmail.com',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -94,12 +87,11 @@ describe('Testing Admin Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -110,13 +102,13 @@ describe('Testing Admin Controller', () => {
       },
     );
 
-    it('should not login a registered / signed-up staff / any other user when type of user is not admin', (done) => {
+    it('should not login a registered rootAdmin / any other user when type of user is not admin', (done) => {
       chai.request(app)
         .post(signinUrl)
         .send({
-          email: 'adechris@gmail.com',
-          password: 'christWasNeverGod',
-          typeOfUser: 'cashier',
+          email: 'snoworlddocs@gmail.com',
+          password: 'igbagbolani',
+          typeOfUser: 'rootAdmin',
         })
         .end((error, response) => {
           expect(response.body).to.be.an('object');
@@ -140,7 +132,6 @@ describe('Testing Admin Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(403);
             expect(response.body.status).to.equal(403);
@@ -157,13 +148,12 @@ describe('Testing Admin Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'addRoger',
+            email: 'yusikelebe@gmail.com',
+            password: 'fajuloIgbagboKun',
             typeOfUser: 'admin',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -196,7 +186,6 @@ describe('Testing Admin Controller', () => {
           })
           .set('authorization', `Bearer ${adminSignInToken}`)
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(201);
             expect(response.body.status).to.equal(201);
@@ -259,7 +248,6 @@ describe('Testing Admin Controller', () => {
           });
       },
     );
-
 
     it(
       'should not register an Admin when the last name is missing',
@@ -501,7 +489,7 @@ describe('Testing Admin Controller', () => {
           .send({
             firstName: 'kehinde',
             lastName: 'soremekun',
-            email: 'sky@gmail.com',
+            email: 'yusikelebe@gmail.com',
             password: 'kenny4roger',
             confirmPassword: 'kenny4roger',
             typeOfUser: 'admin',
@@ -533,7 +521,7 @@ describe('Testing Admin Controller', () => {
             password: 'kenny4roger',
             confirmPassword: 'kenny4roger',
             typeOfUser: 'admin',
-            mobileNo: '+2348103774484',
+            mobileNo: '+2347037876116',
             houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
             idCardType: 3,
             idCardNumber: 'A23562548',
@@ -564,7 +552,7 @@ describe('Testing Admin Controller', () => {
             mobileNo: '+2348103778884',
             houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
             idCardType: 3,
-            idCardNumber: 'A23562548',
+            idCardNumber: 'A25123698',
           })
           .set('authorization', `Bearer ${adminSignInToken}`)
           .end((error, response) => {
@@ -577,7 +565,7 @@ describe('Testing Admin Controller', () => {
       },
     );
   });
- 
+
   describe('Testing create staff account controller for admin that has signed in', () => {
     const createStaffAccountUrl = '/api/v1/auth/admin/create-staff-acct';
     it(
@@ -904,7 +892,7 @@ describe('Testing Admin Controller', () => {
           .send({
             firstName: 'Joshua',
             lastName: 'Kuti',
-            email: 'kutjosh@gmail.com',
+            email: 'alliafunkun@gmail.com',
             password: 'kenny4roger',
             confirmPassword: 'kenny4roger',
             typeOfUser: 'cashier',
@@ -936,7 +924,7 @@ describe('Testing Admin Controller', () => {
             password: 'kenny4roger',
             confirmPassword: 'kenny4roger',
             typeOfUser: 'cashier',
-            mobileNo: '+2348059006860',
+            mobileNo: '+2349033532950',
             houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
             idCardType: 3,
             idCardNumber: 'A23562548',
@@ -967,7 +955,7 @@ describe('Testing Admin Controller', () => {
             mobileNo: '+2348103778884',
             houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
             idCardType: 3,
-            idCardNumber: 'A23244648',
+            idCardNumber: 'A75962413',
           })
           .set('authorization', `Bearer ${adminSignInToken}`)
           .end((error, response) => {

@@ -3,14 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Root Admin Controller', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
   let rootAdminSignUpToken;
   let rootAdminSignInToken;
   describe('Testing root admin signup controller', () => {
@@ -77,24 +73,40 @@ describe('Testing Root Admin Controller', () => {
             chai.request(app)
               .post(signupUrl)
               .send({
-                firstName: 'Yusirat',
-                lastName: 'Soremekun',
-                email: 'yusikelebe@gmail.com',
-                password: 'ajulo42oluwawa',
-                confirmPassword: 'ajulo42oluwawa',
+                firstName: 'Olabisi',
+                lastName: 'Abdus-Samee\'',
+                email: 'snoworlddocs@gmail.com',
+                password: 'igbabolani',
+                confirmPassword: 'igbabolani',
                 typeOfUser: 'rootAdmin',
-                mobileNo: '+2347037876116',
-                houseAddress: '42, Emir\'s road, Ilorin, Kwara State',
+                mobileNo: '+2348125027766',
+                houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
                 idCardType: 3,
-                idCardNumber: 'A25123698',
+                idCardNumber: 'A23568974',
               })
-              .end((error, response) => {
-                expect(response.body).to.be.an('object');
-                expect(response).to.have.status(403);
-                expect(response.body.status).to.equal(403);
-                expect(response.body).to.have.property('error');
-                expect(response.body.error).to.equal('Not Authorized');
-                done();
+              .end((err, res) => {
+                chai.request(app)
+                  .post(signupUrl)
+                  .send({
+                    firstName: 'Yusirat',
+                    lastName: 'Soremekun',
+                    email: 'yusikelebe@gmail.com',
+                    password: 'ajulo42oluwawa',
+                    confirmPassword: 'ajulo42oluwawa',
+                    typeOfUser: 'rootAdmin',
+                    mobileNo: '+2347037876116',
+                    houseAddress: '42, Emir\'s road, Ilorin, Kwara State',
+                    idCardType: 3,
+                    idCardNumber: 'A25123698',
+                  })
+                  .end((error, response) => {
+                    expect(response.body).to.be.an('object');
+                    expect(response).to.have.status(403);
+                    expect(response.body.status).to.equal(403);
+                    expect(response.body).to.have.property('error');
+                    expect(response.body.error).to.equal('Not Authorized');
+                    done();
+                  });
               });
           });
       },
@@ -577,7 +589,6 @@ describe('Testing Root Admin Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(403);
             expect(response.body.status).to.equal(403);
@@ -937,7 +948,7 @@ describe('Testing Root Admin Controller', () => {
             .send({
               firstName: 'kehinde',
               lastName: 'soremekun',
-              email: 'sky@gmail.com',
+              email: 'yusikelebe@gmail.com',
               password: 'kenny4roger',
               confirmPassword: 'kenny4roger',
               typeOfUser: 'admin',
@@ -969,7 +980,7 @@ describe('Testing Root Admin Controller', () => {
               password: 'kenny4roger',
               confirmPassword: 'kenny4roger',
               typeOfUser: 'admin',
-              mobileNo: '+2348103774484',
+              mobileNo: '+2347037876116',
               houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
               idCardType: 3,
               idCardNumber: 'A23562548',
@@ -1000,7 +1011,7 @@ describe('Testing Root Admin Controller', () => {
               mobileNo: '+2348103778884',
               houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
               idCardType: 3,
-              idCardNumber: 'A23562548',
+              idCardNumber: 'A25123698',
             })
             .set('authorization', `Bearer ${rootAdminSignUpToken}`)
             .end((error, response) => {
@@ -1337,7 +1348,7 @@ describe('Testing Root Admin Controller', () => {
             .send({
               firstName: 'kehinde',
               lastName: 'soremekun',
-              email: 'sky@gmail.com',
+              email: 'yusikelebe@gmail.com',
               password: 'kenny4roger',
               confirmPassword: 'kenny4roger',
               typeOfUser: 'admin',
@@ -1369,7 +1380,7 @@ describe('Testing Root Admin Controller', () => {
               password: 'kenny4roger',
               confirmPassword: 'kenny4roger',
               typeOfUser: 'admin',
-              mobileNo: '+2348103774484',
+              mobileNo: '+2347037876116',
               houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
               idCardType: 3,
               idCardNumber: 'A23562548',
@@ -1400,7 +1411,7 @@ describe('Testing Root Admin Controller', () => {
               mobileNo: '+2348103778884',
               houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
               idCardType: 3,
-              idCardNumber: 'A23562548',
+              idCardNumber: 'A25123698',
             })
             .set('authorization', `Bearer ${rootAdminSignInToken}`)
             .end((error, response) => {

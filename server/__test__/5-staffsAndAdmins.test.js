@@ -3,15 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff and Admin Controller for endpoints that only both are privileged to use', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
-
   describe('Testing activate or deactivate bank account controller', () => {
     const toggleBankAcctStatusUrl = '/api/v1/accounts/518791354';
     let adminSignInToken;
@@ -21,8 +16,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(adminSignInUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'admin',
           })
           .end((err, res) => {
@@ -53,8 +48,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(staffSignInUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
           .end((err, res) => {
@@ -85,8 +80,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {
@@ -147,8 +142,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(adminSignInUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'admin',
           })
           .end((err, res) => {
@@ -176,8 +171,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(staffSignInUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
           .end((err, res) => {
@@ -205,8 +200,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {
