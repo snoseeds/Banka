@@ -1,20 +1,5 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+import { pool, logger } from './connectToDb';
 
-dotenv.config();
-
-const pool = new Pool({
-  connectionString: process.env.NODE_ENV === 'TEST'
-    ? process.env.DATABASE_TEST_URL : process.env.DATABASE_URL,
-});
-
-pool.on('connect', () => {
-  console.log('connected to the db');
-});
-
-/**
- * Create Tables
- */
 const createTables = (...args) => {
   const createClientTableQuery = `
   CREATE TABLE IF NOT EXISTS client(
@@ -22,12 +7,11 @@ const createTables = (...args) => {
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    phoneNumber VARCHAR(14) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    type VARCHAR(10) NOT NULL DEFAULT 'client',
+    mobileNo VARCHAR(14) UNIQUE,
     noOfAccounts INTEGER NOT NULL DEFAULT 0,
-    registeredDate TIMESTAMP WITH TIME ZONE NOT NULL,
-    lastVisit TIMESTAMP WITH TIME ZONE NOT NULL
+    registeredDate TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
+    lastVisit TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
   )`;
 
   const createCashierTableQuery = `
@@ -35,16 +19,16 @@ const createTables = (...args) => {
     id BIGSERIAL PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
-    phoneNumber VARCHAR(14) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    type VARCHAR(10) NOT NULL DEFAULT 'cashier',
-    house_address TEXT NOT NULL,
+    mobileNo VARCHAR(14) UNIQUE,
+    houseAddress TEXT NOT NULL,
     idCardType VARCHAR(2) NOT NULL,
     idCardNumber VARCHAR(50) NOT NULL,
     isAdmin BOOLEAN DEFAULT false,
     isRootAdmin BOOLEAN DEFAULT false,
-    registeredDate TIMESTAMP WITH TIME ZONE NOT NULL
+    registeredDate TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
+    lastVisit TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
   )`;
 
   const createAdminTableQuery = `
@@ -52,16 +36,16 @@ const createTables = (...args) => {
     id BIGSERIAL PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
-    phoneNumber VARCHAR(14) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    mobileNo VARCHAR(14) UNIQUE,
     password TEXT NOT NULL,
-    type VARCHAR(10) NOT NULL DEFAULT 'admin',
-    house_address TEXT NOT NULL,
+    houseAddress TEXT NOT NULL,
     idCardType VARCHAR(2) NOT NULL,
     idCardNumber VARCHAR(50) NOT NULL,
     isAdmin BOOLEAN DEFAULT true,
     isRootAdmin BOOLEAN DEFAULT false,
-    registeredDate TIMESTAMP WITH TIME ZONE NOT NULL
+    registeredDate TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
+    lastVisit TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
   )`;
 
   const createRootAdminTableQuery = `
@@ -69,16 +53,16 @@ const createTables = (...args) => {
     id BIGSERIAL PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
-    phoneNumber VARCHAR(14) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    mobileNo VARCHAR(14) UNIQUE,
     password TEXT NOT NULL,
-    type VARCHAR(10) NOT NULL DEFAULT 'rootAdmin',
-    house_address TEXT NOT NULL,
+    houseAddress TEXT NOT NULL,
     idCardType VARCHAR(2) NOT NULL,
     idCardNumber VARCHAR(50) NOT NULL,
     isAdmin BOOLEAN DEFAULT true,
     isRootAdmin BOOLEAN DEFAULT true,
-    registeredDate TIMESTAMP WITH TIME ZONE NOT NULL
+    registeredDate TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
+    lastVisit TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
   )`;
 
   const createAccountTableQuery = `
@@ -89,7 +73,7 @@ const createTables = (...args) => {
     acctMobileNo VARCHAR(14) NOT NULL,
     accountNumber VARCHAR(10) PRIMARY KEY NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    createdon TIMESTAMP WITH TIME ZONE NOT NULL,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
     type VARCHAR(15) NOT NULL,
     ownerID INTEGER NOT NULL REFERENCES client (id),
     status VARCHAR(10) DEFAULT 'active',
@@ -99,7 +83,7 @@ const createTables = (...args) => {
   const createTransactionTableQuery = `
   CREATE TABLE IF NOT EXISTS transaction(
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    createdon TIMESTAMP WITH TIME ZONE NOT NULL,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
     accountnumber VARCHAR(10) NOT NULL REFERENCES account (accountNumber),
     amount DECIMAL(15,2) NOT NULL,
     cashier VARCHAR(255) NOT NULL,
@@ -127,15 +111,11 @@ const createTables = (...args) => {
       pool.end();
     })
     .catch((err) => {
-      console.log('abcdef');
-      console.log(err);
+      logger(err);
       pool.end();
     });
 };
 
-/**
- * Drop Tables
- */
 const dropTables = (...args) => {
   const dropClientTableQuery = 'DROP TABLE IF EXISTS client';
   const dropCashierTableQuery = 'DROP TABLE IF EXISTS cashier';
@@ -163,7 +143,7 @@ const dropTables = (...args) => {
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
+      logger(err);
       pool.end();
     });
 };

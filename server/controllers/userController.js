@@ -15,27 +15,27 @@ const user = {
 
   signin: initSignInAnyUserType('client'),
 
-  createBankAccount: [
-    function getAndPersistReqProps(req, res) {
-      const {
-        accountType,
-        idCardType,
-        idCardNumber,
-        acctMobileNo,
-      } = req.body;
-      const reqdFieldsDescription = {
-        'Type of account (current or savings)': accountType,
-        'Type of identification card': idCardType,
-        'Identification card number': idCardNumber,
-      };
-      const createBankAcctMiddlewares = [
-        initAuthenticateUserType('client'),
-        initCheckUserInDb(),
-        initValidateFields(reqdFieldsDescription),
-        initCreateBankAcct(accountType, idCardType, idCardNumber, acctMobileNo),
-      ];
-      runMiddlewares(createBankAcctMiddlewares, req, res);
-    }],
+  // createBankAccount: [
+  //   function getAndPersistReqProps(req, res) {
+  //     const {
+  //       accountType,
+  //       idCardType,
+  //       idCardNumber,
+  //       acctMobileNo,
+  //     } = req.body;
+  //     const reqdFieldsDescription = {
+  //       'Type of account (current or savings)': accountType,
+  //       'Type of identification card': idCardType,
+  //       'Identification card number': idCardNumber,
+  //     };
+  //     const createBankAcctMiddlewares = [
+  //       initAuthenticateUserType('client'),
+  //       initCheckUserInDb(),
+  //       initValidateFields(reqdFieldsDescription),
+  //       initCreateBankAcct(accountType, idCardType, idCardNumber, acctMobileNo),
+  //     ];
+  //     runMiddlewares(createBankAcctMiddlewares, req, res);
+  //   }],
 };
 
 export default user;

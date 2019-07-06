@@ -76,8 +76,8 @@ describe('Testing Root Admin Controller', () => {
                 firstName: 'Olabisi',
                 lastName: 'Abdus-Samee\'',
                 email: 'snoworlddocs@gmail.com',
-                password: 'igbabolani',
-                confirmPassword: 'igbabolani',
+                password: 'igbagbolani',
+                confirmPassword: 'igbagbolani',
                 typeOfUser: 'rootAdmin',
                 mobileNo: '+2348125027766',
                 houseAddress: '2, Adisa Olorunisola, Oke-Odo, Abiola Way, Abk, Ogun State',
@@ -392,10 +392,10 @@ describe('Testing Root Admin Controller', () => {
             password: 'ajulo42oluwawa',
             confirmPassword: 'ajulo42oluwawa',
             typeOfUser: 'rootAdmin',
-            mobileNo: '+2348056476410',
+            mobileNo: '+2348058956317',
             houseAddress: '42, Emir\'s road, Ilorin, Kwara State',
             idCardType: 3,
-            idCardNumber: 'A25845236',
+            idCardNumber: 'A89657412',
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');

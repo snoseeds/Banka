@@ -3,15 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Banka APIs Landing Pages', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
-
   describe('Testing Banka APIs Main Homepage', () => {
     const homePageUrl = '/';
     it(
