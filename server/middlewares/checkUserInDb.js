@@ -13,7 +13,7 @@ const initCheckUserInDb = (email = null) => {
           break;
       }
       if (user) {
-        console.log(user);
+        // console.log(user);
         req.user = user;
         return next;
       }

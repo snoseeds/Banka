@@ -7,14 +7,13 @@ const createAcctInDb = async (typeOfUser, firstName, lastName, email, password,
   mobileNo, houseAddress, idCardType, idCardNumber) => {
   try {
     const basicDetails = {
-      firstName, lastName, email,
+      firstName, lastName, email, mobileNo,
     };
     if (typeOfUser === 'client') {
       const columnsToBeInsertedArr = [...Object.keys(basicDetails), 'password'];
       const valuesToBeInsertedArr = [...Object.values(basicDetails),
         bcrypt.hashSync(password, salt)];
       const columnsToBeReturnedArr = ['id', ...Object.keys(basicDetails)];
-      // const columnsToBeReturnedDataTypes = ['VARCHAR', 'VARCHAR', 'VARCHAR', 'VARCHAR'];
       const newlyInsertedUserObj = await queries.insert('client', columnsToBeInsertedArr,
         valuesToBeInsertedArr, columnsToBeReturnedArr);
       // console.log(newlyInsertedUserObj);
@@ -22,7 +21,7 @@ const createAcctInDb = async (typeOfUser, firstName, lastName, email, password,
     }
 
     const extendedDetails = {
-      mobileNo, houseAddress, idCardType, idCardNumber,
+      houseAddress, idCardType, idCardNumber,
     };
     const columnsToBeInsertedArr = [...Object.keys(basicDetails), 'password',
       ...Object.keys(extendedDetails)];

@@ -9,32 +9,28 @@ import staff from '../controllers/staffController';
 
 const router = Router();
 
-// router.get('/', (req, res) => {
-//   res.send('hello tdd');
-// });
-
 const routes = () => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
   // Signup routes
   router.post('/api/v1/auth/signup', user.signup);
-  // // Signin routes
+  // Signin routes
   router.post('/api/v1/auth/signin', user.signin);
-  // // Client create bank account route
-  // router.post('/api/v1/accounts', user.createBankAccount[0]);
+  // Client create bank account route
+  router.post('/api/v1/accounts', user.createBankAccount[0]);
   // Root Admin Signup route
   router.post('/api/v1/auth/root-admin/signup', rootAdmin.signup);
   // Root Admin Signin route
   router.post('/api/v1/auth/root-admin/signin', rootAdmin.signin);
-  // // Root Admin can create Admin account
+  // Root Admin can create Admin account
   router.post('/api/v1/auth/root-admin/create-admin-acct', rootAdmin.createAdminAcct);
-  // // Admin can create Admin account
+  // Admin can create Admin account
   router.post('/api/v1/auth/admin/create-admin-acct', admin.createAdminAcct);
-  // // Admin Signin route
+  // Admin Signin route
   router.post('/api/v1/auth/admin/signin', admin.signin);
-  // // Admin can create Staff account
+  // Admin can create Staff account
   router.post('/api/v1/auth/admin/create-staff-acct', admin.createStaffAcct);
-  // // Staff Signin route
+  // Staff Signin route
   router.post('/api/v1/auth/staff/signin', staff.signin);
   // // Admin or Staff can activate or deactivate a bank account
   // router.patch('/api/v1/accounts/:accountNumber',

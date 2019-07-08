@@ -1,6 +1,5 @@
-import moment from 'moment';
 import generateAcctNo from '../helpers/generateAcctNo';
-import Account from '../models/Account';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 
 
 /**
@@ -15,28 +14,35 @@ import Account from '../models/Account';
  */
 
 const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo) => {
-  const createNewBankAcct = (req, res) => {
-    const { user } = req;
-    // eslint-disable-next-line object-curly-newline
-    const { firstName, lastName, email, id, userMobileNo, accounts } = user;
-    const accountNumber = generateAcctNo(email, firstName);
-    const account = new Account(accounts.length + 1, accountNumber, moment.now(), id, accountType,
-      idCardType, idCardNumber, !acctMobileNo ? userMobileNo : acctMobileNo);
-    user.accounts.push(account);
-    user.noOfAccounts += 1;
-    return res.status(201).json({
-      status: 201,
-      data: {
-        accountNumber,
-        firstName,
-        lastName,
-        email,
-        type: accountType,
-        openingBalance: 0.00,
-        idCardType,
-        message: `Congrats!, you now have a new ${accountType} account at Banka!`,
-      },
-    });
+  const createNewBankAcct = async (req, res) => {
+    try {
+      const { user } = req;
+      const {
+        firstname: firstName, lastname: lastName, email, id, mobileno: userMobileNo,
+      } = user;
+      const accountNumber = generateAcctNo(email, firstName);
+      const columnsToBeInsertedArr = ['ownerID', 'email', 'accountNumber', 'type', 'idCardType',
+        'idCardNumber', 'acctMobileNo'];
+      const valuesToBeInsertedArr = [id, email, accountNumber, accountType, idCardType,
+        idCardNumber, !acctMobileNo ? userMobileNo : acctMobileNo];
+      await queries.insert('account', columnsToBeInsertedArr, valuesToBeInsertedArr);
+      await queries.incrementByOne('client', ['noOfAccounts'], 'email', email);
+      return res.status(201).json({
+        status: 201,
+        data: {
+          accountNumber,
+          firstName,
+          lastName,
+          email,
+          type: accountType,
+          openingBalance: 0.00,
+          idCardType,
+          message: `Congrats!, you now have a new ${accountType} account at Banka!`,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   };
   return createNewBankAcct;
 };

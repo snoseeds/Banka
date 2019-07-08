@@ -3,12 +3,12 @@ import { pool, logger } from './connectToDb';
 const createTables = (...args) => {
   const createClientTableQuery = `
   CREATE TABLE IF NOT EXISTS client(
-    id BIGSERIAL PRIMARY KEY not null,
+    id BIGSERIAL PRIMARY KEY NOT NULL,
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    mobileNo VARCHAR(14) UNIQUE,
+    mobileNo VARCHAR(14) UNIQUE NOT NULL,
     noOfAccounts INTEGER NOT NULL DEFAULT 0,
     registeredDate TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
     lastVisit TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
@@ -68,14 +68,14 @@ const createTables = (...args) => {
   const createAccountTableQuery = `
   CREATE TABLE IF NOT EXISTS account(
     accountID BIGSERIAL NOT NULL,
+    ownerID INTEGER NOT NULL REFERENCES client (id),
+    email VARCHAR(255) NOT NULL REFERENCES client (email),
+    accountNumber VARCHAR(10) PRIMARY KEY NOT NULL,
+    type VARCHAR(15) NOT NULL,
     idCardType VARCHAR(2) NOT NULL,
     idCardNumber VARCHAR(50) NOT NULL,
     acctMobileNo VARCHAR(14) NOT NULL,
-    accountNumber VARCHAR(10) PRIMARY KEY NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
     createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
-    type VARCHAR(15) NOT NULL,
-    ownerID INTEGER NOT NULL REFERENCES client (id),
     status VARCHAR(10) DEFAULT 'active',
     accountBalance DECIMAL(15,2) NOT NULL DEFAULT 0.00
   )`;
