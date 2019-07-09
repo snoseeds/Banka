@@ -35,9 +35,9 @@ const routes = () => {
   // Admin or Staff can activate or deactivate a bank account
   router.patch('/api/v1/accounts/:accountNumber',
     processReqOfBankAcct, staffAndAdmin.changeBankAcctStatus);
-  // // Admin or Staff can delete a bank account
-  // router.delete('/api/v1/accounts/:accountNumber',
-  //   processReqOfBankAcct, staffAndAdmin.deleteBankAcct);
+  // Admin or Staff can delete a bank account
+  router.delete('/api/v1/accounts/:accountNumber',
+    processReqOfBankAcct, staffAndAdmin.deleteBankAcct);
   // // Staff can credit a bank account
   // router.post('/api/v1/transactions/:accountNumber/credit',
   //   processReqOfBankAcct, staff.creditBankAcct);

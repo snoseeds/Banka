@@ -33,9 +33,9 @@ const queries = {
     return rows;
   },
 
-  async incrementColsValsByOne(table, columnsArray, matchingColumn = '1', matchingColumnValue = '1') {
+  async incrementOrDecrementColsValsByOne(table, plusOrMinus, columnsArray, matchingColumn = '1', matchingColumnValue = '1') {
     const sysVarForColValue = makeSysVars(1);
-    const query = `UPDATE ${table} SET ${columnsArray.map(col => `${col} = ${col} + 1`).join(', ')} `
+    const query = `UPDATE ${table} SET ${columnsArray.map(col => `${col} = ${col} ${plusOrMinus} 1`).join(', ')} `
       + `WHERE ${matchingColumn} = ${sysVarForColValue}`;
     const argumentsArr = [matchingColumnValue];
     await pool.query(query, argumentsArr);
@@ -49,6 +49,19 @@ const queries = {
     const argumentsArr = [...updatedValsArray, matchingColumnValue];
     await pool.query(query, argumentsArr);
   },
+
+  async deleteRowAndReturnCols(table, matchingColumn, matchingColumnValue, columnsToBeReturnedArr) {
+    const sysVarForColValue = makeSysVars(1);
+    const query = `DELETE FROM ${table} WHERE ${matchingColumn} = ${sysVarForColValue} returning *`;
+    const { rows } = await pool.query(query, [matchingColumnValue]);
+    const returnColsObject = (colsArr, newUserObj) => colsArr
+      .reduce((obj, col) => ({ ...obj, [col]: newUserObj[col.toLowerCase()] }), {});
+    const fieldsToBeReturnedObj = columnsToBeReturnedArr
+      ? returnColsObject(columnsToBeReturnedArr, rows[0])
+      : rows[0];
+    return fieldsToBeReturnedObj;
+  },
+
 };
 
 export default queries;

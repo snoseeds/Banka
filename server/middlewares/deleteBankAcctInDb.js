@@ -1,20 +1,23 @@
-import Database from '../models/Database';
-import updateArrObjsIds from '../helpers/updateArrObjsIds';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 import archiveDeletedBankAcct from '../helpers/archiveDeletedBankAcct';
 
 
-const deleteBankAcctInDb = (req, res) => {
-  const {
-    ownerID,
-    accountID,
-  } = req.bankAccountDetails;
-  const [deletedBankAcct] = Database.client[ownerID - 1].accounts.splice(accountID - 1, 1);
-  Database.client[ownerID - 1].accounts = updateArrObjsIds(Database.client[ownerID - 1].accounts, 'accountID');
-  archiveDeletedBankAcct(deletedBankAcct, ownerID);
-  return res.status(201).json({
-    status: 201,
-    message: 'Account successfully deleted',
-  });
+const deleteBankAcctInDb = async (req, res) => {
+  try {
+    const {
+      ownerid: ownerID,
+      accountnumber: accountNumber,
+    } = req.bankAccountDetails;
+    const deletedBankAcctObj = await queries.deleteRowAndReturnCols('account', 'accountNumber', accountNumber);
+    await archiveDeletedBankAcct(deletedBankAcctObj);
+    await queries.incrementOrDecrementColsValsByOne('client', '-', ['noOfAccounts'], 'id', ownerID);
+    return res.status(201).json({
+      status: 201,
+      message: 'Account successfully deleted',
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export default deleteBankAcctInDb;

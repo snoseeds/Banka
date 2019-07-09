@@ -1,13 +1,13 @@
-import Database from '../models/Database';
-import updateArrObjsIds from './updateArrObjsIds';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 
-const archiveDeletedBankAcct = (deletedBankAcct, ownerID) => {
-  if (Object.prototype.hasOwnProperty.call(Database.deletedBankAccts, `${ownerID}`)) {
-    Database.deletedBankAccts[ownerID].push(deletedBankAcct);
-  } else {
-    Database.deletedBankAccts[ownerID] = [deletedBankAcct];
+const archiveDeletedBankAcct = async (deletedBankAcctObj) => {
+  try {
+    const columnsToBeInsertedArr = Object.keys(deletedBankAcctObj);
+    const valuesToBeInsertedArr = Object.values(deletedBankAcctObj);
+    await queries.insert('deletedBankAccount', columnsToBeInsertedArr, valuesToBeInsertedArr);
+  } catch (error) {
+    throw error;
   }
-  Database.deletedBankAccts[ownerID] = updateArrObjsIds(Database.deletedBankAccts[ownerID], 'accountID');
 };
 
 export default archiveDeletedBankAcct;

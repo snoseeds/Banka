@@ -80,6 +80,21 @@ const createTables = (...args) => {
     accountBalance DECIMAL(15,2) NOT NULL DEFAULT 0.00
   )`;
 
+  const createDeletedBankAccountTableQuery = `
+  CREATE TABLE IF NOT EXISTS deletedBankAccount(
+    accountID BIGSERIAL NOT NULL,
+    ownerID INTEGER NOT NULL REFERENCES client (id),
+    email VARCHAR(255) NOT NULL REFERENCES client (email),
+    accountNumber VARCHAR(10) PRIMARY KEY NOT NULL,
+    type VARCHAR(15) NOT NULL,
+    idCardType VARCHAR(2) NOT NULL,
+    idCardNumber VARCHAR(50) NOT NULL,
+    acctMobileNo VARCHAR(14) NOT NULL,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
+    status VARCHAR(10) DEFAULT 'active',
+    accountBalance DECIMAL(15,2) NOT NULL DEFAULT 0.00
+  )`;
+
   const createTransactionTableQuery = `
   CREATE TABLE IF NOT EXISTS transaction(
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -98,6 +113,7 @@ const createTables = (...args) => {
     admin: createAdminTableQuery,
     rootAdmin: createRootAdminTableQuery,
     account: createAccountTableQuery,
+    deletedBankAccount: createDeletedBankAccountTableQuery,
     transaction: createTransactionTableQuery,
   };
   const queryTextsArr = args.length > 0
@@ -122,12 +138,14 @@ const dropTables = (...args) => {
   const dropAdminTableQuery = 'DROP TABLE IF EXISTS admin';
   const dropRootAdminTableQuery = 'DROP TABLE IF EXISTS rootAdmin';
   const dropAccountTableQuery = 'DROP TABLE IF EXISTS account';
+  const dropDeletedBankAccountTableQuery = 'DROP TABLE IF EXISTS deletedBankAccount';
   const dropTransactionTableQuery = 'DROP TABLE IF EXISTS transaction';
 
   // Hierarchy of deletion done to ensure that referential integrity isn't violated
   const objOfTablesInArgs = {
     transaction: dropTransactionTableQuery,
     account: dropAccountTableQuery,
+    deletedBankAccount: dropDeletedBankAccountTableQuery,
     client: dropClientTableQuery,
     cashier: dropCashierTableQuery,
     admin: dropAdminTableQuery,
