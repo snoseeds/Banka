@@ -26,7 +26,7 @@ const initCreateBankAcct = (accountType, idCardType, idCardNumber, acctMobileNo)
       const valuesToBeInsertedArr = [id, email, accountNumber, accountType, idCardType,
         idCardNumber, !acctMobileNo ? userMobileNo : acctMobileNo];
       await queries.insert('account', columnsToBeInsertedArr, valuesToBeInsertedArr);
-      await queries.incrementByOne('client', ['noOfAccounts'], 'email', email);
+      await queries.incrementColsValsByOne('client', ['noOfAccounts'], 'email', email);
       return res.status(201).json({
         status: 201,
         data: {

@@ -4,8 +4,8 @@ import user from '../controllers/userController';
 import rootAdmin from '../controllers/rootAdminController';
 import admin from '../controllers/adminController';
 import staff from '../controllers/staffController';
-// import staffAndAdmin from '../controllers/staffAndAdminController';
-// import processReqOfBankAcct from '../middlewares/processReqOfBankAcct';
+import staffAndAdmin from '../controllers/staffAndAdminController';
+import processReqOfBankAcct from '../middlewares/processReqOfBankAcct';
 
 const router = Router();
 
@@ -32,9 +32,9 @@ const routes = () => {
   router.post('/api/v1/auth/admin/create-staff-acct', admin.createStaffAcct);
   // Staff Signin route
   router.post('/api/v1/auth/staff/signin', staff.signin);
-  // // Admin or Staff can activate or deactivate a bank account
-  // router.patch('/api/v1/accounts/:accountNumber',
-  //   processReqOfBankAcct, staffAndAdmin.changeBankAcctStatus);
+  // Admin or Staff can activate or deactivate a bank account
+  router.patch('/api/v1/accounts/:accountNumber',
+    processReqOfBankAcct, staffAndAdmin.changeBankAcctStatus);
   // // Admin or Staff can delete a bank account
   // router.delete('/api/v1/accounts/:accountNumber',
   //   processReqOfBankAcct, staffAndAdmin.deleteBankAcct);

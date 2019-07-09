@@ -33,12 +33,21 @@ const queries = {
     return rows;
   },
 
-  async incrementByOne(table, columnsArray, matchingColumn = '1', matchingColumnValue = '1') {
+  async incrementColsValsByOne(table, columnsArray, matchingColumn = '1', matchingColumnValue = '1') {
     const sysVarForColValue = makeSysVars(1);
     const query = `UPDATE ${table} SET ${columnsArray.map(col => `${col} = ${col} + 1`).join(', ')} `
       + `WHERE ${matchingColumn} = ${sysVarForColValue}`;
     const argumentsArr = [matchingColumnValue];
-    const updateResult = await pool.query(query, argumentsArr);
+    await pool.query(query, argumentsArr);
+  },
+
+  async updateColsVals(table, columnsArray, updatedValsArray,
+    matchingColumn = '1', matchingColumnValue = '1') {
+    const sysVarForColValue = makeSysVars(1, columnsArray.length);
+    const query = `UPDATE ${table} SET ${columnsArray.map((col, idx) => `${col} = ${makeSysVars(1, idx)}`).join(', ')} `
+      + `WHERE ${matchingColumn} = ${sysVarForColValue}`;
+    const argumentsArr = [...updatedValsArray, matchingColumnValue];
+    await pool.query(query, argumentsArr);
   },
 };
 
