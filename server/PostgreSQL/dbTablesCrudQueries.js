@@ -2,22 +2,25 @@ import { pool, logger } from './connectToDb';
 import makeSysVars from '../helpers/makeSysVars';
 
 const queries = {
-  async insert(table, columnsToBeInsertedArr, valuesToBeInsertedArr, columnsToBeReturnedArr) {
+  async insert(table, columnsToBeInsertedArr, valuesToBeInsertedArr, columnsToBeReturnedArr = ['*']) {
     const systemVarsForInsertionValues = makeSysVars(valuesToBeInsertedArr.length);
     const query = `INSERT INTO ${table}(${columnsToBeInsertedArr.join(', ')}) `
-      + `VALUES(${systemVarsForInsertionValues}) returning *`;
+      + `VALUES(${systemVarsForInsertionValues}) returning ${columnsToBeReturnedArr.join(', ')}`;
     const { rows } = await pool.query(query, valuesToBeInsertedArr);
-    const returnColsObject = (colsArr, newUserObj) => colsArr
-      .reduce((obj, col) => ({ ...obj, [col]: newUserObj[col.toLowerCase()] }), {});
-    const fieldsToBeReturnedObj = columnsToBeReturnedArr
-      ? returnColsObject(columnsToBeReturnedArr, rows[0])
-      : rows[0];
-    return fieldsToBeReturnedObj;
+    const objWithCamelCaseKeys = columnsToBeReturnedArr[0] === '*'
+      ? Object.values(rows[0])
+        .reduce((obj, colVal, idx) => ({ ...obj, [columnsToBeInsertedArr[idx]]: colVal }), {})
+      : Object.values(rows[0])
+        .reduce((obj, colVal, idx) => ({ ...obj, [columnsToBeReturnedArr[idx]]: colVal }), {});
+    return objWithCamelCaseKeys;
   },
 
-  async getRowsCount(table) {
-    const query = `SELECT COUNT(*) FROM ${table}`;
-    const { rows } = await pool.query(query);
+  async getRowsCount(table, matchingColumn = '1', matchingColumnValue = '1') {
+    const sysVarForMatchingColumnValue = makeSysVars(1);
+    const query = `SELECT COUNT(*) FROM ${table} `
+      + `WHERE ${matchingColumn} = ${sysVarForMatchingColumnValue}`;
+    const argumentsArr = [matchingColumnValue];
+    const { rows } = await pool.query(query, argumentsArr);
     const [{ count }] = rows;
     return Number(count);
   },
@@ -50,16 +53,20 @@ const queries = {
     await pool.query(query, argumentsArr);
   },
 
-  async deleteRowAndReturnCols(table, matchingColumn, matchingColumnValue, columnsToBeReturnedArr) {
+  async deleteRowsAndReturnCols(table, matchingColumn, matchingColumnValue, columnsToBeReturnedArr = ['*']) {
     const sysVarForColValue = makeSysVars(1);
-    const query = `DELETE FROM ${table} WHERE ${matchingColumn} = ${sysVarForColValue} returning *`;
+    const query = `DELETE FROM ${table} WHERE ${matchingColumn} = ${sysVarForColValue} `
+      + `returning ${columnsToBeReturnedArr.join(', ')}`;
     const { rows } = await pool.query(query, [matchingColumnValue]);
-    const returnColsObject = (colsArr, newUserObj) => colsArr
-      .reduce((obj, col) => ({ ...obj, [col]: newUserObj[col.toLowerCase()] }), {});
-    const fieldsToBeReturnedObj = columnsToBeReturnedArr
-      ? returnColsObject(columnsToBeReturnedArr, rows[0])
-      : rows[0];
-    return fieldsToBeReturnedObj;
+    // Returns lower case column values when columnsToBeReturnedArr isn't supplied,
+    // but returns the camel case of the specified columns when columnsToBeReturnedArr is given,
+    // no inconsistency once we're just passing the returned obj in the former (default) case
+    // to be inserted into another table (an operation that normalizes query string to lowercase)
+    const objsWithCamelCaseKeysArr = columnsToBeReturnedArr[0] === '*'
+      ? rows
+      : rows.map(rowObj => Object.values(rowObj)
+        .reduce((obj, colVal, idx) => ({ ...obj, [columnsToBeReturnedArr[idx]]: colVal }), {}));
+    return objsWithCamelCaseKeysArr;
   },
 
 };

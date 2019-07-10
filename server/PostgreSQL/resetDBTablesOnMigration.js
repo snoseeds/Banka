@@ -98,13 +98,25 @@ const createTables = (...args) => {
   const createTransactionTableQuery = `
   CREATE TABLE IF NOT EXISTS transaction(
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp,
     accountnumber VARCHAR(10) NOT NULL REFERENCES account (accountNumber),
     amount DECIMAL(15,2) NOT NULL,
-    cashier VARCHAR(255) NOT NULL,
-    type VARCHAR(6) NOT NULL,
+    cashier INTEGER NOT NULL REFERENCES cashier (id),
+    transactionType VARCHAR(6) NOT NULL,
     oldbalance DECIMAL(15,2) NOT NULL,
-    newbalance DECIMAL(15,2) NOT NULL
+    newbalance DECIMAL(15,2) NOT NULL,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW()::timestamp
+  )`;
+
+  const createDeletedTransactionTableQuery = `
+  CREATE TABLE IF NOT EXISTS deletedTransaction(
+    id BIGINT PRIMARY KEY NOT NULL,
+    accountnumber VARCHAR(10) NOT NULL REFERENCES deletedBankAccount (accountNumber),
+    amount DECIMAL(15,2) NOT NULL,
+    cashier INTEGER NOT NULL REFERENCES cashier (id),
+    transactionType VARCHAR(6) NOT NULL,
+    oldbalance DECIMAL(15,2) NOT NULL,
+    newbalance DECIMAL(15,2) NOT NULL,
+    createdon TIMESTAMP WITH TIME ZONE NOT NULL
   )`;
 
   const objOfTablesInArgs = {
@@ -115,6 +127,7 @@ const createTables = (...args) => {
     account: createAccountTableQuery,
     deletedBankAccount: createDeletedBankAccountTableQuery,
     transaction: createTransactionTableQuery,
+    deletedTransaction: createDeletedTransactionTableQuery,
   };
   const queryTextsArr = args.length > 0
     ? args.map(tableOwner => objOfTablesInArgs[tableOwner])
@@ -140,9 +153,11 @@ const dropTables = (...args) => {
   const dropAccountTableQuery = 'DROP TABLE IF EXISTS account';
   const dropDeletedBankAccountTableQuery = 'DROP TABLE IF EXISTS deletedBankAccount';
   const dropTransactionTableQuery = 'DROP TABLE IF EXISTS transaction';
+  const dropDeletedTransactionTableQuery = 'DROP TABLE IF EXISTS deletedTransaction';
 
   // Hierarchy of deletion done to ensure that referential integrity isn't violated
   const objOfTablesInArgs = {
+    deletedTransaction: dropDeletedTransactionTableQuery,
     transaction: dropTransactionTableQuery,
     account: dropAccountTableQuery,
     deletedBankAccount: dropDeletedBankAccountTableQuery,

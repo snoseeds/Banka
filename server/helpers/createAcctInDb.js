@@ -16,7 +16,6 @@ const createAcctInDb = async (typeOfUser, firstName, lastName, email, password,
       const columnsToBeReturnedArr = ['id', ...Object.keys(basicDetails)];
       const newlyInsertedUserObj = await queries.insert('client', columnsToBeInsertedArr,
         valuesToBeInsertedArr, columnsToBeReturnedArr);
-      // console.log(newlyInsertedUserObj);
       return newlyInsertedUserObj;
     }
 
@@ -28,10 +27,8 @@ const createAcctInDb = async (typeOfUser, firstName, lastName, email, password,
     const valuesToBeInsertedArr = [...Object.values(basicDetails), bcrypt.hashSync(password, salt),
       ...Object.values(extendedDetails)];
     const columnsToBeReturnedArr = ['id', ...Object.keys(basicDetails), ...Object.keys(extendedDetails)];
-    // const columnsToBeReturnedDataTypes = ['VARCHAR', 'VARCHAR', 'VARCHAR', 'VARCHAR', 'VARCHAR', 'TEXT', 'VARCHAR', 'VARCHAR'];
     const newlyInsertedUserObj = await queries.insert(typeOfUser,
       columnsToBeInsertedArr, valuesToBeInsertedArr, columnsToBeReturnedArr);
-    // console.log(newlyInsertedUserObj);
     return newlyInsertedUserObj;
   } catch (error) {
     throw error;

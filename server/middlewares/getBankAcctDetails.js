@@ -5,7 +5,6 @@ const initGetBankAcctDetails = (accountNumber) => {
     try {
       const [accountDetails] = await queries.getRowsOfColumns('account', ['*'], 'accountNumber', accountNumber);
       if (accountDetails) {
-        // console.log(accountDetails);
         req.bankAccountDetails = accountDetails;
         return next;
       }

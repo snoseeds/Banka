@@ -1,5 +1,5 @@
 import queries from '../PostgreSQL/dbTablesCrudQueries';
-import archiveDeletedBankAcct from '../helpers/archiveDeletedBankAcct';
+import archiveDeletedRows from '../helpers/archiveDeletedRows';
 
 
 const deleteBankAcctInDb = async (req, res) => {
@@ -8,8 +8,12 @@ const deleteBankAcctInDb = async (req, res) => {
       ownerid: ownerID,
       accountnumber: accountNumber,
     } = req.bankAccountDetails;
-    const deletedBankAcctObj = await queries.deleteRowAndReturnCols('account', 'accountNumber', accountNumber);
-    await archiveDeletedBankAcct(deletedBankAcctObj);
+    // Hierarcy of deletion done not to violate referential integrity
+    const deletedAcctTrxnsObjsArr = await queries.deleteRowsAndReturnCols('transaction', 'accountNumber', accountNumber);
+    const deletedBankAcctObjArr = await queries.deleteRowsAndReturnCols('account', 'accountNumber', accountNumber);
+    // Hierarchy of archiving done to conform to referential integrity
+    await archiveDeletedRows('deletedBankAccount', deletedBankAcctObjArr);
+    await archiveDeletedRows('deletedTransaction', deletedAcctTrxnsObjsArr);
     await queries.incrementOrDecrementColsValsByOne('client', '-', ['noOfAccounts'], 'id', ownerID);
     return res.status(201).json({
       status: 201,

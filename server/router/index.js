@@ -38,12 +38,12 @@ const routes = () => {
   // Admin or Staff can delete a bank account
   router.delete('/api/v1/accounts/:accountNumber',
     processReqOfBankAcct, staffAndAdmin.deleteBankAcct);
-  // // Staff can credit a bank account
-  // router.post('/api/v1/transactions/:accountNumber/credit',
-  //   processReqOfBankAcct, staff.creditBankAcct);
-  // // Staff can debit a bank account
-  // router.post('/api/v1/transactions/:accountNumber/debit',
-  //   processReqOfBankAcct, staff.debitBankAcct);
+  // Staff can credit a bank account
+  router.post('/api/v1/transactions/:accountNumber/credit',
+    processReqOfBankAcct, staff.creditBankAcct);
+  // Staff can debit a bank account
+  router.post('/api/v1/transactions/:accountNumber/debit',
+    processReqOfBankAcct, staff.debitBankAcct);
 };
 
 routes();
