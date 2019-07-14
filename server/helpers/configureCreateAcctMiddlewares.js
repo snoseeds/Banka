@@ -21,7 +21,6 @@ const configureCreateAcctMiddlewares = (typeOfCreator, typeOfAccountToBeCreated,
     ? [[email, mobileNo], { Email: 'email', 'Mobile number': 'mobileNo' }]
     : [[email, mobileNo, idCardNumber],
       { Email: 'email', 'Mobile number': 'mobileNo', 'ID Card Number': 'idCardNumber' }];
-
   const createAcctMiddlewaresArr = [
     ...checkRootAdminOrAdminDetailsMiddlewares,
     initValidateFields(reqdFieldsDescription),

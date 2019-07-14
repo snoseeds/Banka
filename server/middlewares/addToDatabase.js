@@ -1,4 +1,4 @@
-import queries from '../PostgreSQL/dbTablesCrudQueries';
+import checkMaxNoOfRootAdmins from '../helpers/checkMaxNoOfRootAdmins';
 import generateToken from '../helpers/generateToken';
 import createAcctInDb from '../helpers/createAcctInDb';
 
@@ -6,17 +6,7 @@ const initAddToDatabase = (...args) => {
   const [typeOfUser, , lastName, email] = args;
   const addToDatabase = async (req, res) => {
     try {
-      // checkMaximumNumberOfRootAdmins
-      if (typeOfUser === 'rootAdmin') {
-        const noOfRootAdmins = await queries.getRowsCount('rootAdmin');
-        if (noOfRootAdmins + 1 === 4) {
-          const errorObject = {
-            name: 403,
-            message: 'Not Authorized',
-          };
-          throw errorObject;
-        }
-      }
+      await checkMaxNoOfRootAdmins(typeOfUser);
       const user = await createAcctInDb(...args);
       let dataToken = {};
       if (typeOfUser === 'client' || typeOfUser === 'rootAdmin') {

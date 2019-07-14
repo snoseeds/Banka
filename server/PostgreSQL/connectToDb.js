@@ -9,7 +9,7 @@ config();
 
 const pool = new Pool({
   connectionString: process.env.NODE_ENV === 'TEST'
-    ? process.env.DATABASE_TEST_URL : process.env.DATABASE_URL,
+    ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL,
 });
 
 pool.on('connect', (err) => {

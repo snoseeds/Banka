@@ -21,9 +21,7 @@ const initCheckUserInDb = (email = null) => {
         message: 'User with this email doesn\'t exist',
       };
       throw errorObject;
-    } catch (error) {
-      throw error;
-    }
+    } catch (error) { throw error; }
   };
   return checkUserInDb;
 };
