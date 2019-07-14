@@ -5,10 +5,14 @@
   "main": ".server/index.js",
   "scripts": {
     "start": "node -r esm ./server",
-    "test": "nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit",
-    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
     "start:dev": "nodemon --exec node -r esm ./server",
-    "migrate": "babel-node ./server/models/migration createTables"
+    "dropTable": "node -r esm ./server/PostgreSQL/resetDBTablesOnMigration dropTables",
+    "createTable": "node -r esm ./server/PostgreSQL/resetDBTablesOnMigration createTables",
+    "migrate-test": "npm run dropTable && npm run createTable",
+    "migrate-prod": "npm run createTable",
+    "heroku-postbuild": "npm run migrate-prod",
+    "test": "NODE_ENV=TEST npm run migrate-test && NODE_ENV=TEST nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "Nurudeen Soremekun",
@@ -34,6 +38,7 @@
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "debug": "^4.1.1",
     "dotenv": "^7.0.0",
     "esm": "^3.2.25",
     "express": "^4.16.4",

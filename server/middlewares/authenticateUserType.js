@@ -1,6 +1,6 @@
 import verifyToken from '../helpers/verifyToken';
-import issueErrorResponse from '../helpers/issueErrorResponse';
 import isPayloadUserTypeInvalid from '../helpers/isPayloadUserTypeInvalid';
+
 /**
  * @description uses JWT to validate user authenticity
  * @param req express request object
@@ -13,17 +13,30 @@ const secretKey = 'andela';
 const initAuthenticateUserType = (typeOfUser1, typeOfUser2 = null) => {
   // eslint-disable-next-line consistent-return
   const authenticateUserType = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = verifyToken(token, secretKey);
-    if (typeof payload === 'string') {
-      return issueErrorResponse(res, 401, payload);
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const payload = verifyToken(token, secretKey);
+      let errorObject;
+      if (typeof payload === 'string') {
+        errorObject = {
+          name: 401,
+          message: payload,
+        };
+        throw errorObject;
+      }
+      if (isPayloadUserTypeInvalid(payload, typeOfUser1, typeOfUser2)) {
+        errorObject = {
+          name: 403,
+          message: 'Not Authorized',
+        };
+        throw errorObject;
+      }
+      req.body.typeOfUser = payload.typeOfUser;
+      req.authEmail = payload.email;
+      next();
+    } catch (error) {
+      next(error);
     }
-    if (isPayloadUserTypeInvalid(payload, typeOfUser1, typeOfUser2)) {
-      return issueErrorResponse(res, 403, 'Not Authorized');
-    }
-    req.body.typeOfUser = payload.typeOfUser;
-    req.authEmail = payload.email;
-    next();
   };
   return authenticateUserType;
 };

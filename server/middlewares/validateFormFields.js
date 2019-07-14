@@ -1,4 +1,3 @@
-import issueErrorResponse from '../helpers/issueErrorResponse';
 /**
  * Tests form fields that are required
  * @param [array] requiredFields - variable names of form fields to be validated
@@ -13,14 +12,22 @@ import issueErrorResponse from '../helpers/issueErrorResponse';
 const initValidateFields = (reqdFieldsDescription) => {
   // eslint-disable-next-line consistent-return
   const validateFormFields = (request, response, next) => {
-    let idx = -1;
-    if (Object.values(reqdFieldsDescription).some((inputField) => {
-      idx += 1;
-      return !inputField;
-    })) {
-      return issueErrorResponse(response, 400, `${Object.keys(reqdFieldsDescription)[idx]} is required`);
+    try {
+      let idx = -1;
+      if (Object.values(reqdFieldsDescription).some((inputField) => {
+        idx += 1;
+        return !inputField;
+      })) {
+        const errorObject = {
+          name: 400,
+          message: `${Object.keys(reqdFieldsDescription)[idx]} is required`,
+        };
+        throw errorObject;
+      }
+      next();
+    } catch (error) {
+      next(error);
     }
-    next();
   };
   return validateFormFields;
 };

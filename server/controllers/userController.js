@@ -6,10 +6,6 @@ import initAnyUserTypeAcctCreator from '../middlewares/anyUserTypeAcctCreator';
 import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 import runMiddlewares from '../middlewares/runMiddlewares';
 
-// import moment from 'moment';
-
-// import pool from '../models/database';
-
 const user = {
   signup: initAnyUserTypeAcctCreator(null, 'client'),
 

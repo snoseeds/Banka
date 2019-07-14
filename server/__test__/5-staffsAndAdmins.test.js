@@ -3,17 +3,12 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff and Admin Controller for endpoints that only both are privileged to use', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
-
   describe('Testing activate or deactivate bank account controller', () => {
-    const toggleBankAcctStatusUrl = '/api/v1/accounts/518791354';
+    const toggleBankAcctStatusUrl = '/api/v1/accounts/324295312';
     let adminSignInToken;
     describe('Testing activate or deactivate bank account controller for Logged-in Admin', () => {
       const adminSignInUrl = '/api/v1/auth/admin/signin';
@@ -21,8 +16,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(adminSignInUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'admin',
           })
           .end((err, res) => {
@@ -53,8 +48,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(staffSignInUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
           .end((err, res) => {
@@ -85,8 +80,8 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {
@@ -139,7 +134,6 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
   });
 
   describe('Testing delete bank account controller', () => {
-    const deleteBankAcctUrl = '/api/v1/accounts/518791354';
     let adminSignInToken;
     describe('Testing delete bank account controller for Logged-in Admin', () => {
       const adminSignInUrl = '/api/v1/auth/admin/signin';
@@ -147,11 +141,12 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(adminSignInUrl)
           .send({
-            email: 'sky@gmail.com',
-            password: 'kenny4roger',
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'admin',
           })
           .end((err, res) => {
+            const deleteBankAcctUrl = '/api/v1/accounts/324295312';
             adminSignInToken = res.body.data.token;
             chai.request(app)
               .delete(deleteBankAcctUrl)
@@ -176,14 +171,15 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(staffSignInUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
           .end((err, res) => {
+            const deleteBankAcctUrl = '/api/v1/accounts/332296316';
             staffSignInToken = res.body.data.token;
             chai.request(app)
-              .delete('/api/v1/accounts/895698752')
+              .delete(deleteBankAcctUrl)
               .set('authorization', `Bearer ${staffSignInToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -205,11 +201,12 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {
+            const deleteBankAcctUrl = '/api/v1/accounts/324295312';
             clientToken = res.body.data.token;
             chai.request(app)
               .delete(deleteBankAcctUrl)

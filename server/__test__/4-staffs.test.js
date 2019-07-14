@@ -3,14 +3,10 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
-// import migrations from '../models/migration';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff (cashier) Controller', () => {
-  // before(() => {
-  //   migrations.createTables();
-  // });
   let staffSignInToken;
   describe('Testing staff signin controller', () => {
     const signinUrl = '/api/v1/auth/staff/signin';
@@ -20,8 +16,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
             typeOfUser: 'cashier',
           })
 
@@ -38,7 +34,7 @@ describe('Testing Staff (cashier) Controller', () => {
             expect(response.body.data).to.have.property('email');
             expect(response.body.data).to.have.property('message');
             expect(response.body.data.token).to.be.a('string');
-            expect(response.body.data.email).to.equal('kutjosh@gmail.com');
+            expect(response.body.data.email).to.equal('alliafunkun@gmail.com');
             expect(response.body.data.message).to.equal('Login is successful');
             done();
           });
@@ -71,7 +67,7 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
+            email: 'alliafunkun@gmail.com',
           })
 
           .end((error, response) => {
@@ -92,8 +88,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'christWasNeverGod',
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
           })
 
           .end((error, response) => {
@@ -112,8 +108,8 @@ describe('Testing Staff (cashier) Controller', () => {
       chai.request(app)
         .post(signinUrl)
         .send({
-          email: 'sky@gmail.com',
-          password: 'kenny4roger',
+          email: 'yusikelebe@gmail.com',
+          password: 'ajulo42oluwawa',
           typeOfUser: 'admin',
         })
         .end((error, response) => {
@@ -138,7 +134,6 @@ describe('Testing Staff (cashier) Controller', () => {
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(403);
             expect(response.body.status).to.equal(403);
@@ -155,13 +150,12 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'kutjosh@gmail.com',
-            password: 'addChristStatus',
+            email: 'alliafunkun@gmail.com',
+            password: 'wrongPassword',
             typeOfUser: 'cashier',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
@@ -174,7 +168,7 @@ describe('Testing Staff (cashier) Controller', () => {
   });
 
   describe('Testing staff credit account controller', () => {
-    const creditAcctUrl = '/api/v1/transactions/518791354/credit';
+    const creditAcctUrl = '/api/v1/transactions/324295312/credit';
     it('should successfully credit account when all the criteria and parameters are rightly met and given', (done) => {
       chai.request(app)
         .post(creditAcctUrl)
@@ -236,8 +230,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {
@@ -276,13 +270,13 @@ describe('Testing Staff (cashier) Controller', () => {
   });
 
   describe('Testing staff debit account controller', () => {
-    const debitAcctUrl = '/api/v1/transactions/518791354/debit';
+    const debitAcctUrl = '/api/v1/transactions/324295312/debit';
     it('should successfully debit account when all the criteria and parameters are rightly met and given', (done) => {
       chai.request(app)
         .post(debitAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
-          amount: 45000.89,
+          amount: 40000.85,
         })
         .end((err, res) => {
           expect(res.body).to.be.an('object');
@@ -295,6 +289,22 @@ describe('Testing Staff (cashier) Controller', () => {
           expect(res.body.data.cashier).to.be.a('number');
           expect(res.body.data.transactionType).to.be.a('string');
           expect(res.body.data.accountBalance).to.be.a('string');
+          done();
+        });
+    });
+    it('should not debit account if the resulting balance would be less than minimumPermissibleBalance (zero - default)', (done) => {
+      chai.request(app)
+        .post(debitAcctUrl)
+        .set('authorization', `Bearer ${staffSignInToken}`)
+        .send({
+          amount: 10000.00,
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response).to.have.status(403);
+          expect(response.body.status).to.equal(403);
+          expect(response.body).to.have.property('error');
+          expect(response.body.error).to.equal('Insufficient account balance for the debit amount');
           done();
         });
     });
@@ -338,8 +348,8 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(clientSignInUrl)
           .send({
-            email: 'johndoe@gmail.com',
-            password: 'olujuwondoke',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
             typeOfUser: 'client',
           })
           .end((err, res) => {

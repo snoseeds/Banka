@@ -1,17 +1,21 @@
-import Database from '../models/Database';
-import issueErrorResponse from '../helpers/issueErrorResponse';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 
 const initGetBankAcctDetails = (accountNumber) => {
-  const getBankAcctDetails = (req, res, next) => {
-    let accountDetails;
-    if (Database.client.some((user) => {
-      accountDetails = user.accounts.find(acct => acct.accountNumber === accountNumber);
-      return accountDetails;
-    })) {
-      req.bankAccountDetails = accountDetails;
-      return next();
+  const getBankAcctDetails = async (req, res, next) => {
+    try {
+      const [accountDetails] = await queries.getRowsOfColumns('account', ['*'], 'accountNumber', accountNumber);
+      if (accountDetails) {
+        req.bankAccountDetails = accountDetails;
+        return next;
+      }
+      const errorObject = {
+        name: 404,
+        message: 'This account number doesn\'t exist on Banka',
+      };
+      throw errorObject;
+    } catch (error) {
+      throw error;
     }
-    return issueErrorResponse(res, 404, 'This account number doesn\'t exist on Banka');
   };
   return getBankAcctDetails;
 };

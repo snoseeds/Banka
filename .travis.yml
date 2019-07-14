@@ -5,7 +5,11 @@ node_js:
 env:
   global:
     - CC_TEST_REPORTER_ID=a0c9006a4f5335815788a8caaafbd97d86fe13445eb8484cfe8e038fa114447a
+services:
+  - postgresql
 before_script:
+  - psql -c 'drop database if exists travis_ci_test;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build

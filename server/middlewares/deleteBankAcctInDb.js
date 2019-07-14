@@ -1,16 +1,21 @@
-import Database from '../models/Database';
-import updateArrObjsIds from '../helpers/updateArrObjsIds';
-import archiveDeletedBankAcct from '../helpers/archiveDeletedBankAcct';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
+import archiveDeletedRows from '../helpers/archiveDeletedRows';
 
 
-const deleteBankAcctInDb = (req, res) => {
+// no try andf catch block despite asynchronicity because nature of where this function uses its
+// parameters can never result in an error repsonse irrespective or the arguments supplied
+const deleteBankAcctInDb = async (req, res) => {
   const {
-    ownerID,
-    accountID,
+    ownerid: ownerID,
+    accountnumber: accountNumber,
   } = req.bankAccountDetails;
-  const [deletedBankAcct] = Database.client[ownerID - 1].accounts.splice(accountID - 1, 1);
-  Database.client[ownerID - 1].accounts = updateArrObjsIds(Database.client[ownerID - 1].accounts, 'accountID');
-  archiveDeletedBankAcct(deletedBankAcct, ownerID);
+  // Hierarcy of deletion done not to violate referential integrity
+  const deletedAcctTrxnsObjsArr = await queries.deleteRowsAndReturnCols('transaction', 'accountNumber', accountNumber);
+  const deletedBankAcctObjArr = await queries.deleteRowsAndReturnCols('account', 'accountNumber', accountNumber);
+  // Hierarchy of archiving done to conform to referential integrity
+  await archiveDeletedRows('deletedBankAccount', deletedBankAcctObjArr);
+  await archiveDeletedRows('deletedTransaction', deletedAcctTrxnsObjsArr);
+  await queries.incrementOrDecrementColsValsByOne('client', '-', ['noOfAccounts'], 'id', ownerID);
   return res.status(201).json({
     status: 201,
     message: 'Account successfully deleted',

@@ -1,18 +1,27 @@
-import Database from '../models/Database';
-import issueErrorResponse from '../helpers/issueErrorResponse';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 
 const initCheckUserUniquenessInDB = (typeOfUser, uniqueFieldsValues, uniqueFieldsDescription) => {
-  let i = -1;
   // eslint-disable-next-line consistent-return
-  const checkUserUniquenessInDB = (req, res, next) => {
-    // checkUserUniqueness through each of the properties that must be unique
-    if (Database[typeOfUser].some(user => Object.values(uniqueFieldsDescription)
-    // eslint-disable-next-line no-plusplus
-      .some(uniqueField => user[uniqueField] === uniqueFieldsValues[++i]))) {
-      return issueErrorResponse(res, 400,
-        `${Object.keys(uniqueFieldsDescription)[i]} supplied has already been taken by an existing user`);
+  const checkUserUniquenessInDB = async (req, res, next) => {
+    try {
+      let i;
+      const uniqFieldsNames = Object.values(uniqueFieldsDescription);
+      const arrOfUsersUniqFields = await queries.getRowsOfColumns(typeOfUser, uniqFieldsNames);
+      // checkUserUniqueness across each of the properties that must be unique
+      if (arrOfUsersUniqFields.some(userObj => uniqFieldsNames
+        .some((uniqField, idx) => {
+          i = idx;
+          return userObj[uniqField.toLowerCase()] === uniqueFieldsValues[idx];
+        }))) {
+        const errorObject = {
+          name: 400,
+          message: `${Object.keys(uniqueFieldsDescription)[i]} supplied has already been taken by an existing user`,
+        };
+        throw errorObject;
+      }
+    } catch (error) {
+      throw error;
     }
-    next();
   };
   return checkUserUniquenessInDB;
 };

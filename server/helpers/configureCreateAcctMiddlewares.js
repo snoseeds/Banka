@@ -18,10 +18,9 @@ const configureCreateAcctMiddlewares = (typeOfCreator, typeOfAccountToBeCreated,
   }
   // Populating conditional arguments for initCheckUserUniquenessInDB
   const [uniqueFieldsValues, uniqueFieldsDescription] = typeOfAccountToBeCreated === 'client'
-    ? [[email], { Email: 'email' }]
+    ? [[email, mobileNo], { Email: 'email', 'Mobile number': 'mobileNo' }]
     : [[email, mobileNo, idCardNumber],
       { Email: 'email', 'Mobile number': 'mobileNo', 'ID Card Number': 'idCardNumber' }];
-
   const createAcctMiddlewaresArr = [
     ...checkRootAdminOrAdminDetailsMiddlewares,
     initValidateFields(reqdFieldsDescription),
