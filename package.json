@@ -11,7 +11,7 @@
     "migrate-test": "npm run dropTable && npm run createTable",
     "migrate-prod": "npm run createTable",
     "heroku-postbuild": "npm run migrate-prod",
-    "test": "NODE_ENV=TEST npm run migrate-test && NODE_ENV=TEST nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit",
+    "test": "NODE_ENV=TEST npm run migrate-test && NODE_ENV=TEST nyc mocha -r esm ./server/__test__/*.js",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
@@ -38,16 +38,20 @@
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
     "debug": "^4.1.1",
     "dotenv": "^7.0.0",
     "esm": "^3.2.25",
     "express": "^4.16.4",
+    "express-session": "^1.16.2",
     "jsonwebtoken": "^8.5.1",
     "make-runnable": "^1.3.6",
     "mocha": "^6.1.4",
     "mocha-lcov-reporter": "^1.3.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
-    "pg": "^7.9.0"
+    "pg": "^7.9.0",
+    "pm2": "^3.5.1"
   }
 }

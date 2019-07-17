@@ -9,7 +9,7 @@ import processReqOfBankAcct from '../middlewares/processReqOfBankAcct';
 
 const router = Router();
 
-const routes = () => {
+const routes = (app) => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
   // Signup routes
@@ -44,8 +44,19 @@ const routes = () => {
   // Staff can debit a bank account
   router.post('/api/v1/transactions/:accountNumber/debit',
     processReqOfBankAcct, staff.debitBankAcct);
+  // Client, Staff, and Admin can get transactions of a bank account
+  // router.get('/api/v1/accounts/:accountNumber/transactions');
+
+  router.use((req, res) => {
+    res.status(404).json({
+      status: 404,
+      message: 'This endpoint doesn\'t exist on this server',
+    });
+  });
+
+  app.use(router);
 };
 
-routes();
+// routes();
 
-export default router;
+export default routes;
