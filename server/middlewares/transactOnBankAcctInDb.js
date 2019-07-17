@@ -24,9 +24,7 @@ const initTransactOnBankAcctInDb = (amount, transactionType) => {
         status: 201,
         data: { transactionId: Number(tid), ...transColsAndVals, accountBalance: newBalance },
       });
-    } catch (error) {
-      throw error;
-    }
+    } catch (error) { throw error; }
   };
   return transactOnBankAcctInDb;
 };

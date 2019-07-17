@@ -1,12 +1,13 @@
 import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 import initRunDebitOrCredit from '../middlewares/runDebitOrCredit';
+import initJobsToBeCarriedOut from '../middlewares/jobsToBeCarriedOut';
 
 const staff = {
   signin: initSignInAnyUserType('cashier'),
 
-  creditBankAcct: initRunDebitOrCredit('credit', 'Credit amount'),
+  creditBankAcct: initJobsToBeCarriedOut(initRunDebitOrCredit('credit', 'Credit amount')),
 
-  debitBankAcct: initRunDebitOrCredit('debit', 'Debit amount'),
+  debitBankAcct: initJobsToBeCarriedOut(initRunDebitOrCredit('debit', 'Debit amount')),
 };
 
 export default staff;

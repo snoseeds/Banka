@@ -14,4 +14,5 @@ const config = (app) => {
   }));
   routes(app);
 };
+
 export default config;

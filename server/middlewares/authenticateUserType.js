@@ -1,5 +1,6 @@
 import verifyToken from '../helpers/verifyToken';
 import isPayloadUserTypeInvalid from '../helpers/isPayloadUserTypeInvalid';
+import compareTwoVariables from '../helpers/compareTwoVariables';
 
 /**
  * @description uses JWT to validate user authenticity
@@ -10,27 +11,14 @@ import isPayloadUserTypeInvalid from '../helpers/isPayloadUserTypeInvalid';
  */
 const secretKey = 'andela';
 
-const initAuthenticateUserType = (typeOfUser1, typeOfUser2 = null) => {
+const initAuthenticateUserType = (...typeOfUsersCategoriesArr) => {
   // eslint-disable-next-line consistent-return
   const authenticateUserType = (req, res, next) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       const payload = verifyToken(token, secretKey);
-      let errorObject;
-      if (typeof payload === 'string') {
-        errorObject = {
-          name: 401,
-          message: payload,
-        };
-        throw errorObject;
-      }
-      if (isPayloadUserTypeInvalid(payload, typeOfUser1, typeOfUser2)) {
-        errorObject = {
-          name: 403,
-          message: 'Not Authorized',
-        };
-        throw errorObject;
-      }
+      compareTwoVariables(typeof payload, 'object', 401, payload);
+      isPayloadUserTypeInvalid(payload, typeOfUsersCategoriesArr, 403, 'Not Authorized');
       req.body.typeOfUser = payload.typeOfUser;
       req.authEmail = payload.email;
       next();

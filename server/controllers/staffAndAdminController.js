@@ -1,11 +1,11 @@
-import changeAcctStatusInDb from '../middlewares/changeAcctStatusInDB';
-import deleteBankAcctInDb from '../middlewares/deleteBankAcctInDb';
-import initStaffAndAdminJobber from '../middlewares/staffAndAdminJobber';
+import changeAcctStatusInDbWrapper from '../middlewares/changeAcctStatusInDB';
+import deleteBankAcctInDbWrapper from '../middlewares/deleteBankAcctInDb';
+import initJobsToBeCarriedOut from '../middlewares/jobsToBeCarriedOut';
 
 const staffAndAdmin = {
-  changeBankAcctStatus: initStaffAndAdminJobber(changeAcctStatusInDb),
+  changeBankAcctStatus: initJobsToBeCarriedOut(changeAcctStatusInDbWrapper),
 
-  deleteBankAcct: initStaffAndAdminJobber(deleteBankAcctInDb),
+  deleteBankAcct: initJobsToBeCarriedOut(deleteBankAcctInDbWrapper),
 };
 
 export default staffAndAdmin;

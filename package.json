@@ -11,7 +11,7 @@
     "migrate-test": "npm run dropTable && npm run createTable",
     "migrate-prod": "npm run createTable",
     "heroku-postbuild": "npm run migrate-prod",
-    "test": "NODE_ENV=TEST npm run migrate-test && NODE_ENV=TEST nyc mocha -r esm ./server/__test__/*.js",
+    "test": "NODE_ENV=TEST npm run migrate-test && NODE_ENV=TEST nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
