@@ -7,7 +7,7 @@ const initTransactOnBankAcctInDb = (amount, transactionType) => {
       const transAmount = parseFloat(amount);
       const {
         accountnumber: accountNumber, accountbalance: accountBalance,
-      } = req.bankAccountDetails;
+      } = req.paramDetails;
       const { id } = req.user; // Getting ID of Cashier consumating the credit transaction
       const newBalance = calculateBalance(accountBalance, transAmount, transactionType);
       const transColsAndVals = {

@@ -6,7 +6,7 @@ import admin from '../controllers/adminController';
 import staff from '../controllers/staffController';
 import staffAndAdmin from '../controllers/staffAndAdminController';
 import clientsStaffsAndAdmins from '../controllers/clientsStaffsAndAdminsController';
-import initProcessReqOfBankAcct from '../middlewares/processReqOfBankAcct';
+import initProcessBankaParameter from '../middlewares/processBankaParameter';
 
 const router = Router();
 
@@ -35,19 +35,28 @@ const routes = (app) => {
   router.post('/api/v1/auth/staff/signin', staff.signin);
   // Admin or Staff can activate or deactivate a bank account
   router.patch('/api/v1/accounts/:accountNumber',
-    initProcessReqOfBankAcct('admin', 'cashier'), staffAndAdmin.changeBankAcctStatus);
+    initProcessBankaParameter('account', 'accountNumber', 'account number', ['admin', 'cashier']),
+    staffAndAdmin.changeBankAcctStatus);
   // Admin or Staff can delete a bank account
   router.delete('/api/v1/accounts/:accountNumber',
-    initProcessReqOfBankAcct('admin', 'cashier'), staffAndAdmin.deleteBankAcct);
+    initProcessBankaParameter('account', 'accountNumber', 'account number', ['admin', 'cashier']),
+    staffAndAdmin.deleteBankAcct);
   // Staff can credit a bank account
   router.post('/api/v1/transactions/:accountNumber/credit',
-    initProcessReqOfBankAcct('cashier'), staff.creditBankAcct);
+    initProcessBankaParameter('account', 'accountNumber', 'account number', ['cashier']),
+    staff.creditBankAcct);
   // Staff can debit a bank account
   router.post('/api/v1/transactions/:accountNumber/debit',
-    initProcessReqOfBankAcct('cashier'), staff.debitBankAcct);
+    initProcessBankaParameter('account', 'accountNumber', 'account number', ['cashier']),
+    staff.debitBankAcct);
   // Client, Staff, and Admin can get transactions of a bank account
   router.get('/api/v1/accounts/:accountNumber/transactions',
-    initProcessReqOfBankAcct('client', 'cashier', 'admin'), clientsStaffsAndAdmins.viewAcctNoTransactxns);
+    initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
+    clientsStaffsAndAdmins.viewTransactxnsByAcctNo);
+  // Client, Staff, and Admin can get a specified transaction by its id
+  router.get('/api/v1/transactions/:transactionId',
+    initProcessBankaParameter('transaction', 'id', 'transaction id', ['client', 'cashier', 'admin']),
+    clientsStaffsAndAdmins.viewTransactxnById);
 
   router.use((req, res) => {
     res.status(404).json({

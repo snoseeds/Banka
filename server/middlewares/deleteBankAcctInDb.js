@@ -9,7 +9,7 @@ const deleteBankAcctInDbWrapper = () => {
     const {
       ownerid: ownerID,
       accountnumber: accountNumber,
-    } = req.bankAccountDetails;
+    } = req.paramDetails;
     // Hierarcy of deletion done not to violate referential integrity
     const deletedAcctTrxnsObjsArr = await queries.deleteRowsAndReturnCols('transaction', 'accountNumber', accountNumber);
     const deletedBankAcctObjArr = await queries.deleteRowsAndReturnCols('account', 'accountNumber', accountNumber);
