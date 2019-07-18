@@ -9,7 +9,7 @@ const changeAcctStatusInDbWrapper = () => {
     const {
       status,
       accountnumber: accountNumber,
-    } = req.bankAccountDetails;
+    } = req.paramDetails;
     const newStatus = status === 'active' ? 'dormant' : 'active';
     await queries.updateColsVals('account', ['status'], [newStatus], 'accountNumber', accountNumber);
     return res.status(201).json({
