@@ -1,13 +1,9 @@
+import compareTwoVariables from '../helpers/compareTwoVariables';
+
 const initValidateUserType = (expectedType, typeOfUser) => {
   const validateUserType = (req, res, next) => {
     try {
-      if (expectedType !== typeOfUser) {
-        const errorObject = {
-          name: 403,
-          message: 'Not Authorized',
-        };
-        throw errorObject;
-      }
+      compareTwoVariables(expectedType, typeOfUser, 403, 'Not Authorized');
       next();
     } catch (error) {
       next(error);

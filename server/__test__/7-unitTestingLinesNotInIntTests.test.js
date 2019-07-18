@@ -5,7 +5,7 @@ import archiveDeletedRows from '../helpers/archiveDeletedRows';
 import initCreateNewBankAcct from '../middlewares/createNewBankAcct';
 
 describe('Unit Testing lines of code not exposed in integration tests', () => {
-  describe('Testing deleteRowsAndReturnCols method on query object', () => {
+  describe('Testing deleteRowsAndReturnCols method on query object', async () => {
     it('should return specified columns when record(s) is(are) deleted from a db table', async () => {
       const rowsOfColsFromDeletedRecord = await queries
         .deleteRowsAndReturnCols('deletedTransaction', 'id', 2, ['id', 'amount', 'transactionType']);

@@ -1,3 +1,6 @@
+import compareTwoVariables from '../helpers/compareTwoVariables';
+
+
 /**
  * Tests equality of password and confirmPassword fields
  * @param 'string' password Signup form password
@@ -10,13 +13,7 @@
 const initPasswordsMatch = (password, confirmPassword) => {
   const checkPasswordsMatch = (req, res, next) => {
     try {
-      if (password !== confirmPassword) {
-        const errorObject = {
-          name: 400,
-          message: 'Passwords do not match',
-        };
-        throw errorObject;
-      }
+      compareTwoVariables(password, confirmPassword, 400, 'Passwords do not match');
       next();
     } catch (error) {
       next(error);

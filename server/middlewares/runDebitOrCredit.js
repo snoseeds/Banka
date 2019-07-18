@@ -1,7 +1,7 @@
 import initIsTransactionAmountValid from './isTransactionAmountValid';
 import initValidateFields from './validateFormFields';
 import initTransactOnBankAcctInDb from './transactOnBankAcctInDb';
-import runMiddlewares from './runMiddlewares';
+// import runMiddlewares from './runMiddlewares';
 
 const initRunDebitOrCredit = (transType, transTypeDescription) => {
   const runDebitOrCredit = (req, res) => {
@@ -11,7 +11,8 @@ const initRunDebitOrCredit = (transType, transTypeDescription) => {
       initIsTransactionAmountValid(parseFloat(amount), transType),
       initTransactOnBankAcctInDb(amount, transType),
     ];
-    runMiddlewares([...req.middlewaresArr, ...transactionMiddlewares], req, res);
+    // runMiddlewares([...req.middlewaresArr, ...transactionMiddlewares], req, res);
+    return transactionMiddlewares;
   };
   return runDebitOrCredit;
 };

@@ -24,6 +24,16 @@ describe('Testing Banka APIs Landing Pages', () => {
           });
       },
     );
+
+    it('should return status 404 if route is not available on server', (done) => {
+      chai.request(app)
+        .get('/i-dont-exist/')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.message).to.equal('This endpoint doesn\'t exist on this server');
+          done();
+        });
+    });
   });
 
   describe('Testing Banka APIs Version 1 Main Homepage', () => {

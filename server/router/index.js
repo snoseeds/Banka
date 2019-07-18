@@ -5,11 +5,12 @@ import rootAdmin from '../controllers/rootAdminController';
 import admin from '../controllers/adminController';
 import staff from '../controllers/staffController';
 import staffAndAdmin from '../controllers/staffAndAdminController';
-import processReqOfBankAcct from '../middlewares/processReqOfBankAcct';
+import clientsStaffsAndAdmins from '../controllers/clientsStaffsAndAdminsController';
+import initProcessReqOfBankAcct from '../middlewares/processReqOfBankAcct';
 
 const router = Router();
 
-const routes = () => {
+const routes = (app) => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
   // Signup routes
@@ -34,18 +35,28 @@ const routes = () => {
   router.post('/api/v1/auth/staff/signin', staff.signin);
   // Admin or Staff can activate or deactivate a bank account
   router.patch('/api/v1/accounts/:accountNumber',
-    processReqOfBankAcct, staffAndAdmin.changeBankAcctStatus);
+    initProcessReqOfBankAcct('admin', 'cashier'), staffAndAdmin.changeBankAcctStatus);
   // Admin or Staff can delete a bank account
   router.delete('/api/v1/accounts/:accountNumber',
-    processReqOfBankAcct, staffAndAdmin.deleteBankAcct);
+    initProcessReqOfBankAcct('admin', 'cashier'), staffAndAdmin.deleteBankAcct);
   // Staff can credit a bank account
   router.post('/api/v1/transactions/:accountNumber/credit',
-    processReqOfBankAcct, staff.creditBankAcct);
+    initProcessReqOfBankAcct('cashier'), staff.creditBankAcct);
   // Staff can debit a bank account
   router.post('/api/v1/transactions/:accountNumber/debit',
-    processReqOfBankAcct, staff.debitBankAcct);
+    initProcessReqOfBankAcct('cashier'), staff.debitBankAcct);
+  // Client, Staff, and Admin can get transactions of a bank account
+  router.get('/api/v1/accounts/:accountNumber/transactions',
+    initProcessReqOfBankAcct('client', 'cashier', 'admin'), clientsStaffsAndAdmins.viewAcctNoTransactxns);
+
+  router.use((req, res) => {
+    res.status(404).json({
+      status: 404,
+      message: 'This endpoint doesn\'t exist on this server',
+    });
+  });
+
+  app.use(router);
 };
 
-routes();
-
-export default router;
+export default routes;

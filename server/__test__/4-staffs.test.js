@@ -226,6 +226,8 @@ describe('Testing Staff (cashier) Controller', () => {
     describe('Testing credit bank account controller for a non staff sign-in', () => {
       let clientToken;
       const clientSignInUrl = '/api/v1/auth/signin';
+      let adminToken;
+      const adminSignInUrl = '/api/v1/auth/admin/signin';
       it('should not credit bank account', (done) => {
         chai.request(app)
           .post(clientSignInUrl)
@@ -239,6 +241,35 @@ describe('Testing Staff (cashier) Controller', () => {
             chai.request(app)
               .post(creditAcctUrl)
               .set('authorization', `Bearer ${clientToken}`)
+              .send({
+                amount: 5000.45,
+              })
+              .end((error, response) => {
+                expect(response.body).to.be.an('object');
+                expect(response).to.have.status(403);
+                expect(response.body.status).to.equal(403);
+                expect(response.body).to.have.property('error');
+                expect(response.body.error).to.equal('Not Authorized');
+                done();
+              });
+          });
+      });
+      it('should not credit bank account for admin that signed in', (done) => {
+        chai.request(app)
+          .post(adminSignInUrl)
+          .send({
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
+            typeOfUser: 'admin',
+          })
+          .end((err, res) => {
+            adminToken = res.body.data.token;
+            chai.request(app)
+              .post(creditAcctUrl)
+              .set('authorization', `Bearer ${adminToken}`)
+              .send({
+                amount: 5000.45,
+              })
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
                 expect(response).to.have.status(403);
@@ -257,6 +288,9 @@ describe('Testing Staff (cashier) Controller', () => {
         chai.request(app)
           .post(`/api/v1/transactions/${nonExistentAcct}/credit`)
           .set('authorization', `Bearer ${staffSignInToken}`)
+          .send({
+            amount: 5000.45,
+          })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(404);
@@ -344,7 +378,9 @@ describe('Testing Staff (cashier) Controller', () => {
     describe('Testing debit bank account controller for a non staff sign-in', () => {
       let clientToken;
       const clientSignInUrl = '/api/v1/auth/signin';
-      it('should not debit bank account', (done) => {
+      let adminToken;
+      const adminSignInUrl = '/api/v1/auth/admin/signin';
+      it('should not debit bank account for client that signed in', (done) => {
         chai.request(app)
           .post(clientSignInUrl)
           .send({
@@ -357,6 +393,35 @@ describe('Testing Staff (cashier) Controller', () => {
             chai.request(app)
               .post(debitAcctUrl)
               .set('authorization', `Bearer ${clientToken}`)
+              .send({
+                amount: 5000.45,
+              })
+              .end((error, response) => {
+                expect(response.body).to.be.an('object');
+                expect(response).to.have.status(403);
+                expect(response.body.status).to.equal(403);
+                expect(response.body).to.have.property('error');
+                expect(response.body.error).to.equal('Not Authorized');
+                done();
+              });
+          });
+      });
+      it('should not debit bank account for admin that signed in', (done) => {
+        chai.request(app)
+          .post(adminSignInUrl)
+          .send({
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
+            typeOfUser: 'admin',
+          })
+          .end((err, res) => {
+            adminToken = res.body.data.token;
+            chai.request(app)
+              .post(debitAcctUrl)
+              .set('authorization', `Bearer ${adminToken}`)
+              .send({
+                amount: 5000.45,
+              })
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
                 expect(response).to.have.status(403);
