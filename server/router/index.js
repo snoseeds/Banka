@@ -66,7 +66,8 @@ const routes = (app) => {
   router.get('/api/v1/accounts/:accountNumber',
     initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
     clientStaffAndAdmin.viewBankAcctByAcctNo);
-  // Client, Staff, and Admin can get all bank accounts
+  // Client and Admin can get all bank accounts (or only active or dormant depending on
+  // value for status property in query string)
   router.get('/api/v1/accounts',
     initProcessBankaQueryOrPath(['admin', 'cashier']),
     staffAndAdmin.viewAllBankAccts);
