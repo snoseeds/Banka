@@ -5,14 +5,16 @@ const viewAllBankAcctsWrapper = () => {
   // doesn't use any external parameter.
   // Moreover, if the request is bad, previous middlewares would have rejected
   // the request with the appropriate error
-  const viewAllBankAccts = async (req, res) => res.status(200)
-    .json({
+  const viewAllBankAccts = async (req, res) => {
+    const { status } = req.query;
+    return res.status(200).json({
       status: 200,
       data: await queries.getRowsOfColumns('account',
         ['createdOn', 'accountNumber', 'email', 'type', 'status', 'accountBalance'],
-        undefined, undefined,
+        status ? 'status' : undefined, status,
         ['createdOn', 'accountNumber', 'ownerEmail', 'type', 'status', 'balance']),
     });
+  };
   return [viewAllBankAccts];
 };
 
