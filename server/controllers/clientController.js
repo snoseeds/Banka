@@ -6,7 +6,7 @@ import initAnyUserTypeAcctCreator from '../middlewares/anyUserTypeAcctCreator';
 import initSignInAnyUserType from '../middlewares/signInAnyUserType';
 import runMiddlewares from '../middlewares/runMiddlewares';
 
-const user = {
+const client = {
   signup: initAnyUserTypeAcctCreator(null, 'client'),
 
   signin: initSignInAnyUserType('client'),
@@ -34,4 +34,4 @@ const user = {
     }],
 };
 
-export default user;
+export default client;

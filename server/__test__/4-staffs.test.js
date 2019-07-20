@@ -9,6 +9,7 @@ import app from '../app';
 chai.use(chaiHttp);
 
 describe('Testing Staff (cashier) Controller', () => {
+  let staffSignInToken;
   before((done) => {
     queries.getRowsOfColumns('account', ['accountNumber'], 'accountId', '2', ['testAccountNumber'])
       .then(([{ testAccountNumber }]) => {
@@ -18,7 +19,6 @@ describe('Testing Staff (cashier) Controller', () => {
         done();
       });
   });
-  let staffSignInToken;
   describe('Testing staff signin controller', () => {
     const signinUrl = '/api/v1/auth/staff/signin';
     it(
@@ -179,7 +179,6 @@ describe('Testing Staff (cashier) Controller', () => {
   });
 
   describe('Testing staff credit account controller', () => {
-    // const creditAcctUrl = `/api/v1/transactions/${global.testAccountNumber}/credit`;
     it('should successfully credit account when all the criteria and parameters are rightly met and given', (done) => {
       chai.request(app)
         .post(testVariablesObj.creditAcctUrl)

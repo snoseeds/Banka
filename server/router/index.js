@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import Index from '../controllers';
-import user from '../controllers/userController';
+import client from '../controllers/clientController';
 import rootAdmin from '../controllers/rootAdminController';
 import admin from '../controllers/adminController';
 import staff from '../controllers/staffController';
 import staffAndAdmin from '../controllers/staffAndAdminController';
-import clientsStaffsAndAdmins from '../controllers/clientsStaffsAndAdminsController';
+import clientStaffAndAdmin from '../controllers/clientStaffAndAdminController';
 import initProcessBankaParameter from '../middlewares/processBankaParameter';
+import initProcessBankaQueryOrPath from '../middlewares/processBankaQueryOrPath';
 
 const router = Router();
 
@@ -14,11 +15,11 @@ const routes = (app) => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
   // Signup routes
-  router.post('/api/v1/auth/signup', user.signup);
+  router.post('/api/v1/auth/signup', client.signup);
   // Signin routes
-  router.post('/api/v1/auth/signin', user.signin);
+  router.post('/api/v1/auth/signin', client.signin);
   // Client create bank account route
-  router.post('/api/v1/accounts', user.createBankAccount[0]);
+  router.post('/api/v1/accounts', client.createBankAccount[0]);
   // Root Admin Signup route
   router.post('/api/v1/auth/root-admin/signup', rootAdmin.signup);
   // Root Admin Signin route
@@ -52,19 +53,23 @@ const routes = (app) => {
   // Client, Staff, and Admin can get transactions of a bank account
   router.get('/api/v1/accounts/:accountNumber/transactions',
     initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
-    clientsStaffsAndAdmins.viewTransactxnsByAcctNo);
+    clientStaffAndAdmin.viewTransactxnsByAcctNo);
   // Client, Staff, and Admin can get a specified transaction by its id
   router.get('/api/v1/transactions/:transactionId',
     initProcessBankaParameter('transaction', 'id', 'transaction id', ['client', 'cashier', 'admin']),
-    clientsStaffsAndAdmins.viewTransactxnById);
+    clientStaffAndAdmin.viewTransactxnById);
   // Client, Staff, and Admin can get a specified transaction by its id
   router.get('/api/v1/user/:email/accounts',
     initProcessBankaParameter('account', 'email', 'email address', ['client', 'cashier', 'admin']),
-    clientsStaffsAndAdmins.viewBankAcctsByClientEmail);
+    clientStaffAndAdmin.viewBankAcctsByClientEmail);
   // Client, Staff, and Admin can get specific bank account details by its account number
   router.get('/api/v1/accounts/:accountNumber',
     initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
-    clientsStaffsAndAdmins.viewBankAcctByAcctNo);
+    clientStaffAndAdmin.viewBankAcctByAcctNo);
+  // Client, Staff, and Admin can get all bank accounts
+  router.get('/api/v1/accounts',
+    initProcessBankaQueryOrPath(['admin', 'cashier']),
+    staffAndAdmin.viewAllBankAccts);
 
   router.use((req, res) => {
     res.status(404).json({

@@ -9,6 +9,10 @@ import { testVariablesObj } from '../config/config';
 chai.use(chaiHttp);
 
 describe('Testing Staff and Admin Controller for endpoints that only both are privileged to use', () => {
+  let adminSignInToken;
+  let staffSignInToken;
+  const adminSignInUrl = '/api/v1/auth/admin/signin';
+  const staffSignInUrl = '/api/v1/auth/staff/signin';
   before((done) => {
     testVariablesObj.deleteBankAcctUrl = `/api/v1/accounts/${testVariablesObj.testAccountNumber}`;
     testVariablesObj.toggleBankAcctStatusUrl = `/api/v1/accounts/${testVariablesObj.testAccountNumber}`;
@@ -18,10 +22,9 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
         done();
       });
   });
+
   describe('Testing activate or deactivate bank account controller', () => {
-    let adminSignInToken;
     describe('Testing activate or deactivate bank account controller for Logged-in Admin', () => {
-      const adminSignInUrl = '/api/v1/auth/admin/signin';
       it('should change status of bank account in request parameter from active to dormant', (done) => {
         chai.request(app)
           .post(adminSignInUrl)
@@ -52,8 +55,6 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
     });
 
     describe('Testing activate or deactivate bank account controller for Logged-in Staff', () => {
-      let staffSignInToken;
-      const staffSignInUrl = '/api/v1/auth/staff/signin';
       it('should change status of bank account in request parameter from dormant to active', (done) => {
         chai.request(app)
           .post(staffSignInUrl)
@@ -143,61 +144,142 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
     });
   });
 
-  describe('Testing delete bank account controller', () => {
-    let adminSignInToken;
-    describe('Testing delete bank account controller for Logged-in Admin', () => {
-      const adminSignInUrl = '/api/v1/auth/admin/signin';
-      it('should delete bank account in request parameter from database', (done) => {
+  describe('Testing view all bank accounts controller', () => {
+    const viewAllAccountsUrl = '/api/v1/accounts';
+    describe('Testing view all bank accounts controller for Logged-in Admin', () => {
+      it('should return all bank accounts if admin is authenticated', (done) => {
         chai.request(app)
-          .post(adminSignInUrl)
+          .get(viewAllAccountsUrl)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('ownerEmail');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            expect(res.body.data[1]).to.be.an('object');
+            expect(res.body.data[1]).to.have.property('createdOn');
+            expect(res.body.data[1]).to.have.property('accountNumber');
+            expect(res.body.data[1]).to.have.property('ownerEmail');
+            expect(res.body.data[1]).to.have.property('type');
+            expect(res.body.data[1]).to.have.property('status');
+            expect(res.body.data[1]).to.have.property('balance');
+            expect(res.body.data[2]).to.be.an('object');
+            expect(res.body.data[2]).to.have.property('createdOn');
+            expect(res.body.data[2]).to.have.property('accountNumber');
+            expect(res.body.data[2]).to.have.property('ownerEmail');
+            expect(res.body.data[2]).to.have.property('type');
+            expect(res.body.data[2]).to.have.property('status');
+            expect(res.body.data[2]).to.have.property('balance');
+            done();
+          });
+      });
+    });
+
+    describe('Testing view all bank accounts controller for Logged-in Staff', () => {
+      it('should return all bank accounts if admin is authenticated', (done) => {
+        chai.request(app)
+          .get(viewAllAccountsUrl)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('ownerEmail');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            expect(res.body.data[1]).to.be.an('object');
+            expect(res.body.data[1]).to.have.property('createdOn');
+            expect(res.body.data[1]).to.have.property('accountNumber');
+            expect(res.body.data[1]).to.have.property('ownerEmail');
+            expect(res.body.data[1]).to.have.property('type');
+            expect(res.body.data[1]).to.have.property('status');
+            expect(res.body.data[1]).to.have.property('balance');
+            expect(res.body.data[2]).to.be.an('object');
+            expect(res.body.data[2]).to.have.property('createdOn');
+            expect(res.body.data[2]).to.have.property('accountNumber');
+            expect(res.body.data[2]).to.have.property('ownerEmail');
+            expect(res.body.data[2]).to.have.property('type');
+            expect(res.body.data[2]).to.have.property('status');
+            expect(res.body.data[2]).to.have.property('balance');
+            done();
+          });
+      });
+    });
+
+    describe('Testing view all bank accounts controller for a non admin nor staff sign-in', () => {
+      let clientToken;
+      const clientSignInUrl = '/api/v1/auth/signin';
+      it('should not return bank accounts', (done) => {
+        chai.request(app)
+          .post(clientSignInUrl)
           .send({
-            email: 'yusikelebe@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'admin',
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
+            typeOfUser: 'client',
           })
           .end((err, res) => {
-            adminSignInToken = res.body.data.token;
+            clientToken = res.body.data.token;
             chai.request(app)
-              .delete(testVariablesObj.deleteBankAcctUrl)
-              .set('authorization', `Bearer ${adminSignInToken}`)
+              .get(viewAllAccountsUrl)
+              .set('authorization', `Bearer ${clientToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
-                expect(response).to.have.status(201);
-                expect(response.body).to.have.property('status');
-                expect(response.body).to.have.property('message');
-                expect(response.body.status).to.equal(201);
-                expect(response.body.message).to.equal('Account successfully deleted');
+                expect(response).to.have.status(403);
+                expect(response.body.status).to.equal(403);
+                expect(response.body).to.have.property('error');
+                expect(response.body.error).to.equal('Not Authorized');
                 done();
               });
           });
       });
     });
+  });
 
-    describe('Testing delete bank account controller for Logged-in Staff', () => {
-      let staffSignInToken;
-      const staffSignInUrl = '/api/v1/auth/staff/signin';
+  describe('Testing delete bank account controller', () => {
+    describe('Testing delete bank account controller for Logged-in Admin', () => {
       it('should delete bank account in request parameter from database', (done) => {
         chai.request(app)
-          .post(staffSignInUrl)
-          .send({
-            email: 'alliafunkun@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'cashier',
-          })
-          .end((err, res) => {
-            staffSignInToken = res.body.data.token;
-            chai.request(app)
-              .delete(testVariablesObj.secondDeleteBankAcctUrl)
-              .set('authorization', `Bearer ${staffSignInToken}`)
-              .end((error, response) => {
-                expect(response.body).to.be.an('object');
-                expect(response).to.have.status(201);
-                expect(response.body).to.have.property('status');
-                expect(response.body).to.have.property('message');
-                expect(response.body.status).to.equal(201);
-                expect(response.body.message).to.equal('Account successfully deleted');
-                done();
-              });
+          .delete(testVariablesObj.deleteBankAcctUrl)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((error, response) => {
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(201);
+            expect(response.body).to.have.property('status');
+            expect(response.body).to.have.property('message');
+            expect(response.body.status).to.equal(201);
+            expect(response.body.message).to.equal('Account successfully deleted');
+            done();
+          });
+      });
+    });
+
+    describe('Testing delete bank account controller for Logged-in Staff', () => {
+      it('should delete bank account in request parameter from database', (done) => {
+        chai.request(app)
+          .delete(testVariablesObj.secondDeleteBankAcctUrl)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((error, response) => {
+            expect(response.body).to.be.an('object');
+            expect(response).to.have.status(201);
+            expect(response.body).to.have.property('status');
+            expect(response.body).to.have.property('message');
+            expect(response.body.status).to.equal(201);
+            expect(response.body.message).to.equal('Account successfully deleted');
+            done();
           });
       });
     });
