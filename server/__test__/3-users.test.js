@@ -510,12 +510,13 @@ describe('Testing User Controller', () => {
         },
       );
     });
+
     describe('Testing create bank account controller for user that signed in', () => {
       let clientToken;
       const signinUrl = '/api/v1/auth/signin';
       const createAccountUrl = '/api/v1/accounts';
       it(
-        'should create a new bank account for user that signed in when all the required parameters are given',
+        'should create a new bank account for user that signed in when all the required information is given',
         (done) => {
           chai.request(app)
             .post(signinUrl)
@@ -550,6 +551,35 @@ describe('Testing User Controller', () => {
                   expect(response.body.data).to.have.property('message');
                   done();
                 });
+            });
+        },
+      );
+
+      it(
+        'should create a new additional bank account for user when all the required information is given',
+        (done) => {
+          chai.request(app)
+            .post(createAccountUrl)
+            .send({
+              accountType: 'savings',
+              idCardType: 3,
+              idCardNumber: 'A09579734',
+            })
+            .set('authorization', `Bearer ${clientToken}`)
+            .end((error, response) => {
+              expect(response.body).to.be.an('object');
+              expect(response).to.have.status(201);
+              expect(response.body.status).to.equal(201);
+              expect(response.body.data).to.be.a('object');
+              expect(response.body.data).to.have.property('accountNumber');
+              expect(response.body.data).to.have.property('firstName');
+              expect(response.body.data).to.have.property('lastName');
+              expect(response.body.data).to.have.property('email');
+              expect(response.body.data).to.have.property('type');
+              expect(response.body.data).to.have.property('openingBalance');
+              expect(response.body.data).to.have.property('idCardType');
+              expect(response.body.data).to.have.property('message');
+              done();
             });
         },
       );

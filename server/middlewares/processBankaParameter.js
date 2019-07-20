@@ -7,7 +7,7 @@ const initProcessBankaParameter = (table, paramName, paramDescription, allowedUs
     const startingMiddlewares = [
       initAuthenticateUserType(...allowedUsersTypeArr),
       initCheckUserInDb(),
-     initGetBankaParameterDetails(table, paramName, Object.values(req.params)[0], paramDescription),
+      initGetBankaParameterDetails(table, paramName, Object.values(req.params)[0], paramDescription),
     ];
     req.middlewaresArr = startingMiddlewares;
     next();

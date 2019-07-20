@@ -4,6 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import routes from '../router';
 
+const testVariablesObj = {};
+
 const config = (app) => {
   app.use(cors());
   app.use(cookieParser());
@@ -15,4 +17,4 @@ const config = (app) => {
   routes(app);
 };
 
-export default config;
+export { testVariablesObj, config };

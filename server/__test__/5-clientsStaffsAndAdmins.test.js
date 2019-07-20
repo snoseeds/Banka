@@ -3,10 +3,15 @@ import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
 import app from '../app';
+import { testVariablesObj } from '../config/config';
 
 chai.use(chaiHttp);
 
 describe('Testing User, Staff, and Admin Controller for endpoints that the trio are privileged to use', () => {
+  before((done) => {
+    testVariablesObj.bankAcctTrxnsUrl = `/api/v1/accounts/${testVariablesObj.testAccountNumber}/transactions`;
+    done();
+  });
   let clientSignInToken;
   let staffSignInToken;
   let adminSignInToken;
@@ -15,7 +20,6 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
   const adminSignInUrl = '/api/v1/auth/admin/signin';
 
   describe('Testing view transactions on a user\'s particular bank account controller', () => {
-    const accountNumber = '324295312';
     const nonExistentAcctNo = '343922111';
     describe('Testing view transactions on a user\'s particular bank account controller for a Logged in User', () => {
       it('should return the bank account transactions if the client is authenticated and if account number exists', (done) => {
@@ -29,7 +33,8 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
           .end((error, response) => {
             clientSignInToken = response.body.data.token; // Client signup token would work the same as well
             chai.request(app)
-              .get(`/api/v1/accounts/${accountNumber}/transactions`)
+              // .get(`/api/v1/accounts/${testAccountNumber}/transactions`)
+              .get(testVariablesObj.bankAcctTrxnsUrl)
               .set('authorization', `Bearer ${clientSignInToken}`)
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -44,7 +49,7 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
 
       it('should not return bank account transactions if the user token is invalid', (done) => {
         chai.request(app)
-          .get(`/api/v1/accounts/${accountNumber}/transactions`)
+          .get(testVariablesObj.bankAcctTrxnsUrl)
           .set('authorization', 'Bearer obviouslyWrongToken')
           .end((err, res) => {
             expect(res).to.have.status(401);
@@ -84,7 +89,7 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
           .end((error, response) => {
             staffSignInToken = response.body.data.token;
             chai.request(app)
-              .get(`/api/v1/accounts/${accountNumber}/transactions`)
+              .get(testVariablesObj.bankAcctTrxnsUrl)
               .set('authorization', `Bearer ${staffSignInToken}`)
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -99,7 +104,7 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
 
       it('should not return bank account transactions if the user token is invalid', (done) => {
         chai.request(app)
-          .get(`/api/v1/accounts/${accountNumber}/transactions`)
+          .get(testVariablesObj.bankAcctTrxnsUrl)
           .set('authorization', 'Bearer obviouslyWrongToken')
           .end((err, res) => {
             expect(res).to.have.status(401);
@@ -139,7 +144,7 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
           .end((error, response) => {
             adminSignInToken = response.body.data.token;
             chai.request(app)
-              .get(`/api/v1/accounts/${accountNumber}/transactions`)
+              .get(testVariablesObj.bankAcctTrxnsUrl)
               .set('authorization', `Bearer ${adminSignInToken}`)
               .end((err, res) => {
                 expect(res).to.have.status(200);
@@ -154,7 +159,7 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
 
       it('should not return bank account transactions if the user token is invalid', (done) => {
         chai.request(app)
-          .get(`/api/v1/accounts/${accountNumber}/transactions`)
+          .get(testVariablesObj.bankAcctTrxnsUrl)
           .set('authorization', 'Bearer obviouslyWrongToken')
           .end((err, res) => {
             expect(res).to.have.status(401);
@@ -346,6 +351,212 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
             expect(res.body).to.have.property('error');
             expect(res.body.error).to.be.a('string');
             expect(res.body.error).to.equal('This transaction id doesn\'t exist on Banka');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('Testing view all bank accounts of a user with particular email address controller', () => {
+    const email = 'test@test.com';
+    const nonExistentUserEmail = 'nonexistent@null.com';
+    const viewAllBankAcctsUrl = `/api/v1/user/${email}/accounts`;
+    describe('Testing view all bank accounts of a user with particular email address controller for a Logged in User', () => {
+      it('should return all the bank accounts if the client is authenticated and the email address exists', (done) => {
+        chai.request(app)
+          .post(clientSignInUrl)
+          .send({
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
+            typeOfUser: 'client',
+          })
+          .end((error, response) => {
+            clientSignInToken = response.body.data.token; // Client signup token would work the same as well
+            chai.request(app)
+              .get(viewAllBankAcctsUrl)
+              .set('authorization', `Bearer ${clientSignInToken}`)
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal(200);
+                expect(res.body).to.have.property('data');
+                expect(res.body.data).to.be.an('array');
+                expect(res.body.data[0]).to.be.an('object');
+                expect(res.body.data[0]).to.have.property('createdOn');
+                expect(res.body.data[0]).to.have.property('accountNumber');
+                expect(res.body.data[0]).to.have.property('type');
+                expect(res.body.data[0]).to.have.property('status');
+                expect(res.body.data[0]).to.have.property('balance');
+                expect(res.body.data[1]).to.be.an('object');
+                expect(res.body.data[1]).to.have.property('createdOn');
+                expect(res.body.data[1]).to.have.property('accountNumber');
+                expect(res.body.data[1]).to.have.property('type');
+                expect(res.body.data[1]).to.have.property('status');
+                expect(res.body.data[1]).to.have.property('balance');
+                done();
+              });
+          });
+      });
+
+      it('should not return bank accounts if the user token is invalid', (done) => {
+        chai.request(app)
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', 'Bearer obviouslyWrongToken')
+          .end((err, res) => {
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(401);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            done();
+          });
+      });
+
+      it('should not return bank accounts if the email address does not exist', (done) => {
+        chai.request(app)
+          .get(`/api/v1/user/${nonExistentUserEmail}/accounts`)
+          .set('authorization', `Bearer ${clientSignInToken}`)
+          .end((err, res) => {
+            expect(res.body).to.be.an('object');
+            expect(res).to.have.status(404);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            expect(res.body.error).to.equal('This email address doesn\'t exist on Banka');
+            done();
+          });
+      });
+    });
+
+    describe('Testing view all bank accounts of a user with particular email address controller for a Logged in Staff (cashier)', () => {
+      it('should return all the bank accounts if the cashier is authenticated and the email address exists', (done) => {
+        chai.request(app)
+          .post(staffSignInUrl)
+          .send({
+            email: 'alliafunkun@gmail.com',
+            password: 'ajulo42oluwawa',
+            typeOfUser: 'cashier',
+          })
+          .end((error, response) => {
+            staffSignInToken = response.body.data.token;
+            chai.request(app)
+              .get(viewAllBankAcctsUrl)
+              .set('authorization', `Bearer ${staffSignInToken}`)
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal(200);
+                expect(res.body).to.have.property('data');
+                expect(res.body.data).to.be.an('array');
+                expect(res.body.data[0]).to.be.an('object');
+                expect(res.body.data[0]).to.have.property('createdOn');
+                expect(res.body.data[0]).to.have.property('accountNumber');
+                expect(res.body.data[0]).to.have.property('type');
+                expect(res.body.data[0]).to.have.property('status');
+                expect(res.body.data[0]).to.have.property('balance');
+                expect(res.body.data[1]).to.be.an('object');
+                expect(res.body.data[1]).to.have.property('createdOn');
+                expect(res.body.data[1]).to.have.property('accountNumber');
+                expect(res.body.data[1]).to.have.property('type');
+                expect(res.body.data[1]).to.have.property('status');
+                expect(res.body.data[1]).to.have.property('balance');
+                done();
+              });
+          });
+      });
+
+      it('should not return bank accounts if the staff token is invalid', (done) => {
+        chai.request(app)
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', 'Bearer obviouslyWrongToken')
+          .end((err, res) => {
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(401);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            done();
+          });
+      });
+
+      it('should not return bank accounts if the email address does not exist', (done) => {
+        chai.request(app)
+          .get(`/api/v1/user/${nonExistentUserEmail}/accounts`)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res.body).to.be.an('object');
+            expect(res).to.have.status(404);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            expect(res.body.error).to.equal('This email address doesn\'t exist on Banka');
+            done();
+          });
+      });
+    });
+    
+    describe('Testing view all bank accounts of a user with particular email address controller for a Logged in Admin', () => {
+      it('should return all the bank accounts if the admin is authenticated and the email address exists', (done) => {
+        chai.request(app)
+          .post(adminSignInUrl)
+          .send({
+            email: 'yusikelebe@gmail.com',
+            password: 'ajulo42oluwawa',
+            typeOfUser: 'admin',
+          })
+          .end((error, response) => {
+            adminSignInToken = response.body.data.token;
+            chai.request(app)
+              .get(viewAllBankAcctsUrl)
+              .set('authorization', `Bearer ${adminSignInToken}`)
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal(200);
+                expect(res.body).to.have.property('data');
+                expect(res.body.data).to.be.an('array');
+                expect(res.body.data[0]).to.be.an('object');
+                expect(res.body.data[0]).to.have.property('createdOn');
+                expect(res.body.data[0]).to.have.property('accountNumber');
+                expect(res.body.data[0]).to.have.property('type');
+                expect(res.body.data[0]).to.have.property('status');
+                expect(res.body.data[0]).to.have.property('balance');
+                expect(res.body.data[1]).to.be.an('object');
+                expect(res.body.data[1]).to.have.property('createdOn');
+                expect(res.body.data[1]).to.have.property('accountNumber');
+                expect(res.body.data[1]).to.have.property('type');
+                expect(res.body.data[1]).to.have.property('status');
+                expect(res.body.data[1]).to.have.property('balance');
+                done();
+              });
+          });
+      });
+
+      it('should not return bank accounts if the admin token is invalid', (done) => {
+        chai.request(app)
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', 'Bearer obviouslyWrongToken')
+          .end((err, res) => {
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(401);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            done();
+          });
+      });
+
+      it('should not return bank accounts if the email address does not exist', (done) => {
+        chai.request(app)
+          .get(`/api/v1/user/${nonExistentUserEmail}/accounts`)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res.body).to.be.an('object');
+            expect(res).to.have.status(404);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.be.a('string');
+            expect(res.body.error).to.equal('This email address doesn\'t exist on Banka');
             done();
           });
       });

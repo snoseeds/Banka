@@ -6,7 +6,6 @@ const staff = {
   signin: initSignInAnyUserType('cashier'),
 
   creditBankAcct: initJobsToBeCarriedOut(initRunDebitOrCredit('credit', 'Credit amount')),
-
   debitBankAcct: initJobsToBeCarriedOut(initRunDebitOrCredit('debit', 'Debit amount')),
 };
 
