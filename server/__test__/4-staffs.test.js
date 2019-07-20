@@ -1,12 +1,23 @@
 /* eslint-disable no-undef */
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
+import { testVariablesObj } from '../config/config';
 
 import app from '../app';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff (cashier) Controller', () => {
+  before((done) => {
+    queries.getRowsOfColumns('account', ['accountNumber'], 'accountId', '2', ['testAccountNumber'])
+      .then(([{ testAccountNumber }]) => {
+        testVariablesObj.creditAcctUrl = `/api/v1/transactions/${testAccountNumber}/credit`;
+        testVariablesObj.debitAcctUrl = `/api/v1/transactions/${testAccountNumber}/debit`;
+        testVariablesObj.testAccountNumber = testAccountNumber;
+        done();
+      });
+  });
   let staffSignInToken;
   describe('Testing staff signin controller', () => {
     const signinUrl = '/api/v1/auth/staff/signin';
@@ -168,10 +179,10 @@ describe('Testing Staff (cashier) Controller', () => {
   });
 
   describe('Testing staff credit account controller', () => {
-    const creditAcctUrl = '/api/v1/transactions/324295312/credit';
+    // const creditAcctUrl = `/api/v1/transactions/${global.testAccountNumber}/credit`;
     it('should successfully credit account when all the criteria and parameters are rightly met and given', (done) => {
       chai.request(app)
-        .post(creditAcctUrl)
+        .post(testVariablesObj.creditAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
           amount: 45000.89,
@@ -192,7 +203,7 @@ describe('Testing Staff (cashier) Controller', () => {
     });
     it('should not credit account if amount field is empty', (done) => {
       chai.request(app)
-        .post(creditAcctUrl)
+        .post(testVariablesObj.creditAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
 
@@ -208,7 +219,7 @@ describe('Testing Staff (cashier) Controller', () => {
     });
     it('should not credit account if amount is less than or equal to zero', (done) => {
       chai.request(app)
-        .post(creditAcctUrl)
+        .post(testVariablesObj.creditAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
           amount: -5000.45,
@@ -239,7 +250,7 @@ describe('Testing Staff (cashier) Controller', () => {
           .end((err, res) => {
             clientToken = res.body.data.token;
             chai.request(app)
-              .post(creditAcctUrl)
+              .post(testVariablesObj.creditAcctUrl)
               .set('authorization', `Bearer ${clientToken}`)
               .send({
                 amount: 5000.45,
@@ -265,7 +276,7 @@ describe('Testing Staff (cashier) Controller', () => {
           .end((err, res) => {
             adminToken = res.body.data.token;
             chai.request(app)
-              .post(creditAcctUrl)
+              .post(testVariablesObj.creditAcctUrl)
               .set('authorization', `Bearer ${adminToken}`)
               .send({
                 amount: 5000.45,
@@ -304,10 +315,9 @@ describe('Testing Staff (cashier) Controller', () => {
   });
 
   describe('Testing staff debit account controller', () => {
-    const debitAcctUrl = '/api/v1/transactions/324295312/debit';
     it('should successfully debit account when all the criteria and parameters are rightly met and given', (done) => {
       chai.request(app)
-        .post(debitAcctUrl)
+        .post(testVariablesObj.debitAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
           amount: 40000.85,
@@ -328,7 +338,7 @@ describe('Testing Staff (cashier) Controller', () => {
     });
     it('should not debit account if the resulting balance would be less than minimumPermissibleBalance (zero - default)', (done) => {
       chai.request(app)
-        .post(debitAcctUrl)
+        .post(testVariablesObj.debitAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
           amount: 10000.00,
@@ -344,7 +354,7 @@ describe('Testing Staff (cashier) Controller', () => {
     });
     it('should not debit account if amount field is empty', (done) => {
       chai.request(app)
-        .post(debitAcctUrl)
+        .post(testVariablesObj.debitAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
 
@@ -360,7 +370,7 @@ describe('Testing Staff (cashier) Controller', () => {
     });
     it('should not debit account if amount is less than or equal to zero', (done) => {
       chai.request(app)
-        .post(debitAcctUrl)
+        .post(testVariablesObj.debitAcctUrl)
         .set('authorization', `Bearer ${staffSignInToken}`)
         .send({
           amount: -5000.45,
@@ -391,7 +401,7 @@ describe('Testing Staff (cashier) Controller', () => {
           .end((err, res) => {
             clientToken = res.body.data.token;
             chai.request(app)
-              .post(debitAcctUrl)
+              .post(testVariablesObj.debitAcctUrl)
               .set('authorization', `Bearer ${clientToken}`)
               .send({
                 amount: 5000.45,
@@ -417,7 +427,7 @@ describe('Testing Staff (cashier) Controller', () => {
           .end((err, res) => {
             adminToken = res.body.data.token;
             chai.request(app)
-              .post(debitAcctUrl)
+              .post(testVariablesObj.debitAcctUrl)
               .set('authorization', `Bearer ${adminToken}`)
               .send({
                 amount: 5000.45,

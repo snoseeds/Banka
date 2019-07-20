@@ -57,6 +57,10 @@ const routes = (app) => {
   router.get('/api/v1/transactions/:transactionId',
     initProcessBankaParameter('transaction', 'id', 'transaction id', ['client', 'cashier', 'admin']),
     clientsStaffsAndAdmins.viewTransactxnById);
+  // Client, Staff, and Admin can get a specified transaction by its id
+  router.get('/api/v1/user/:email/accounts',
+    initProcessBankaParameter('account', 'email', 'email address', ['client', 'cashier', 'admin']),
+    clientsStaffsAndAdmins.viewBankAcctsByEmail);
 
   router.use((req, res) => {
     res.status(404).json({

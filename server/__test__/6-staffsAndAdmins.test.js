@@ -1,14 +1,24 @@
 /* eslint-disable no-undef */
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
+import queries from '../PostgreSQL/dbTablesCrudQueries';
 
 import app from '../app';
+import { testVariablesObj } from '../config/config';
 
 chai.use(chaiHttp);
 
 describe('Testing Staff and Admin Controller for endpoints that only both are privileged to use', () => {
+  before((done) => {
+    testVariablesObj.deleteBankAcctUrl = `/api/v1/accounts/${testVariablesObj.testAccountNumber}`;
+    testVariablesObj.toggleBankAcctStatusUrl = `/api/v1/accounts/${testVariablesObj.testAccountNumber}`;
+    queries.getRowsOfColumns('account', ['accountNumber'], 'accountId', '1', ['secondTestAcctNo'])
+      .then(([{ secondTestAcctNo }]) => {
+        testVariablesObj.secondDeleteBankAcctUrl = `/api/v1/accounts/${secondTestAcctNo}`;
+        done();
+      });
+  });
   describe('Testing activate or deactivate bank account controller', () => {
-    const toggleBankAcctStatusUrl = '/api/v1/accounts/324295312';
     let adminSignInToken;
     describe('Testing activate or deactivate bank account controller for Logged-in Admin', () => {
       const adminSignInUrl = '/api/v1/auth/admin/signin';
@@ -23,7 +33,7 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
           .end((err, res) => {
             adminSignInToken = res.body.data.token;
             chai.request(app)
-              .patch(toggleBankAcctStatusUrl)
+              .patch(testVariablesObj.toggleBankAcctStatusUrl)
               .set('authorization', `Bearer ${adminSignInToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -55,7 +65,7 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
           .end((err, res) => {
             staffSignInToken = res.body.data.token;
             chai.request(app)
-              .patch(toggleBankAcctStatusUrl)
+              .patch(testVariablesObj.toggleBankAcctStatusUrl)
               .set('authorization', `Bearer ${staffSignInToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -87,7 +97,7 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
           .end((err, res) => {
             clientToken = res.body.data.token;
             chai.request(app)
-              .patch(toggleBankAcctStatusUrl)
+              .patch(testVariablesObj.toggleBankAcctStatusUrl)
               .set('authorization', `Bearer ${clientToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -103,7 +113,7 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
       it('should return internal server error for a request without token as a way to test '
         + '"async" library promise rejection that is used to run middlewares', (done) => {
         chai.request(app)
-          .patch(toggleBankAcctStatusUrl)
+          .patch(testVariablesObj.toggleBankAcctStatusUrl)
           .end((error, response) => {
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(500);
@@ -146,10 +156,9 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
             typeOfUser: 'admin',
           })
           .end((err, res) => {
-            const deleteBankAcctUrl = '/api/v1/accounts/324295312';
             adminSignInToken = res.body.data.token;
             chai.request(app)
-              .delete(deleteBankAcctUrl)
+              .delete(testVariablesObj.deleteBankAcctUrl)
               .set('authorization', `Bearer ${adminSignInToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -176,10 +185,9 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
             typeOfUser: 'cashier',
           })
           .end((err, res) => {
-            const deleteBankAcctUrl = '/api/v1/accounts/332296316';
             staffSignInToken = res.body.data.token;
             chai.request(app)
-              .delete(deleteBankAcctUrl)
+              .delete(testVariablesObj.secondDeleteBankAcctUrl)
               .set('authorization', `Bearer ${staffSignInToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');
@@ -206,10 +214,9 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
             typeOfUser: 'client',
           })
           .end((err, res) => {
-            const deleteBankAcctUrl = '/api/v1/accounts/324295312';
             clientToken = res.body.data.token;
             chai.request(app)
-              .delete(deleteBankAcctUrl)
+              .delete(testVariablesObj.deleteBankAcctUrl)
               .set('authorization', `Bearer ${clientToken}`)
               .end((error, response) => {
                 expect(response.body).to.be.an('object');

@@ -3,19 +3,24 @@ import { expect } from 'chai';
 import queries from '../PostgreSQL/dbTablesCrudQueries';
 import archiveDeletedRows from '../helpers/archiveDeletedRows';
 import initCreateNewBankAcct from '../middlewares/createNewBankAcct';
+import { testVariablesObj } from '../config/config';
 
 describe('Unit Testing lines of code not exposed in integration tests', () => {
-  describe('Testing deleteRowsAndReturnCols method on query object', async () => {
-    it('should return specified columns when record(s) is(are) deleted from a db table', async () => {
-      const rowsOfColsFromDeletedRecord = await queries
-        .deleteRowsAndReturnCols('deletedTransaction', 'id', 2, ['id', 'amount', 'transactionType']);
-      const colsFromDeletedRecord = rowsOfColsFromDeletedRecord[0];
-      expect(colsFromDeletedRecord).to.be.an('object');
-      expect(colsFromDeletedRecord).to.have.property('id');
-      expect(colsFromDeletedRecord).to.have.property('amount');
-      expect(colsFromDeletedRecord).to.have.property('transactionType');
-      expect(Object.entries(colsFromDeletedRecord).length).to.equal(3);
-      expect(colsFromDeletedRecord.amount).to.equal('40000.85');
+  describe('Testing deleteRowsAndReturnCols method on query object', () => {
+    before((done) => {
+      queries.deleteRowsAndReturnCols('deletedTransaction', 'id', 1, ['id', 'amount', 'transactionType'])
+        .then(([deletedRecordColumns]) => {
+          testVariablesObj.deletedRecordColumns = deletedRecordColumns;
+          done();
+        });
+    });
+    it('should return specified columns when record(s) is(are) deleted from a db table', () => {
+      expect(testVariablesObj.deletedRecordColumns).to.be.an('object');
+      expect(testVariablesObj.deletedRecordColumns).to.have.property('id');
+      expect(testVariablesObj.deletedRecordColumns).to.have.property('amount');
+      expect(testVariablesObj.deletedRecordColumns).to.have.property('transactionType');
+      expect(Object.entries(testVariablesObj.deletedRecordColumns).length).to.equal(3);
+      expect(testVariablesObj.deletedRecordColumns.amount).to.equal('45000.89');
     });
   });
 

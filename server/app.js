@@ -1,6 +1,6 @@
 import express from 'express';
 import logger from 'morgan';
-import config from './config/config';
+import { config } from './config/config';
 
 require('dotenv').config();
 
