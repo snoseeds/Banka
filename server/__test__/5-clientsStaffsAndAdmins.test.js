@@ -194,25 +194,15 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view specific transaction corresponding to a transaction id controller for a Logged in User', () => {
       it('should return the specific transaction if the client is authenticated and the transaction id exists', (done) => {
         chai.request(app)
-          .post(clientSignInUrl)
-          .send({
-            email: 'test@test.com',
-            password: 'ajulo2oluwawa',
-            typeOfUser: 'client',
-          })
-          .end((error, response) => {
-            clientSignInToken = response.body.data.token; // Client signup token would work the same as well
-            chai.request(app)
-              .get(`/api/v1/transactions/${transactionId}`)
-              .set('authorization', `Bearer ${clientSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                done();
-              });
+          .get(`/api/v1/transactions/${transactionId}`)
+          .set('authorization', `Bearer ${clientSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            done();
           });
       });
 
@@ -249,25 +239,15 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view specific transaction corresponding to a transaction id controller for a Logged in Staff (cashier)', () => {
       it('should return the specific transaction if the cashier is authenticated and the transaction id exists', (done) => {
         chai.request(app)
-          .post(staffSignInUrl)
-          .send({
-            email: 'alliafunkun@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'cashier',
-          })
-          .end((error, response) => {
-            staffSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(`/api/v1/transactions/${transactionId}`)
-              .set('authorization', `Bearer ${staffSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                done();
-              });
+          .get(`/api/v1/transactions/${transactionId}`)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            done();
           });
       });
 
@@ -300,29 +280,19 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
           });
       });
     });
-    
+  
     describe('Testing view specific transaction corresponding to a transaction id controller for a Logged in Admin', () => {
       it('should return the specific transaction if the admin is authenticated and the transaction id exists', (done) => {
         chai.request(app)
-          .post(adminSignInUrl)
-          .send({
-            email: 'yusikelebe@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'admin',
-          })
-          .end((error, response) => {
-            adminSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(`/api/v1/transactions/${transactionId}`)
-              .set('authorization', `Bearer ${adminSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                done();
-              });
+          .get(`/api/v1/transactions/${transactionId}`)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            done();
           });
       });
 
@@ -364,37 +334,27 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view all bank accounts of a user with particular email address controller for a Logged in User', () => {
       it('should return all the bank accounts if the client is authenticated and the email address exists', (done) => {
         chai.request(app)
-          .post(clientSignInUrl)
-          .send({
-            email: 'test@test.com',
-            password: 'ajulo2oluwawa',
-            typeOfUser: 'client',
-          })
-          .end((error, response) => {
-            clientSignInToken = response.body.data.token; // Client signup token would work the same as well
-            chai.request(app)
-              .get(viewAllBankAcctsUrl)
-              .set('authorization', `Bearer ${clientSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('array');
-                expect(res.body.data[0]).to.be.an('object');
-                expect(res.body.data[0]).to.have.property('createdOn');
-                expect(res.body.data[0]).to.have.property('accountNumber');
-                expect(res.body.data[0]).to.have.property('type');
-                expect(res.body.data[0]).to.have.property('status');
-                expect(res.body.data[0]).to.have.property('balance');
-                expect(res.body.data[1]).to.be.an('object');
-                expect(res.body.data[1]).to.have.property('createdOn');
-                expect(res.body.data[1]).to.have.property('accountNumber');
-                expect(res.body.data[1]).to.have.property('type');
-                expect(res.body.data[1]).to.have.property('status');
-                expect(res.body.data[1]).to.have.property('balance');
-                done();
-              });
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', `Bearer ${clientSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            expect(res.body.data[1]).to.be.an('object');
+            expect(res.body.data[1]).to.have.property('createdOn');
+            expect(res.body.data[1]).to.have.property('accountNumber');
+            expect(res.body.data[1]).to.have.property('type');
+            expect(res.body.data[1]).to.have.property('status');
+            expect(res.body.data[1]).to.have.property('balance');
+            done();
           });
       });
 
@@ -431,37 +391,27 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view all bank accounts of a user with particular email address controller for a Logged in Staff (cashier)', () => {
       it('should return all the bank accounts if the cashier is authenticated and the email address exists', (done) => {
         chai.request(app)
-          .post(staffSignInUrl)
-          .send({
-            email: 'alliafunkun@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'cashier',
-          })
-          .end((error, response) => {
-            staffSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(viewAllBankAcctsUrl)
-              .set('authorization', `Bearer ${staffSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('array');
-                expect(res.body.data[0]).to.be.an('object');
-                expect(res.body.data[0]).to.have.property('createdOn');
-                expect(res.body.data[0]).to.have.property('accountNumber');
-                expect(res.body.data[0]).to.have.property('type');
-                expect(res.body.data[0]).to.have.property('status');
-                expect(res.body.data[0]).to.have.property('balance');
-                expect(res.body.data[1]).to.be.an('object');
-                expect(res.body.data[1]).to.have.property('createdOn');
-                expect(res.body.data[1]).to.have.property('accountNumber');
-                expect(res.body.data[1]).to.have.property('type');
-                expect(res.body.data[1]).to.have.property('status');
-                expect(res.body.data[1]).to.have.property('balance');
-                done();
-              });
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            expect(res.body.data[1]).to.be.an('object');
+            expect(res.body.data[1]).to.have.property('createdOn');
+            expect(res.body.data[1]).to.have.property('accountNumber');
+            expect(res.body.data[1]).to.have.property('type');
+            expect(res.body.data[1]).to.have.property('status');
+            expect(res.body.data[1]).to.have.property('balance');
+            done();
           });
       });
 
@@ -498,37 +448,27 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view all bank accounts of a user with particular email address controller for a Logged in Admin', () => {
       it('should return all the bank accounts if the admin is authenticated and the email address exists', (done) => {
         chai.request(app)
-          .post(adminSignInUrl)
-          .send({
-            email: 'yusikelebe@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'admin',
-          })
-          .end((error, response) => {
-            adminSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(viewAllBankAcctsUrl)
-              .set('authorization', `Bearer ${adminSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('array');
-                expect(res.body.data[0]).to.be.an('object');
-                expect(res.body.data[0]).to.have.property('createdOn');
-                expect(res.body.data[0]).to.have.property('accountNumber');
-                expect(res.body.data[0]).to.have.property('type');
-                expect(res.body.data[0]).to.have.property('status');
-                expect(res.body.data[0]).to.have.property('balance');
-                expect(res.body.data[1]).to.be.an('object');
-                expect(res.body.data[1]).to.have.property('createdOn');
-                expect(res.body.data[1]).to.have.property('accountNumber');
-                expect(res.body.data[1]).to.have.property('type');
-                expect(res.body.data[1]).to.have.property('status');
-                expect(res.body.data[1]).to.have.property('balance');
-                done();
-              });
+          .get(viewAllBankAcctsUrl)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            expect(res.body.data[1]).to.be.an('object');
+            expect(res.body.data[1]).to.have.property('createdOn');
+            expect(res.body.data[1]).to.have.property('accountNumber');
+            expect(res.body.data[1]).to.have.property('type');
+            expect(res.body.data[1]).to.have.property('status');
+            expect(res.body.data[1]).to.have.property('balance');
+            done();
           });
       });
 
@@ -567,31 +507,21 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view specific details of a given bank account number controller for a Logged in User', () => {
       it('should return specific bank account details if the client is authenticated and the bank account number exists', (done) => {
         chai.request(app)
-          .post(clientSignInUrl)
-          .send({
-            email: 'test@test.com',
-            password: 'ajulo2oluwawa',
-            typeOfUser: 'client',
-          })
-          .end((error, response) => {
-            clientSignInToken = response.body.data.token; // Client signup token would work as well
-            chai.request(app)
-              .get(testVariablesObj.viewSingleBankAcctUrl)
-              .set('authorization', `Bearer ${clientSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data).to.have.property('createdOn');
-                expect(res.body.data).to.have.property('accountNumber');
-                expect(res.body.data).to.have.property('ownerEmail');
-                expect(res.body.data).to.have.property('type');
-                expect(res.body.data).to.have.property('status');
-                expect(res.body.data).to.have.property('balance');
-                done();
-              });
+          .get(testVariablesObj.viewSingleBankAcctUrl)
+          .set('authorization', `Bearer ${clientSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            expect(res.body.data).to.have.property('createdOn');
+            expect(res.body.data).to.have.property('accountNumber');
+            expect(res.body.data).to.have.property('ownerEmail');
+            expect(res.body.data).to.have.property('type');
+            expect(res.body.data).to.have.property('status');
+            expect(res.body.data).to.have.property('balance');
+            done();
           });
       });
 
@@ -628,31 +558,21 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view specific details of a given bank account number controller for a Logged in Staff', () => {
       it('should return specific bank account details if the cashier is authenticated and the bank account number exists', (done) => {
         chai.request(app)
-          .post(staffSignInUrl)
-          .send({
-            email: 'alliafunkun@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'cashier',
-          })
-          .end((error, response) => {
-            staffSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(testVariablesObj.viewSingleBankAcctUrl)
-              .set('authorization', `Bearer ${staffSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data).to.have.property('createdOn');
-                expect(res.body.data).to.have.property('accountNumber');
-                expect(res.body.data).to.have.property('ownerEmail');
-                expect(res.body.data).to.have.property('type');
-                expect(res.body.data).to.have.property('status');
-                expect(res.body.data).to.have.property('balance');
-                done();
-              });
+          .get(testVariablesObj.viewSingleBankAcctUrl)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            expect(res.body.data).to.have.property('createdOn');
+            expect(res.body.data).to.have.property('accountNumber');
+            expect(res.body.data).to.have.property('ownerEmail');
+            expect(res.body.data).to.have.property('type');
+            expect(res.body.data).to.have.property('status');
+            expect(res.body.data).to.have.property('balance');
+            done();
           });
       });
 
@@ -689,31 +609,21 @@ describe('Testing User, Staff, and Admin Controller for endpoints that the trio 
     describe('Testing view specific details of a given bank account number controller for a Logged in Admin', () => {
       it('should return specific bank account details if the admin is authenticated and the bnak account number exists', (done) => {
         chai.request(app)
-          .post(adminSignInUrl)
-          .send({
-            email: 'yusikelebe@gmail.com',
-            password: 'ajulo42oluwawa',
-            typeOfUser: 'admin',
-          })
-          .end((error, response) => {
-            adminSignInToken = response.body.data.token;
-            chai.request(app)
-              .get(testVariablesObj.viewSingleBankAcctUrl)
-              .set('authorization', `Bearer ${adminSignInToken}`)
-              .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal(200);
-                expect(res.body).to.have.property('data');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data).to.have.property('createdOn');
-                expect(res.body.data).to.have.property('accountNumber');
-                expect(res.body.data).to.have.property('ownerEmail');
-                expect(res.body.data).to.have.property('type');
-                expect(res.body.data).to.have.property('status');
-                expect(res.body.data).to.have.property('balance');
-                done();
-              });
+          .get(testVariablesObj.viewSingleBankAcctUrl)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+            expect(res.body.data).to.have.property('createdOn');
+            expect(res.body.data).to.have.property('accountNumber');
+            expect(res.body.data).to.have.property('ownerEmail');
+            expect(res.body.data).to.have.property('type');
+            expect(res.body.data).to.have.property('status');
+            expect(res.body.data).to.have.property('balance');
+            done();
           });
       });
 

@@ -4,11 +4,11 @@ import viewTransactxnByIdWrapper from '../middlewares/viewTransactxnById';
 import viewBankAccountsByEmailWrapper from '../middlewares/viewBankAccountsByEmail';
 import viewBankAccountByAcctNoWrapper from '../middlewares/viewBankAccountByAcctNo';
 
-const clientsStaffsAndAdmins = {
+const clientStaffAndAdmin = {
   viewTransactxnsByAcctNo: initJobsToBeCarriedOut(viewTransactxnsByAcctNoWrapper),
   viewTransactxnById: initJobsToBeCarriedOut(viewTransactxnByIdWrapper),
   viewBankAcctsByClientEmail: initJobsToBeCarriedOut(viewBankAccountsByEmailWrapper),
   viewBankAcctByAcctNo: initJobsToBeCarriedOut(viewBankAccountByAcctNoWrapper),
 };
 
-export default clientsStaffsAndAdmins;
+export default clientStaffAndAdmin;
