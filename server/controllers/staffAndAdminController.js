@@ -1,12 +1,14 @@
 import initJobsToBeCarriedOut from '../middlewares/jobsToBeCarriedOut';
 import changeAcctStatusInDbWrapper from '../middlewares/changeAcctStatusInDB';
 import deleteBankAcctInDbWrapper from '../middlewares/deleteBankAcctInDb';
-import viewAllBankAcctsWrapper from '../middlewares/viewAllBankAcctsInDb';
+import initViewAnyResourceInDb from '../middlewares/viewAnyResourceInDb';
 
 const staffAndAdmin = {
   changeBankAcctStatus: initJobsToBeCarriedOut(changeAcctStatusInDbWrapper),
   deleteBankAcct: initJobsToBeCarriedOut(deleteBankAcctInDbWrapper),
-  viewAllBankAccts: initJobsToBeCarriedOut(viewAllBankAcctsWrapper),
+  viewBankAcctsByQueryProp: initJobsToBeCarriedOut(initViewAnyResourceInDb('query', 'account',
+    ['createdOn', 'accountNumber', 'email', 'type', 'status', 'accountBalance'],
+    ['createdOn', 'accountNumber', 'ownerEmail', 'type', 'status', 'balance'])),
 };
 
 export default staffAndAdmin;

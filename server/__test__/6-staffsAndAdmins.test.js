@@ -499,6 +499,85 @@ describe('Testing Staff and Admin Controller for endpoints that only both are pr
     });
   });
 
+  describe('Testing view all savings bank accounts controller', () => {
+    const viewAllSavingsAccountsUrl = '/api/v1/accounts?type=savings';
+    describe('Testing view all savings bank accounts controller for Logged-in Admin', () => {
+      it('should return all savings bank accounts if admin is authenticated', (done) => {
+        chai.request(app)
+          .get(viewAllSavingsAccountsUrl)
+          .set('authorization', `Bearer ${adminSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('ownerEmail');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0].type).to.equal('savings');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            done();
+          });
+      });
+    });
+
+    describe('Testing view all savings bank accounts controller for Logged-in Staff', () => {
+      it('should return all bank savings accounts if cashier is authenticated', (done) => {
+        chai.request(app)
+          .get(viewAllSavingsAccountsUrl)
+          .set('authorization', `Bearer ${staffSignInToken}`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.status).to.equal(200);
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+            expect(res.body.data[0]).to.be.an('object');
+            expect(res.body.data[0]).to.have.property('createdOn');
+            expect(res.body.data[0]).to.have.property('accountNumber');
+            expect(res.body.data[0]).to.have.property('ownerEmail');
+            expect(res.body.data[0]).to.have.property('type');
+            expect(res.body.data[0].type).to.equal('savings');
+            expect(res.body.data[0]).to.have.property('status');
+            expect(res.body.data[0]).to.have.property('balance');
+            done();
+          });
+      });
+    });
+
+    describe('Testing view all savings bank accounts controller for a non admin nor staff sign-in', () => {
+      let clientToken;
+      const clientSignInUrl = '/api/v1/auth/signin';
+      it('should not return bank accounts', (done) => {
+        chai.request(app)
+          .post(clientSignInUrl)
+          .send({
+            email: 'test@test.com',
+            password: 'ajulo2oluwawa',
+            typeOfUser: 'client',
+          })
+          .end((err, res) => {
+            clientToken = res.body.data.token;
+            chai.request(app)
+              .get(viewAllSavingsAccountsUrl)
+              .set('authorization', `Bearer ${clientToken}`)
+              .end((error, response) => {
+                expect(response.body).to.be.an('object');
+                expect(response).to.have.status(403);
+                expect(response.body.status).to.equal(403);
+                expect(response.body).to.have.property('error');
+                expect(response.body.error).to.equal('Not Authorized');
+                done();
+              });
+          });
+      });
+    });
+  });
+
   describe('Testing delete bank account controller', () => {
     describe('Testing delete bank account controller for Logged-in Admin', () => {
       it('should delete bank account in request parameter from database', (done) => {
