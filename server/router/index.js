@@ -53,24 +53,24 @@ const routes = (app) => {
   // Client, Staff, and Admin can get transactions of a bank account
   router.get('/api/v1/accounts/:accountNumber/transactions',
     initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
-    clientStaffAndAdmin.viewTransactxnsByAcctNo);
+    clientStaffAndAdmin.viewTransactxnsByParamsProp);
   // Client, Staff, and Admin can get a specified transaction by its id
   router.get('/api/v1/transactions/:transactionId',
     initProcessBankaParameter('transaction', 'id', 'transaction id', ['client', 'cashier', 'admin']),
-    clientStaffAndAdmin.viewTransactxnById);
+    clientStaffAndAdmin.viewTransactxnsByParamsProp);
   // Client, Staff, and Admin can get a specified transaction by its id
   router.get('/api/v1/user/:email/accounts',
     initProcessBankaParameter('account', 'email', 'email address', ['client', 'cashier', 'admin']),
-    clientStaffAndAdmin.viewBankAcctsByClientEmail);
+    clientStaffAndAdmin.viewBankAcctsByParamsProp);
   // Client, Staff, and Admin can get specific bank account details by its account number
   router.get('/api/v1/accounts/:accountNumber',
     initProcessBankaParameter('account', 'accountNumber', 'account number', ['client', 'cashier', 'admin']),
-    clientStaffAndAdmin.viewBankAcctByAcctNo);
-  // Client and Admin can get all bank accounts (or only active or dormant depending on
-  // value for status property in query string)
+    clientStaffAndAdmin.viewBankAcctsByParamsProp);
+  // Client and Admin can get all bank accounts (or only any of active, dormant, current or savings
+  // depending on type and value of property in query string object)
   router.get('/api/v1/accounts',
     initProcessBankaQueryOrPath(['admin', 'cashier']),
-    staffAndAdmin.viewAllBankAccts);
+    staffAndAdmin.viewBankAcctsByQueryProp);
 
   router.use((req, res) => {
     res.status(404).json({

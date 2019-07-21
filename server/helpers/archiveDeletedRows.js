@@ -2,7 +2,7 @@ import queries from '../PostgreSQL/dbTablesCrudQueries';
 
 const archiveDeletedRows = async (table, tableRowsArray) => {
   // eslint-disable-next-line consistent-return
-  tableRowsArray.forEach(async (tableRow) => {
+  await tableRowsArray.forEach(async (tableRow) => {
     try {
       const columnsToBeInsertedArr = Object.keys(tableRow);
       const valuesToBeInsertedArr = Object.values(tableRow);

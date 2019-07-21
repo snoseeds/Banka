@@ -1,14 +1,14 @@
 import initJobsToBeCarriedOut from '../middlewares/jobsToBeCarriedOut';
-import viewTransactxnsByAcctNoWrapper from '../middlewares/viewTransactxnsByAcctNo';
-import viewTransactxnByIdWrapper from '../middlewares/viewTransactxnById';
-import viewBankAccountsByEmailWrapper from '../middlewares/viewBankAccountsByEmail';
-import viewBankAccountByAcctNoWrapper from '../middlewares/viewBankAccountByAcctNo';
+import initViewAnyResourceInDb from '../middlewares/viewAnyResourceInDb';
 
 const clientStaffAndAdmin = {
-  viewTransactxnsByAcctNo: initJobsToBeCarriedOut(viewTransactxnsByAcctNoWrapper),
-  viewTransactxnById: initJobsToBeCarriedOut(viewTransactxnByIdWrapper),
-  viewBankAcctsByClientEmail: initJobsToBeCarriedOut(viewBankAccountsByEmailWrapper),
-  viewBankAcctByAcctNo: initJobsToBeCarriedOut(viewBankAccountByAcctNoWrapper),
+  viewTransactxnsByParamsProp: initJobsToBeCarriedOut(initViewAnyResourceInDb('params', 'transaction',
+    ['id', 'createdOn', 'transactionType', 'accountNumber', 'amount', 'oldBalance', 'newBalance'],
+    ['transactionId', 'createdOn', 'type', 'accountNumber', 'amount', 'oldBalance', 'newBalance'])),
+
+  viewBankAcctsByParamsProp: initJobsToBeCarriedOut(initViewAnyResourceInDb('params', 'account',
+    ['createdOn', 'accountNumber', 'email', 'type', 'status', 'accountBalance'],
+    ['createdOn', 'accountNumber', 'ownerEmail', 'type', 'status', 'balance'])),
 };
 
 export default clientStaffAndAdmin;
