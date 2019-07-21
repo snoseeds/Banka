@@ -6,12 +6,14 @@ const viewAllBankAcctsWrapper = () => {
   // Moreover, if the request is bad, previous middlewares would have rejected
   // the request with the appropriate error
   const viewAllBankAccts = async (req, res) => {
-    const { status } = req.query;
+    const queryType = Object.keys(req.query)[0];
+    const typeOfQueryObj = {};
+    [typeOfQueryObj[queryType]] = Object.values(req.query);
     return res.status(200).json({
       status: 200,
       data: await queries.getRowsOfColumns('account',
         ['createdOn', 'accountNumber', 'email', 'type', 'status', 'accountBalance'],
-        status ? 'status' : undefined, status,
+        typeOfQueryObj[queryType] ? queryType : undefined, typeOfQueryObj[queryType],
         ['createdOn', 'accountNumber', 'ownerEmail', 'type', 'status', 'balance']),
     });
   };
