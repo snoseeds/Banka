@@ -9,7 +9,7 @@
 	<title>Banka | Welcome</title>
 </head>
 
-<body class="accordion-page confirmation-box history slidingFormPage transaction">
+<body class="accordion-page confirmation-box history slidingFormPage transaction admin-user-portal">
 	<div class="container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -19,6 +19,9 @@
 						<img src="assets/images/banka_logo.png" alt="banka_logo">
 					</a>
 				</li>
+        <li id="adminPortalBtn" class="admin-staff-link">
+          <a href="" class="btn btn-default">Back to View Users</a>
+        </li>
 				<li class="log-out">
 					<a data-question="Are you sure you want to log out?" data-url="index.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
 				</li>
@@ -71,15 +74,13 @@
                
                 <label id="formLabel" class="required">
                   <p>Credit Account</p>
-                  <input id="transactField" type="number" name="credit-amount" placeholder="Credit Amount" required>
+                  <input data-val-type="transactionAmount" id="transactField" type="number" name="credit-amount" placeholder="Credit Amount" required>
                 </label>
 
               </fieldset>
               <div>
-                <a id="slidingFormButton" class="staff btn btn-default">Credit</a>
+                <button id="slidingFormButton" class="staff btn btn-default formActionBtn">Credit</button>
               </div>
-
-    <!--           <input class="btn btn-default" type="submit" name="submit" value="Credit"> -->
 
             </form>
           </div>    
@@ -93,7 +94,7 @@
 			
 			Accounts History form
 
-     --><form class="" action="#" method="post">
+     --><form class="" action="account_no_history.html" method="post">
 
           <fieldset class="flex-label">
           	<label class="control-label">
@@ -103,12 +104,10 @@
 								<option value="AccountNumber2ofUser">Current: Oke S, 8309230008</option>
 							</select>
 							<div>
-								<a href="account_no_history.html" class="btn btn-default">Go</a>
+                <button data-request="staff" class="btn btn-default">Go</button>
 							</div>
             </label>
 					</fieldset>
-
-<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 
         </form>
 			</section>
@@ -147,9 +146,9 @@
             </tr>
           </tbody>
         </table>
-        <section class="admin-section">
+        <section class="admin-staff-section hide-admin-staff-section">
           <header class="admin-summary">
-            <p>Admin/Staff Section</p>
+            <p>Admin / <p class="to-next-line">Staff Section</p></p>
             <p>Account Status: <span class="account-status">Activated</span></p>
           </header>
           <section class="admin-staff-power">
@@ -158,7 +157,7 @@
             <button data-question="Are you sure you want to delete this bank account?" data-url="user_bankAccount_deleted.html" data-url-title="Delete" class="btn btn-default action">Delete Bank Account</button>
           </section>
         </section>
-        <section class="staff-section">
+        <section class="staff-section hide-staff-section">
           <header class="staff-summary">
             <p>Staff Section</p>
           </header>
@@ -176,44 +175,32 @@
 			
 			Accounts Monthly History form
 
-	   -->
-	   		<form class="" action="#" method="post">
+	   --><form class="" action="account_no_history.html" method="post">
 
 	        <fieldset>
 	        	<div class="date-label">
 		        	<label class="history start hide">
 								<p>From</p>
 								<div class="form-div">
-			            <select name="day">
+			            <select name="dayStart">
 										<option value="0">Day</option>
 									</select><!--
-							 --><select name="month">
-										<option value="0">Month</option>
-									</select><!--
-							 --><select>
-										<option value="0">Year</option>
-									</select>
+               --><input type="month" name="monthStart" required  pattern="[0-9]{4}-[0-9]{2}">
 								</div>
 		          </label>
+
 		          <label class="history end">
 								<p class="hide">To</p>
 								<div class="form-div">
-			            <select name="day">
+			            <select name="dayEnd">
 										<option value="0">Day</option>
 									</select><!--
-							 --><select name="month">
-										<option value="0">Month</option>
-									</select><!--
-							 --><select>
-										<option value="0">Year</option>
-									</select><!--
-							 --><a class="go btn btn-default" href="account_no_history.html" class="btn btn-default">Go</a>
+							 --><input type="month" name="monthEnd" required pattern="[0-9]{4}-[0-9]{2}">
+                  <button class="go btn btn-default">Go</button>
 								</div>
 		          </label>
 						</div>
 					</fieldset>
-
-	<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 
 	      </form>
 	    </section>				

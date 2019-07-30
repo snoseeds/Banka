@@ -9,7 +9,7 @@
 	<title>Banka | Create Bank Account</title>
 </head>
 
-<body class="accordion-page confirmation-box">
+<body class="accordion-page confirmation-box createAcct">
 	<div class="container form-page-container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -69,12 +69,12 @@
         
         Registration form
 
-    --><form class="" action="#" method="post">
+    --><form class="" action="user_bankAccount_creation_success.html" method="post">
 
           <fieldset class="create-account flex-label">
           	<label class="control-label">
               Account Type
-              <select name="accountType"  class="form-control">
+              <select name="accountType" class="form-control">
 								<option value="0">-- choose account type --</option>
 								<option value="1">Savings</option>
 								<option value="2">Current</option>
@@ -83,17 +83,17 @@
 
             <label class="required">
               Mobile Number
-              <input type="number" name="mobileNumber" placeholder="Mobile Number for account" required>
+              <input type="number" name="mobileNumber" placeholder="Mobile Number for account">
             </label>
            
             <label class="required">
               Email Address
-              <input type="email" name="email" placeholder="Email address for account" required>
+              <input type="email" name="email" placeholder="Email address for account">
             </label>
 
             <label class="required">
             	House Address
-            	<input type="text" name="houseAddress" placeholder="House Address" required>
+            	<input data-val-type="libraryValidation" type="text" name="houseAddress" placeholder="House Address" required>
             </label>
 
 			    	<label class="control-label">Identification type
@@ -113,21 +113,14 @@
 						</label>
 
 			      <label class="control-label">Identification number
-			        <input name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
+			        <input data-val-type="libraryValidation" name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
 						</label>
-
-						<label class="required">
-            	Opening Balance 
-            	<input type="number" name="openingBalance" placeholder="Number 0 if none" required>
-            </label>
 
 					</fieldset>
 
 					<div>
-						<a href="user_bankAccount_creation_success.html" class="btn btn-default">Create your Bank Account</a>
+						<button id="signupBtn" class="btn btn-default formActionBtn">Create your Bank Account</button>
 					</div>
-
-<!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 
         </form>
 			</section>

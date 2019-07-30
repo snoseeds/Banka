@@ -14,9 +14,9 @@ const router = Router();
 const routes = (app) => {
   router.get('/', Index.home);
   router.get('/api/v1', Index.v1);
-  // Signup routes
+  // Client Signup route
   router.post('/api/v1/auth/signup', client.signup);
-  // Signin routes
+  // Client Signin route
   router.post('/api/v1/auth/signin', client.signin);
   // Client create bank account route
   router.post('/api/v1/accounts', client.createBankAccount[0]);
@@ -58,7 +58,7 @@ const routes = (app) => {
   router.get('/api/v1/transactions/:transactionId',
     initProcessBankaParameter('transaction', 'id', 'transaction id', ['client', 'cashier', 'admin']),
     clientStaffAndAdmin.viewTransactxnsByParamsProp);
-  // Client, Staff, and Admin can get a specified transaction by its id
+  // Client, Staff, and Admin can get all bank accounts of a client by his email
   router.get('/api/v1/user/:email/accounts',
     initProcessBankaParameter('account', 'email', 'email address', ['client', 'cashier', 'admin']),
     clientStaffAndAdmin.viewBankAcctsByParamsProp);

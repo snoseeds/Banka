@@ -9,7 +9,7 @@
 	<title>Banka | User Welcome</title>
 </head>
 
-<body class="accordion-page confirmation-box users-portal">
+<body class="accordion-page confirmation-box users-portal admin-user-portal">
 	<div class="container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -19,6 +19,9 @@
 						<img src="assets/images/banka_logo.png" alt="banka_logo">
 					</a>
 				</li>
+        <li id="adminPortalBtn" class="admin-staff-link">
+          <a href="" class="btn btn-default">Back to View Users</a>
+        </li>
 				<li class="log-out">
 					<a data-question="Are you sure you want to log out?" data-url="index.html?log_out" data-url-title="Log Out" class="action" href="#tail">Log Out</a>
 				</li>
@@ -118,10 +121,6 @@
 				<section class="account-creation">
 					<button data-question="Are you sure you want to create a new bank account?" data-url="user_bankAccount_creation.html" data-url-title="Add Account" class="btn btn-default action">Add Bank Account</button>
 				</section>
-			</section>
-			<section class="admin-welcome">
-				<p>Welcome <span class="accessAdmin">Admin X</span>, Click on any specific bank account or history to view history and/or wield your Admin privileges.</p>
-				<a href="admin_portal.html" class="btn btn-default">Go back to Admin Portal</a>
 			</section>
 			<div id="transOverlay"></div>
 		</section>
