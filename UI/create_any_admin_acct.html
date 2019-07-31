@@ -9,7 +9,7 @@
 	<title></title>
 </head>
 
-<body class="admin-sign-up confirmation-box">
+<body class="admin-sign-up confirmation-box createAcct">
 	<div class="container form-page-container">
 		<header class="main-header portal-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -85,7 +85,7 @@
         
         Registration form
 
-    --><form class="" action="#" method="post">
+    --><form class="" action="" method="post">
 
           <fieldset class="create-account flex-label">
 
@@ -116,12 +116,17 @@
 
             <label>
           		Password
-          		<input name="password" type="password" placeholder="Password" required>
+          		<input id="password" name="password" type="password" placeholder="Password" required>
           	</label>
+
+            <label>
+              Confirm Password
+              <input data-val-type="confirmPassword" name="password" type="password" placeholder="Confirm Password" required>
+            </label>
 
             <label class="required">
             	House Address
-            	<input type="text" name="houseAddress" placeholder="House Address" required>
+            	<input data-val-type="libraryValidation" type="text" name="houseAddress" placeholder="House Address" required>
             </label>
 
 			    	<label class="control-label">Identification type
@@ -141,17 +146,14 @@
 						</label>
 
 			      <label class="control-label">Identification number
-			        <input name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
+			        <input data-val-type="libraryValidation" name="identificationNumber" type="text" id="identificationNumber" class="form-control" placeholder="Identification number here!" maxlength="30" required>
 						</label>
 
 					</fieldset>
 
 					<div>
-						<a id="submitForm" href="" class="btn btn-default"></a>
+            <button id="signupBtn" class="btn btn-default formActionBtn"></button>
 					</div>
-
-<!--           <input class="btn btn-default" type="submit" name="submit" value="Create Account"> -->
-
         </form>
 			</section>
 			<div id="transOverlay"></div>

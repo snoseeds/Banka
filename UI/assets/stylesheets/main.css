@@ -81,6 +81,16 @@ body {
 	display: none;
 }
 
+.main-header .admin-staff-link {
+	text-align: left;
+	align-self: center;
+	display: none;
+}
+
+.main-header .admin-staff-link a {
+	text-align: center;
+}
+
 /*.main-header li:last-child {
 	color: white;
 }*/
@@ -189,10 +199,26 @@ body {
 	margin-top: 15px;
 }
 
+.form-page-main-body header p {
+	margin-bottom: 15px;
+}
+
+.form-page-main-body .flex-label .error,
+.slidingFormPage .flex-label .error {
+	color: red;
+	font-size: 12px;
+	text-align: right;
+}
+
 @media only screen and (max-width: 980px) {
 	body{
 		grid-template-columns: 1fr 98vw 1fr;
 		height: 100vmax;
+	}
+
+	.form-page-main-body .flex-label .error,
+	.slidingFormPage .flex-label .error {
+		text-align: center;
 	}
 }
 
@@ -227,6 +253,11 @@ body {
 		grid-template-rows: auto 0 1fr auto;
 	}
 	
+
+	.main-header .admin-staff-link a {
+		padding: 5px;
+	}
+
 	.main-body {
 		grid-template-rows: auto 1fr;
 		grid-auto-rows: 1fr;
@@ -368,6 +399,7 @@ textarea {
 }
 
 .date-label select,
+.date-label input,
 .flex-label input,
 .flex-label select,
 .flex-label textarea {
@@ -673,9 +705,9 @@ td.av-balance p {
 }
 
 .menu-item-title {
-	-webkit-box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
-		 -moz-box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
-					box-shadow: 0px 2px 1px -2px rgba(0,0,0,0.75);
+	-webkit-box-shadow: -1px 2px 1px -2px rgba(0,0,0,0.75);
+		 -moz-box-shadow: -1px 2px 1px -2px rgba(0,0,0,0.75);
+					box-shadow: -1px 2px 1px -2px rgba(0,0,0,0.75);
 	border-radius: 0;
 	padding-bottom: 5px;
 }
@@ -833,7 +865,8 @@ header.portal-intro.intro p {
 
 .history .flex-label select,
 /*.history .flex-label div,*/
-.date-label select {
+.date-label select,
+.date-label input {
 	margin: 0;
 }
 
@@ -841,14 +874,20 @@ header.portal-intro.intro p {
 	position: static;
 }
 
-a.go,
-.accts-history-form fieldset a {
+button.go,
+.accts-history-form fieldset button {
 	padding: 8px;
   height: 34px;
 }
 
 .accts-history-form .flex-label select {
 	margin-right: 5px;
+}
+
+
+.monthly-form .start {
+	margin-right: 40px;
+	margin-bottom: 0.5em;
 }
 
 @media only screen and (max-width: 600px) {
@@ -884,10 +923,6 @@ a.go,
 	grid-auto-rows: auto;
 }
 
-.monthly-form .date-label * {
-	/*display: inline-block;*/
-}
-
 .monthly-form .date-label {
 	display: flex;
 	flex-wrap: wrap;
@@ -897,6 +932,12 @@ a.go,
 .monthly-form .date-label label {
 	display: flex;
 }
+
+.admin-staff-section header p:first-child,
+.admin-staff-section .to-next-line {
+	display: inline-block;
+}
+
 
 .go {
 	vertical-align: top;
@@ -986,6 +1027,7 @@ td.transaction-diff {
 	.recent-history {
 		margin-top: 10px;
 	}
+
 }
 
 	@media only screen and (max-width: 360px) {
@@ -996,11 +1038,10 @@ td.transaction-diff {
 	.recent-history {
 		margin-top: 10px;
 	}
-}
 
-.monthly-form .start {
-	margin-right: 40px;
-	margin-bottom: 0.5em;
+	.admin-staff-section .to-next-line {
+		display: block
+	}
 }
 
 .monthly-form label p {
@@ -1103,7 +1144,7 @@ td.transaction-diff {
 }
 
 .history .staff-section,
-.history .admin-section {
+.history .admin-staff-section {
 	display: flex;
 	justify-content: space-between;
 	background: #fff;
@@ -1113,7 +1154,7 @@ td.transaction-diff {
 
 
 .history .staff-section .staff-power,
-.history .admin-section .admin-staff-power {
+.history .admin-staff-section .admin-staff-power {
 	flex-shrink: 0;
 	padding: 4px;
 	display: grid;
@@ -1124,7 +1165,7 @@ td.transaction-diff {
 }
 
 .history .staff-section header,
-.history .admin-section header {
+.history .admin-staff-section header {
 	padding: 5px;
 	flex-shrink: 0;
 }
@@ -1139,7 +1180,7 @@ td.transaction-diff {
 	color: #000;
 }
 
-.history .admin-section {
+.history .admin-staff-section {
 	/*display: none;*/
 
 }
@@ -1152,7 +1193,8 @@ td.transaction-diff {
 /*}*/
 
 .history .staff-section p:first-child,
-.history .admin-section p:first-child {
+.history .admin-staff-section p:first-child,
+.history .admin-staff-section p.to-next-line {
 	color: red;
 }
 
@@ -1177,11 +1219,19 @@ td.transaction-diff {
 	color: black;
 }
 
-
 .history .staff-power button:first-child {
 	background: green;
 	color: #fff;
 }
+
+.hide-account-creation,
+.hide-user-portal-intro,
+.history .hide-admin-staff-section,
+.history .hide-staff-section {
+	display: none;
+}
+
+
 
 /*.admin-user-ops,
 .admin-user-ops * {

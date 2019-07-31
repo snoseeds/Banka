@@ -9,7 +9,7 @@
 	<title>Banka | User Sign Up</title>
 </head>
 
-<body>
+<body class="createAcct">
 	<div class="container form-page-container">
 		<header class="main-header">
 			<h1 id="heading">Internet Banking</h1>
@@ -52,7 +52,7 @@
         
         Registration form
 
-    --><form class="" action="#" method="post">
+    --><form class="" action="user_account_success.html" method="post">
 
           <fieldset class="create-account flex-label">
 
@@ -92,14 +92,20 @@
 
             <label>
           		Password
-          		<input name="password" type="password" placeholder="Password" required>
+          		<input id="password" name="password" type="password" placeholder="Password" required>
           	</label>
+
+            <label>
+              Confirm Password
+              <input data-val-type="confirmPassword" name="password" type="password" placeholder="Confirm Password" required>
+            </label>
 
 					</fieldset>
 
 					<div>
-						<a href="user_account_success.html" class="btn btn-default">Sign me up with Banka!</a>
+						<button id="signupBtn" class="btn btn-default formActionBtn">Sign me up with Banka!</button>
 					</div>
+     <!--        <a id="signupBtn" href="user_account_success.html" class="btn btn-default">Sign me up with Banka!</a> -->
 
 <!--           <input class="btn btn-default" type="submit" name="submit" value="Create your Bank Account"> -->
 
